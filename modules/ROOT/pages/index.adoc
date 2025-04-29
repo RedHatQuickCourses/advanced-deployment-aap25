@@ -3,25 +3,35 @@
 
 == Introduction
 
-Course Title: Course title FIXME
+Course Title: Advanced Deployment of AAP 2.5
 
 Description:
-Course description FIXME
+The Advanced Ansible Automation Platform enables scalable IT automation across complex environments.It features an Automation Mesh for efficient task distribution and coordination and Proper sizing based on workload and infrastructure is crucial for optimal deployment in this training you will get to know the aspect that needs consideration while doing that and few tips for effective troubleshooting for installation issues involves understanding. 
 
-Duration: FIXME hours
+Duration: 60 minutes
 
 == Objectives
 
 On completing this course, you should be able to:
 
-* Observable, measurable objective...
-* Observable, measurable objective...
-* Observable, measurable objective...
+- Understanding of Automation Mesh.
+- Calculate the Sizing requirement of Ansible Automation platform.
+- Troubleshooting Ansible Automation Platform Installation issue.
+- Performance consideration of Ansible Automation Platform.
 
 == Prerequisites
 
 This course assumes that you have the following prior experience:
 
-* Course or experience...
-* Course or experience...
-* Course or experience...
+- Foundational knowledge of Linux, Containers and Ansible, 
+- https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D73946012[Basic Deployment of Ansible Automation Platform 2.5,windows=_blank].
+
+
+== Contributors
+
+The PTL team acknowledges the valuable contributions of the following Red Hat associates:
+
+- Nikhil Jain (Principal Software Engineer)
+- Amrinder Singh (Content Architect)
+- Rutuja Deshmukh (Editor)
+- Anna Swicegood (Learning Product Manager)

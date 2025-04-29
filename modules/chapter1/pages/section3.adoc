@@ -1,6 +1,91 @@
-= Section 3
+= Automation Mesh Hands-on LAB
 
-* Create multiple copies of this section as needed.
-* Remove any unnecessary sections or chapter pages.
-* Customize the section as appropriate.
-* Ensure that each page contains a manageable amount of content.
+Once the lab is deployed and you are accessing the system via *ssh* terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the below video to perform the operations: 
+
+video::advanced_aap_lab.mp4[align="left",width=800,height=500]
+
+. Install the required and useful utilities:
++
+[source,bash,role=execute]
+----
+ $ sudo dnf install -y wget git-core rsync vim ansible-core
+----
+
+. Copy the content of the into a notepad locally the `/home/devops/inventory`.
++
+[source,bash,role=execute]
+----
+$ cat /home/devops/inventory
+----
+
+. Extract the *installer file* using the following command:
++
+[source,bash,role=execute]
+----
+$ tar -xvf ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.tar.gz
+$ cd ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.
+----
+
+
+. The `inventory-growth` should have the below values set: 
+
++
+[source,bash,role=execute]
+----
+[automationgateway]
+aap2.g8hpb.internal
+
+[automationcontroller]
+aap-controller.g8hpb.internal
+
+[automationhub]
+
+[automationeda]
+
+[database]
+aap-database.g8hpb.internal
+
+[execution_nodes]
+aap-execution.g8hpb.internal
+
+[all:vars]
+
+postgresql_admin_username=postgres
+postgresql_admin_password=redhat
+
+bundle_install=true
+bundle_dir='{{ lookup("ansible.builtin.env", "PWD") }}/bundle'
+
+redis_mode=standalone
+
+gateway_admin_password=redhat
+gateway_pg_host=aap-database.g8hpb.internal
+gateway_pg_password=redhat
+
+controller_admin_password=redhat
+controller_pg_host=aap-database.g8hpb.internal
+controller_pg_password=redhat
+----
+
+
+. Once the inventory file is ready follow the below steps to do the installation:
++
+[source,bash,role=execute]
+----
+$ ansible-playbook -i inventory-growth ansible.containerized_installer.install
+----
+
+. Access the system using the `aap2` hostname by removing the `internal` from last and adding the `sandboxid` to the hostname from the `RHDP` lab login details section. 
++
+[source,bash,role=execute]
+----
+aap2.g8hpb.sandbox3274.opentlc.com
+----
+
+. Use the user *admin* and the *password* set during the time of installation. In the above video i set it to *redhat*. 
+
+ Note: Try to use stronger password while doing the enterprise deployment 
+
+. Provide the *Red Hat login ID* to get the subscription for attaching it to the AAP and *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* subscription can be used for this lab.
+
+. After *Login* run the *Project sync* for the *Demo project* to confirm the job is getting executed.

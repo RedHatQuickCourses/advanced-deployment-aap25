@@ -1,0 +1,128 @@
+= Calculate the Sizing requirement for RPM and Containerized Installation
+
+Having the correct sizing of the Ansible automation Platform will help make your automation future proof at not much additional cost and all the sizing requirement depend on multiple factors on what kind of automation you are running in your organization but before that the below points are the focus areas while planning the capacity planning: 
+
+- Characterizing your workload. 			
+- Reviewing the capabilities of different node types 					
+- Planning the deployment based on the requirements of your workload 			
+
+And below are the isolated factors that play a major role while calculating Sizing. 
+
+- Number of the Managed hosts controlled by the AAP. 
+- Jobs or Tasks running per hour per host.
+- Maximum number of concurrent jobs that you want to support.			
+- Maximum number of forks set on jobs. Forks determine the number of hosts that a job acts on concurrently. 						
+- Maximum API requests per second 						
+- Node size that you prefer to deploy (CPU/Memory/Disk) 			
+
+*Unified UI*
+
+Unified UI provides the authentication and a load-balancing of requests using the GRPC service.  Increasing the CPU and Memory will help to reduce the bottleneck on increasing resources if facing any issues you identify it by when you started facing the 502 error on the gateway while trying to access it. 
+
+*Automation Execution/Controller*
+
+There are 4 types of nodes in the RPM based Ansible Automation platform: 
+Control plane: Control node and Hybrid node.
+Execution plane: Execution node and Hop node. 
+
+Control and hybrid nodes play a key role in managing jobs in a system. Think of them as the "managers" that start jobs and handle their results, feeding that data into a database. Every job needs one control node to manage it.
+
+Key Concept for Control Capacity.
+
+- Each job needs 1 unit of control capacity.
+- A node with 100 capacity units can control up to 100 jobs at once.
+
+Scaling Control Nodes (Making Them More Powerful)
+
+You can vertically scale a control node by giving it more CPU and memory (i.e., using a larger virtual machine). This boosts the control plane's ability in two big ways:
+
+. More Jobs: It can handle more jobs at the same time.
+. Faster Event Handling: It can process more job events at once.
+
+ Note: Vertically scaling a control node does not automatically increase the number of workers that handle web requests. Instead of making one control node stronger (vertical scaling), you can add more control nodes (horizontal scaling). This spreads the workload and web traffic across multiple nodes using a load balancer. It also adds redundancy—so if one node fails, others keep things running smoothly. Horizontal scaling is often preferred for better reliability and performance.
+
+For vertical scaling as well the best Practices are:
+
+Scale CPU and memory together, ideally in a 1 CPU : 4 GB RAM ratio.
+Even if memory seems like the issue, adding more CPU can help because The memory load mostly comes from unprocessed events in a memory queue. More CPU power helps process those events faster, reducing memory pressure.
+Now lets talk about the benefits of the execution node and the hop nodes: 
+
+*Execution nodes*
+ 
+Execution and hybrid nodes provide execution capacity. The capacity consumed by a job is equal to the number of forks set on the job template or the number of hosts in the inventory,
+
+`Vertically scaling` an execution node by deploying a larger virtual machine with more resources provides more forks for job execution. This increases the number of concurrent jobs that an instance can run. 				
+
+You can configure an instance group that can only be used for running jobs against a certain Inventory. In this scenario, by `horizontally scaling` the execution node, you can ensure that lower-priority jobs do not block higher-priority jobs. 
+
+Hop nodes: 	
+
+Hop nodes use minimal resources, so vertical scaling doesn't increase capacity. Instead, monitor bandwidth—especially for hop nodes linking many execution nodes to the control plane. If bandwidth is maxed out, consider a network upgrade.	
+
+Hop nodes on `horizontal scaling` can increase redundancy and guarantee that traffic will continue to flow even in the event of a node failure.
+
+From the above you have got a very decent Idea about what all things are involved while considering the capacity planning and where to use `Vertical and horizontal scaling` and Apart from the above please consider the below while doing the calculations: 
+
+The fork values are generated on the basis of RAM and CPU.
+
+*Memory Relative Capacity*
+
+`mem_capacity` is calculated relative to the amount of memory needed per-fork and the value is 100 mb RAM = 1 fork. Where as 2 GB of ram is reserved for the AAP services: 
+
+[source]
+----
+16 GB ram - 2 GB ram reserved will give you (16384 - 2048) / 100 ~ 140 forks 
+----
+
+*CPU Relative Capacity*
+
+Ansible workloads are often processor-bound.  In these cases sometimes reducing the simultaneous workload allows more tasks to run faster and reduces the average time-to-completion of those jobs.
+
+Just as the `mem_capacity` algorithm adjusts the amount of memory required per fork, the `cpu_capacity` algorithm adjusts the amount of processing resources required per fork. The baseline value for this is 1 CPU = 4 forks. 
+
+[source]
+----
+4 cpu * 4 forks per cpu = 16 forks
+----
+
+Selecting a capacity out of the CPU-bound or the memory-bound capacity limits is selecting between the minimum or maximum number of forks.
+
+The instance field `capacity_adjustment`` enables you to select how much you want to consider. It is represented as a value between 0.0 and 1.0. If set to a value of 1.0, then the largest value is used. The previous example involves memory capacity, so a value of 140 forks can be selected. If set to a value of 0.0 then the smallest value is used ie. A value of 0.5 is a 50/50 balance between the two algorithms, which is: 	
+
+
+[source]
+----
+Capacity = [140 forks memory * 0.50] + [16 forks of CPU * 0.50] 	
+	  = 70 + 8 = 78 forks. 
+----
+
+Choosing the right node type in terms of what your business needs are and the above CPU and RAM capacity calculation will help you in determining the right capacity. Lets calculate the capacity using 1 example in the next section. 
+
+ NOTE: The above information is for the RPM and there is a slight change while we talk about the Containerized AAP installation only the control node type is not there for the Containerized AAP.  The remaining calculations and concepts are unchanged.
+
+*Event-Driven Ansible controller / Automation Decision*
+
+In Event-Driven Ansible controller, your workload includes the number of rulebook activations and events being received. Consider the following factors to characterize your Event-Driven Ansible controller workload: 		
+
+- Number of simultaneous rulebook activations 					
+- Number of events received by Event-Driven Ansible controller 				
+
+By default, Event-Driven Ansible controller allows 12 rulebook activations per node and 24 activations in total can run simultaneously. It wont run any more activation even if there is enough CPU or RAM due to the variable being set `MAX_RUNNING_ACTIVATIONS` which needs to be set according to the requirement if its more than 24. 
+
+This can be configured via `/etc/ansible-automation-platform/eda/settings`.yaml` `MAX_RUNNING_ACTIVATIONS = 25` and restart the `automation-eda-controller-service restart` accordingly on the `EDA` server.
+
+Memory usage is based on the number of events that Event-Driven Ansible controller has to process. Each rulebook activation container has a 200MB memory limit. For example, with 4 CPU and 16GB of RAM, one rulebook activation container with an assigned `200MB` memory limit can not handle more than 150,000 events per minute. If the number of parallel running rulebook activations is higher, then the maximum number of events each rulebook activation can process is reduced. If there are too many incoming events at a very high rate, the container can run out of memory trying to process the events. This will kill the container, and your rulebook activation will fail with a status code of 137. 	
+
+Navigate to the file `/etc/ansible-automation-platform/eda/settings.yaml` and set `PODMAN_MEM_LIMIT = 400m` and restart the `automation-eda-controller-service restart` accordingly on the EDA server.
+
+*Automation Content or Private Automation Hub:* 
+
+Since it only provides the execution Environment and collection so there might not be much need of resources for Automation Content or Private Automation Hub.  Meeting the minimum and storage requirements should be enough. 
+
+- Number of Execution Environments you have. 
+- Size of each execution environment. 
+- Number of versions of each execution environment. 
+
+Accordingly, provide the Database space to the PAH system. Most of the time minimum should be enough to take care of the environment but the above factors play a major role if you want to calculate it accurately.
+
+
