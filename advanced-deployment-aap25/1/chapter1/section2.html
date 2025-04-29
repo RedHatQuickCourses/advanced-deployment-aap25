@@ -148,6 +148,9 @@
 <ol class="arabic">
 <li>
 <p>Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes are mandatory to have so the below example only share the information related to the</p>
+</li>
+</ol>
+</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationcontroller]
@@ -161,9 +164,6 @@ peers=execution_nodes
 execution_hostname.example.com</code></pre>
 </div>
 </div>
-</li>
-</ol>
-</div>
 <div class="paragraph">
 <p>In the above example we can see that there is 1 Automation Controller node mentioned as a node_type= control which acts as a control node to execute jobs on the execution nodes.</p>
 </div>
@@ -171,6 +171,9 @@ execution_hostname.example.com</code></pre>
 <ol class="arabic">
 <li>
 <p>Creating a 1 hop node and 1 execution node connected to the hop node and the other execution node directly connected to the Automation Controller node.</p>
+</li>
+</ol>
+</div>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationcontroller]
@@ -195,9 +198,6 @@ peers=automationcontroller
 [proxy]
 execution_hostname1.example.com</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 <div class="paragraph">
 <p>The <code>execution_nodes</code> group help the AAP installer script to understand how to install software to make that node work as a execution node for the AAP and the <code>[execution]</code> group will tell the script about the peering how it needs to be done to the automation controller.</p>
