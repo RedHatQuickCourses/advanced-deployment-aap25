@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Automation Mesh Hands-on LAB :: Advanced Deployment of AAP 2.5</title>
-    <link rel="prev" href="section2.html">
-    <link rel="next" href="section4.html">
+    <title>Example on calculating the size :: Advanced Deployment of AAP 2.5</title>
+    <link rel="prev" href="section4.html">
+    <link rel="next" href="section6.html">
     <meta name="generator" content="Antora 3.1.3">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <script>var uiRootPath = '../../../_'</script>
@@ -63,13 +63,13 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section2.html">Automation Mesh Example</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="2">
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section3.html">Automation Mesh Hands-on LAB</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="2">
     <a class="nav-link" href="section5.html">Example on calculating the size</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -122,7 +122,7 @@
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
     <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
-    <li><a href="section3.html">Automation Mesh Hands-on LAB</a></li>
+    <li><a href="section5.html">Example on calculating the size</a></li>
   </ul>
 </nav>
 </div>
@@ -131,119 +131,120 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Automation Mesh Hands-on LAB</h1>
+<h1 class="page">Example on calculating the size</h1>
 <div class="paragraph">
-<p>Once the lab is deployed and you are accessing the system via <strong>ssh</strong> terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the below video to perform the operations:</p>
+<p>From the previous section you must have figured out the workload capacity that you want to support, you must plan your deployment based on the requirements of the workload. To help you with your deployment, review the following planning exercise.</p>
 </div>
-<div class="videoblock text-left">
-<div class="content">
-<video src="_images/advanced_aap_lab.mp4" width="800" height="500" controls>
-Your browser does not support the video tag.
-</video>
+<div class="paragraph">
+<p>For this example, the cluster must support the following capacity:</p>
 </div>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>Install the required and useful utilities:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> $ sudo dnf install -y wget git-core rsync vim ansible-core</code></pre>
-</div>
-</div>
+<p>500 managed hosts</p>
 </li>
 <li>
-<p>Copy the content of the into a notepad locally the <code>/home/devops/inventory</code>.</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cat /home/devops/inventory</code></pre>
-</div>
-</div>
+<p>1,000 tasks per hour per host or 16 tasks per minute per host</p>
 </li>
 <li>
-<p>Extract the <strong>installer file</strong> using the following command:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ tar -xvf ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.tar.gz
-$ cd ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.</code></pre>
-</div>
-</div>
+<p>10 concurrent jobs</p>
 </li>
 <li>
-<p>The <code>inventory-growth</code> should have the below values set:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationgateway]
-aap2.g8hpb.internal
-
-[automationcontroller]
-aap-controller.g8hpb.internal
-
-[automationhub]
-
-[automationeda]
-
-[database]
-aap-database.g8hpb.internal
-
-[execution_nodes]
-aap-execution.g8hpb.internal
-
-[all:vars]
-
-postgresql_admin_username=postgres
-postgresql_admin_password=redhat
-
-bundle_install=true
-bundle_dir='{{ lookup("ansible.builtin.env", "PWD") }}/bundle'
-
-redis_mode=standalone
-
-gateway_admin_password=redhat
-gateway_pg_host=aap-database.g8hpb.internal
-gateway_pg_password=redhat
-
-controller_admin_password=redhat
-controller_pg_host=aap-database.g8hpb.internal
-controller_pg_password=redhat</code></pre>
-</div>
-</div>
+<p>Forks set to 5 on playbooks. This is the default.</p>
 </li>
 <li>
-<p>Once the inventory file is ready follow the below steps to do the installation:</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ansible-playbook -i inventory-growth ansible.containerized_installer.install</code></pre>
-</div>
-</div>
+<p>Average event size is 1 Mb</p>
 </li>
-<li>
-<p>Access the system using the <code>aap2</code> hostname by removing the <code>internal</code> from last and adding the <code>sandboxid</code> to the hostname from the <code>RHDP</code> lab login details section.</p>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">aap2.g8hpb.sandbox3274.opentlc.com</code></pre>
+</ul>
 </div>
+<div class="paragraph">
+<p>The virtual machines have 4 CPU and 16 GB RAM, and disks that have 3000 IOPs.</p>
 </div>
-</li>
-<li>
-<p>Use the user <strong>admin</strong> and the <strong>password</strong> set during the time of installation. In the above video i set it to <strong>redhat</strong>.</p>
+<div class="paragraph">
+<p><strong>Execution Capacity calculation</strong></p>
+</div>
+<div class="paragraph">
+<p>Execution Capacity = (Number of jobs * forks value) + (number of jobs * 1 base task impact of a job)</p>
+</div>
+<div class="paragraph">
+<p>You calculate this by using the following equation: (10 jobs * 5 forks) + (10 jobs * 1 base task impact of a job) = 60 execution capacity</p>
+</div>
+<div class="paragraph">
+<p><strong>Control Capacity</strong></p>
+</div>
+<div class="paragraph">
+<p>Total tasks/min = 500 Managed hosts * 16 tasks per minute
+                         = 8000 tasks/ minute</p>
+</div>
+<div class="paragraph">
+<p>The above also means that 8000 events will be generated every minute.</p>
+</div>
 <div class="literalblock">
 <div class="content">
-<pre>Note: Try to use stronger password while doing the enterprise deployment</pre>
+<pre>Note: You must run the job to see exactly how many events it produces, because this is dependent on the specific task and verbosity. For example, a debug task printing “Hello World” produces 6 job events with the verbosity of 1 on one host. With a verbosity of 3, it produces 34 job events on one host. Therefore, you must estimate that the task produces at least 6 events and rest depends on the number of jobs and verbosity on which you are running it which varies from organization to organization.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lets assume that there are 6 events generated per task and there are <code>8000/60 tasks/second = 133 tasks per second</code></p>
+</div>
+<div class="paragraph">
+<p>Now from the above example each event is of 1 mb in size.</p>
+</div>
+<div class="paragraph">
+<p>Lets estimate the event:</p>
+</div>
+<div class="paragraph">
+<p>Number of tasks/sec * Events per tasks = events per second.
+133 * 6 = 798 events per second and each event is of 1 mb so 798 mb per second for logs / event data.</p>
+</div>
+<div class="paragraph">
+<p>Your control node must be able to process around 789 events of data per second and it should have Execution capacity of 60.</p>
+</div>
+<div class="paragraph">
+<p>Now considering the reservation and virtual machine we have deployed we get around 140 forks.</p>
+</div>
+<div class="paragraph">
+<p>Number of Execution Nodes = Required Forks / Forks per Node</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"> 60 / 140  which is less than 1. So minimum 1 node will be needed and 2 nodes to implement a fail-safe mechanism.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So for the above:</p>
+</div>
+<div class="paragraph">
+<p>You need to deploy 1 execution node, 1 control node, 1 database node and 1 Unified UI node (mandatory for AAP 2.5) of 4 CPU at 2.5Ghz, 16 GB RAM, and disks that have about 3000 IOPs to handle the Infrastructure for the below requirement:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>500 managed hosts</p>
+</li>
+<li>
+<p>1,000 tasks per hour per host or 16 tasks per minute per host</p>
+</li>
+<li>
+<p>10 concurrent jobs</p>
+</li>
+<li>
+<p>Forks set to 5 on playbooks. This is the default.</p>
+</li>
+<li>
+<p>Average event size is 1 Mb</p>
+<div class="literalblock">
+<div class="content">
+<pre>Note:
+The above is true for RPM and Containerized environment.</pre>
 </div>
 </div>
 </li>
-<li>
-<p>Provide the <strong>Red Hat login ID</strong> to get the subscription for attaching it to the AAP and <strong>60-day subscription to Red Hat Ansible® Automation Platform</strong> or <strong>Red Hat Developer Subscription for Individuals</strong> subscription can be used for this lab.</p>
-</li>
-<li>
-<p>After <strong>Login</strong> run the <strong>Project sync</strong> for the <strong>Demo project</strong> to confirm the job is getting executed.</p>
-</li>
-</ol>
+</ul>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="section2.html">Automation Mesh Example</a></span>
-  <span class="next"><a href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a></span>
+  <span class="prev"><a href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a></span>
+  <span class="next"><a href="section6.html">section6.adoc</a></span>
 </nav>
 </article>
   </div>
