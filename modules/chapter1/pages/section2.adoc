@@ -61,7 +61,7 @@ For more information on the different types of architectures that can be made wi
 In `Containerized`` to create the nodes execution or hop we use the `receptor_type`` value which can be either execution or hop, while the `receptor_protocol`` is either tcp or udp. By default, the nodes in the `execution_nodes`` group are added as peers for the controller node. However, you can change the peers configuration by using the receptor_peers variable. 	
 
 For execution node: 
-+
+
 [source,bash,role=execute]
 ----
 [execution_nodes]
@@ -69,7 +69,7 @@ execution_hostname.example.com
 ----
 
 For hop node:			
-+
+
 [source,bash,role=execute]
 ----
 [execution_nodes]

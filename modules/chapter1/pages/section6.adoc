@@ -1,0 +1,50 @@
+= Performance Consideration: 
+
+Now from the previous information you have got a very brief idea about the deployment and calculating the sizing requirement. Where as this is not it 
+
+Few tips that will help you better plan the deployment for Control and Execution plane: 
+
+The Default Parameters that does not need to to be changed unless needed and you know the exact value it needs to be changed to: 
+
+. Facts size per host is Default 50 kb .
+. Size per event is 2 kb 
+. Events per tasks = 10
+. Memory for 1 fork = 100mb 
+. 1 CPU provide 4 forks 
+. Capacity Adjustment by default set 1.0 i.e take max of RAM and CPU capacity. 
+. Execution Environment Average Size is approximately 450 MB rest varies from environment to environment. 
+. Automation Controller Process 400 events/s Benchmark from engineering performance tests Automation controller with minimum sizing under load. 
+. Automation Controller RAM per event fork  is 10 kb. 
+. Automation Controller CPU per event fork 0.0001. 
+. Concurrent API calls per controller is 100 by default and it can reach upto 300 calls. 
+. Controlled base Job per capacity unit is 1. 
+
+The factors that will depend across different customers and environments: 
+
+- Number of Ansible Managed hosts/nodes 
+- Number of jobs per host per day
+- Tasks run per playbook or job including the imported roles/ tasks/ playbooks. 
+- Jobs are running for a specific time-period or 24X7. 
+
+Few formulas for assistance. 
+
+[source]
+----
+Total Jobs = (Number of Hosts × Jobs per Host per Day) ÷ Hosts Required per Job
+
+Job Duration = Job Duration per Host × CEILING(Hosts per Job ÷ Parallel Forks)
+
+Workload Utilization = (Jobs per Day × Job Duration) ÷  Automation Hours per Day
+
+Polling Load = (Jobs per Day × Job Duration) ÷ Polling Interval
+
+API Utilization = (API Calls per Day × API Call Duration) ÷ Automation Hours per Day
+
+Database size for facts  = Facts size of hosts * number of hosts / 1024
+
+Database size for Inventory will be similar to size of database facts. 
+
+Database size for jobs = number of hosts * jobs per host per data * Number of days to keep the data * Number of events * event  size / 1024 
+----
+
+Database RAM and CPU should be something similar to the RAM and CPU or control plane or  execution plane whichever is higher. 

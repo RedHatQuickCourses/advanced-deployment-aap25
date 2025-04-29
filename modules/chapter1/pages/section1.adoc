@@ -16,6 +16,8 @@ Automation mesh communicates have TLS encryption, which encrypts traffic traveli
 
 Automation mesh makes use of unique node types to create both the control and execution plane. Lets Learn more about the control and execution plane and their node types before designing your automation mesh topology. 	
 
+image::0.png[]
+
 The diagram that follows describes the functions of the control and execution plane as well as the node purpose belongs to the respective plane:
 
 image::1.png[]
