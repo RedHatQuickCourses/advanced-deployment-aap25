@@ -8,8 +8,8 @@ The important part is how to make connections between the nodes that is also kno
 
 Let create a examples of 2 Deployment structure  That will help you understand the above concept better: 
 
-1. Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes are mandatory to have so the below example only share the information related to the 
-+
+. Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes are mandatory to have so the below example only share the information related to the 
+
 [source,bash,role=execute]
 ----
 [automationcontroller]
@@ -25,8 +25,8 @@ execution_hostname.example.com
 
 In the above example we can see that there is 1 Automation Controller node mentioned as a node_type= control which acts as a control node to execute jobs on the execution nodes. 
 
-2. Creating a 1 hop node and 1 execution node connected to the hop node and the other execution node directly connected to the Automation Controller node. 
-+
+. Creating a 1 hop node and 1 execution node connected to the hop node and the other execution node directly connected to the Automation Controller node.
+
 [source,bash,role=execute]
 ----
 [automationcontroller]

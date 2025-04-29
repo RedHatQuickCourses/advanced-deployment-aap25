@@ -1,11 +1,8 @@
-= An Example Quick Course
+= Advanced Deployment of AAP 2.5
 :navtitle: Home
 
 == Introduction
 
-Course Title: Advanced Deployment of AAP 2.5
-
-Description:
 The Advanced Ansible Automation Platform enables scalable IT automation across complex environments.It features an Automation Mesh for efficient task distribution and coordination and Proper sizing based on workload and infrastructure is crucial for optimal deployment in this training you will get to know the aspect that needs consideration while doing that and few tips for effective troubleshooting for installation issues involves understanding. 
 
 Duration: 60 minutes
