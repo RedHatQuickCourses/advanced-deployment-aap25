@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshooting Ansible Automation Platform Installation Issue :: Advanced Deployment of AAP 2.5</title>
+    <link rel="prev" href="section6.html">
+    <link rel="next" href="section8.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section1.html">Automation Mesh</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section2.html">Automation Mesh Example</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section6.html">Performance Consideration</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section8.html">section8.adoc</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
+    <li><a href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Troubleshooting Ansible Automation Platform Installation Issue</h1>
+<div class="paragraph">
+<p>For the RPM/Containerized Installation:</p>
+</div>
+<div class="paragraph">
+<p>As the scripts are only automating the tasks that can be performed manually, the basic thumb rule for resolving installation issues for the Ansible Automation Platform on the RPM and containerized installer is to implement the steps manually.
+This helps isolate the issue and also ensures that the steps are run with the same normal user the script uses.
+Use the sudo command while running it to depict the same behaviour as of Ansible:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Increase the verbosity  while running the script by just adding -vvv in the last and it will provide more verbose output while running the automation script tasks for setting up for the ansible automation platform.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Level 1 (-v)  describes the below:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Task results including any changed/failed details.</p>
+</li>
+<li>
+<p>Module output (stdout/stderr of commands).</p>
+</li>
+<li>
+<p>Useful for seeing why something failed.</p>
+<div class="paragraph">
+<p>For eg:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.common : Set ostree-based OS fact] ********************************
+ok: [localhost] =&gt; {"ansible_facts": {"ostree": false}, "changed": false}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The above is useful for simple debugging, checking why something changed or failed, and identifying which file and which task was where it failed.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Level 2 (-vv) describes the below:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>More info on variables and task parameters</p>
+</li>
+<li>
+<p>SSH arguments and remote command details</p>
+</li>
+<li>
+<p>What Ansible is sending to the remote host and the location of the file which is getting executed.</p>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.preflight : Ensure postgresql admin password is provided] *********
+task path: /home/lab-user/ansible-automation-platform-containerized-setup-bundle-2.5-12-x86_64/collections/ansible_collections/ansible/containerized_installer/roles/preflight/tasks/database.yml:30
+ok: [localhost] =&gt; {
+	"changed": false,
+	"msg": "All assertions passed"
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>This will be helpful to see what variables or args are being used.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Level 3 (-vvv) describes the below:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Connection details, SSH-level debug</p>
+</li>
+<li>
+<p>Exact shell commands being executed on the remote machine</p>
+</li>
+<li>
+<p>Fact gathering (detailed facts about hosts)</p>
+</li>
+<li>
+<p>Module file paths</p>
+<div class="paragraph">
+<p>Example :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [Gather facts] *************************************************************************************
+task path: /home/lab-user/ansible-automation-platform-containerized-setup-bundle-2.5-12-x86_64/collections/ansible_collections/ansible/containerized_installer/playbooks/install.yml:8
+&lt;127.0.0.1&gt; ESTABLISH LOCAL CONNECTION FOR USER: lab-user
+&lt;127.0.0.1&gt; EXEC /bin/sh -c 'echo ~lab-user &amp;&amp; sleep 0'
+&lt;127.0.0.1&gt; EXEC /bin/sh -c '( umask 77 &amp;&amp; mkdir -p "` echo /home/lab-user/.ansible/tmp `"&amp;&amp; mkdir "` echo /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629 `" &amp;&amp; echo ansible-tmp-1745343613.5557938-21925-131051723522629="` echo /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629 `" ) &amp;&amp; sleep 0'
+Using module file /usr/lib/python3.9/site-packages/ansible/modules/setup.py
+&lt;127.0.0.1&gt; PUT /home/lab-user/.ansible/tmp/ansible-local-21921anxpgqif/tmpqek1dip5 TO /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/AnsiballZ_setup.py
+&lt;127.0.0.1&gt; EXEC /bin/sh -c 'chmod u+x /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/ /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/AnsiballZ_setup.py &amp;&amp; sleep 0'
+&lt;127.0.0.1&gt; EXEC /bin/sh -c '/usr/bin/python3 /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/AnsiballZ_setup.py &amp;&amp; sleep 0'</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>This will help in Debugging SSH issues or checking the exact remote commands.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>If you are facing any issue with the script you will be facing an issue with the manual tasks as well. Thus, identify the task and fix the issue manually with the help of System
+administrator if needed.</p>
+</li>
+<li>
+<p>Using the Red Hat suggested rpm repositories and reading the error properly will help you resolve 90% of the issues:</p>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.automation_platform_installer.preflight : Preflight check - Fail if this machine lacks sufficient RAM.] ***
+fatal: [127.0.0.1]: FAILED! =&gt; {"changed": false, "msg": "This machine does not have sufficient RAM to run Ansible Automation Platform."}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>From the above error, if we read it, it points to the issue with the RAM, so increasing it will resolve the issue. Similarly, the other errors also point to common issues of the system that result in the installation issues.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The above should be enough to resolve the installation issues. Further, here are a few commonly faced installation issues:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://access.redhat.com/solutions/7096052">Ansible Automation Platform 2.5 Installer fails with Bad API request: 502 Server Error: Bad Gateway for url</a></p>
+</li>
+<li>
+<p><a href="https://access.redhat.com/solutions/7105447">Ansible Automation Platform 2.5 Installer fails at TASK "ansible.automation_platform_installer.automationgateway : Migrate data"</a></p>
+</li>
+<li>
+<p><a href="https://access.redhat.com/solutions/7099900">RPM Installation of AAP 2.5 throws (HTTP Error 502: Bad Gateway): api/gateway/v1/</a></p>
+</li>
+</ul>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="section6.html">Performance Consideration</a></span>
+  <span class="next"><a href="section8.html">section8.adoc</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

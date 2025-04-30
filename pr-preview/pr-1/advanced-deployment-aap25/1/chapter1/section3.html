@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Automation Mesh Hands-on Lab :: Advanced Deployment of AAP 2.5</title>
+    <link rel="prev" href="section2.html">
+    <link rel="next" href="section4.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section1.html">Automation Mesh</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section2.html">Automation Mesh Example</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section6.html">Performance Consideration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section8.html">section8.adoc</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
+    <li><a href="section3.html">Automation Mesh Hands-on Lab</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Automation Mesh Hands-on Lab</h1>
+<div class="paragraph">
+<p>Once the lab is deployed and you are accessing the system via <strong>ssh</strong> terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the video below to perform the operations:</p>
+</div>
+<div class="videoblock text-left">
+<div class="content">
+<video src="_images/advanced_aap_lab.mp4" width="800" height="500" controls>
+Your browser does not support the video tag.
+</video>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install the required and useful utilities:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> $ sudo dnf install -y wget git-core rsync vim ansible-core</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Copy the content of the into a notepad locally the <code>/home/devops/inventory</code>.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cat /home/devops/inventory</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Extract the <strong>installer file</strong> using the following command:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ tar -xvf ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.tar.gz
+$ cd ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>The <code>inventory-growth</code> should have the below values set:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationgateway]
+aap2.g8hpb.internal
+
+[automationcontroller]
+aap-controller.g8hpb.internal
+
+[automationhub]
+
+[automationeda]
+
+[database]
+aap-database.g8hpb.internal
+
+[execution_nodes]
+aap-execution.g8hpb.internal
+
+[all:vars]
+
+postgresql_admin_username=postgres
+postgresql_admin_password=redhat
+
+bundle_install=true
+bundle_dir='{{ lookup("ansible.builtin.env", "PWD") }}/bundle'
+
+redis_mode=standalone
+
+gateway_admin_password=redhat
+gateway_pg_host=aap-database.g8hpb.internal
+gateway_pg_password=redhat
+
+controller_admin_password=redhat
+controller_pg_host=aap-database.g8hpb.internal
+controller_pg_password=redhat</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Once the inventory file is ready follow the below steps to do the installation:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ansible-playbook -i inventory-growth ansible.containerized_installer.install</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Access the system using the <code>aap2</code> hostname by removing the <code>internal</code> from last and adding the <code>sandboxid</code> to the hostname from the <code>RHDP</code> lab login details section.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">aap2.g8hpb.sandbox3274.opentlc.com</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Use the user <strong>admin</strong> and the <strong>password</strong> set during the time of installation. In the above video I have set it to <strong>redhat</strong>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Note: Try to use a stronger password while doing the enterprise deployment</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Provide the <strong>Red Hat login ID</strong> to get the subscription for attaching it to the AAP and a <strong>60-day subscription to Red Hat Ansible® Automation Platform</strong> or <strong>Red Hat Developer Subscription for Individuals</strong> subscription can be used for this lab.</p>
+</li>
+<li>
+<p>After <strong>Login</strong> run the <strong>Project sync</strong> for the <strong>Demo project</strong> to confirm the job is getting executed.</p>
+</li>
+</ol>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="section2.html">Automation Mesh Example</a></span>
+  <span class="next"><a href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
