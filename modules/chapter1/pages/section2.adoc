@@ -1,14 +1,14 @@
 = Automation Mesh Example 
 
-Lets talk about the Automation mesh in RPM and Containerized installation:
+Let us talk about the Automation mesh in RPM and Containerized installation:
 
 *RPM*
 
-The important part is how to make connections between the nodes that is also known as peering. Peer relationships define node-to-node connections. You can define peers within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] groups with peers=<node-name-to-connect-too>				
+The important part is how to make connections between the nodes which is also known as peering. Peer relationships define node-to-node connections. You can define peers within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] groups with peers=<node-name-to-connect-too>				
 
-Let create a examples of 2 Deployment structure  That will help you understand the above concept better: 
+Let us create an example of 2 Deployment structures which will help you understand the above concept better: 
 
-. Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes are mandatory to have so the below example only share the information related to the 
+. Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes is mandatory to have. So the below example only shares the information related to that. 
 
 [source,bash,role=execute]
 ----
@@ -52,13 +52,13 @@ peers=automationcontroller
 execution_hostname1.example.com
 ----
 
-The `execution_nodes` group help the AAP installer script to understand how to install software to make that node work as a execution node for the AAP and the `[execution]` group will tell the script about the peering how it needs to be done to the automation controller. 
+The `execution_nodes` group helps the AAP installer script to understand how to install software to make that node work as an execution node for the AAP and the `[execution]` group will tell the script about the peering and how it needs to be done to the automation controller. 
 
-For more information on the different types of architectures that can be made with the help of https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution[automation mesh,windows=_blank]
+For more information on the different types of architectures that can be made with the help of https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution[automation mesh,windows=_blank].
 
 *Containerized*
 
-In `Containerized`` to create the nodes execution or hop we use the `receptor_type`` value which can be either execution or hop, while the `receptor_protocol`` is either tcp or udp. By default, the nodes in the `execution_nodes`` group are added as peers for the controller node. However, you can change the peers configuration by using the receptor_peers variable. 	
+In `Containerized`` to create the nodes execution or hop we use the `receptor_type`` value which can be either execution or hop, while the `receptor_protocol`` is either tcp or udp. By default, the nodes in the `execution_nodes`` group are added as peers for the controller node. However, you can change the peer's configuration by using the receptor_peers variable. 	
 
 For execution node: 
 
@@ -77,4 +77,4 @@ execution_hostname2.example.com
 hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname2.example.com"]'
 ----
 
- NOTE: The execution and hop concept remains the same only the deployment will be different  when doing it on the Containerized installer for execution and hop node and for the automation controller there is only 1 node. 
+ NOTE: The execution and hop concept remains the same only the deployment will be different  as you have to use receptor_type to define the hop node and The Containerized installer for have node_type as hybrid only for the Automation Controller.

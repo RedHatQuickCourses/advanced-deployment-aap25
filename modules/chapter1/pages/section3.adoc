@@ -1,6 +1,6 @@
-= Automation Mesh Hands-on LAB
+= Automation Mesh Hands-on Lab
 
-Once the lab is deployed and you are accessing the system via *ssh* terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the below video to perform the operations: 
+Once the lab is deployed and you are accessing the system via *ssh* terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the video below to perform the operations: 
 
 video::advanced_aap_lab.mp4[align="left",width=800,height=500]
 
@@ -11,7 +11,8 @@ video::advanced_aap_lab.mp4[align="left",width=800,height=500]
  $ sudo dnf install -y wget git-core rsync vim ansible-core
 ----
 
-. Copy the content of the into a notepad locally the `/home/devops/inventory`.
+. Copy the content of the into a notepad locally the `/home/devops/inventory`. 
+// Copy the content of???
 +
 [source,bash,role=execute]
 ----
@@ -82,10 +83,10 @@ $ ansible-playbook -i inventory-growth ansible.containerized_installer.install
 aap2.g8hpb.sandbox3274.opentlc.com
 ----
 
-. Use the user *admin* and the *password* set during the time of installation. In the above video i set it to *redhat*. 
+. Use the user *admin* and the *password* set during the time of installation. In the above video I have set it to *redhat*. 
 
- Note: Try to use stronger password while doing the enterprise deployment 
+ Note: Try to use a stronger password while doing the enterprise deployment 
 
-. Provide the *Red Hat login ID* to get the subscription for attaching it to the AAP and *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* subscription can be used for this lab.
+. Provide the *Red Hat login ID* to get the subscription for attaching it to the AAP and a *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* subscription can be used for this lab.
 
 . After *Login* run the *Project sync* for the *Demo project* to confirm the job is getting executed.
