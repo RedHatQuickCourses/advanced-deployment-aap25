@@ -1,10 +1,10 @@
 = Advanced Deployment of Ansible Automation Platform 2.5
 
-Organizations may accomplish scalable and effective IT automation in complicated environments with the help of the Advanced Ansible Automation Platform. Along with best practices for sizing, deployment, and troubleshooting to guarantee optimal performance, this course offers a thorough examination of important features including Automation Mesh, which improves job distribution and coordination.
+Organizations may accomplish scalable and effective IT automation in complicated environments with the help of the Advanced Ansible Automation Platform. Along with the best practices for sizing, deployment, and troubleshooting to guarantee optimal performance, this course offers a thorough examination of important features including Automation Mesh, which improves job distribution and coordination.
 
 Participants will acquire practical skills in:
 
-- Create and deploy Automation Mesh for distributed automation in an efficient manner.
-- Determine sizing requirements precisely by taking infrastructure and workload requirements into account.
-- To guarantee a seamless deployment, troubleshoot common installation problems.
-- To keep the Ansible Automation Platform operating at peak efficiency, assess performance factors.
+- Creating and deploying Automation Mesh for distributed automation in an efficient manner.
+- Determining sizing requirements precisely by taking infrastructure and workload requirements into account.
+- Troubleshooting common installation problems to guarantee a seamless deployment.
+- Assessing performance factors to keep the Ansible Automation Platform operating at peak efficiency.
