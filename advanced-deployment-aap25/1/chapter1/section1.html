@@ -64,19 +64,19 @@
     <a class="nav-link" href="section2.html">Automation Mesh Example</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on LAB</a>
+    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on calculating the size</a>
+    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration:</a>
+    <a class="nav-link" href="section6.html">Performance Consideration</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation issue.</a>
+    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">section8.adoc</a>
@@ -133,10 +133,10 @@
 <article class="doc">
 <h1 class="page">Automation Mesh</h1>
 <div class="paragraph">
-<p>One thing is common in every application that needs to scale the operation globally i.e communication between the application and for this Ansible automation platform has Automation Mesh.</p>
+<p>One thing is common in every application that needs to scale the operation globally: communication between the application. For this, the Ansible automation platform has an Automation Mesh.</p>
 </div>
 <div class="paragraph">
-<p>An automation mesh is an overlay network designed to enable the allocation of work among a sizable and scattered group of workers known as execution nodes by means of nodes that link to one another peer-to-peer via pre-existing networks and receptor is the service that helps with the maintenance of this network.</p>
+<p>An automation mesh is an overlay network designed to enable the allocation of work among a sizable and scattered group of workers known as execution nodes by means of nodes that link to one another peer-to-peer via pre-existing networks. Receptor is the service that helps with the maintenance of this network.</p>
 </div>
 <div class="paragraph">
 <p>Automation mesh communicates have TLS encryption, which encrypts traffic traveling across external networks, such as the internet which helped the Ansible automation platform to achieve the below landmarks:</p>
@@ -147,16 +147,16 @@
 <p>Nodes may be created, registered, grouped, ungrouped, and deregistered with less downtime thanks to dynamic cluster capacity that increases independently.</p>
 </li>
 <li>
-<p>Control and execution plane separation that enables you to scale playbook execution capacity independently from control plane capacity.</p>
+<p>Control and execution plane separation enables you to scale playbook execution capacity independently from control plane capacity.</p>
 </li>
 <li>
 <p>Deployment options that can be reconfigured without an outage, are resilient to latency, and dynamically redirect to select another way in the event of an outage.</p>
 </li>
 <li>
-<p>Connectivity that includes bi-directional, multi-hopped mesh communication possibilities which are Federal Information Processing Standards (FIPS) compliant.</p>
+<p>Connectivity includes bi-directional, multi-hopped mesh communication possibilities which are Federal Information Processing Standards (FIPS) compliant.</p>
 <div class="literalblock">
 <div class="content">
-<pre>Note: Registered means the nodes will be added in a group and deregistered means removing the node from the architecture.
+<pre>Note: Registered means the nodes will be added to a group and deregistered means removing the node from the architecture.
 Grouped and ungrouped means to add the nodes in a particular group name and changing is by just placing the hostname under a different group name.</pre>
 </div>
 </div>
@@ -164,7 +164,7 @@ Grouped and ungrouped means to add the nodes in a particular group name and chan
 </ul>
 </div>
 <div class="paragraph">
-<p>Automation mesh makes use of unique node types to create both the control and execution plane. Lets Learn more about the control and execution plane and their node types before designing your automation mesh topology.</p>
+<p>Automation mesh makes use of unique node types to create both the control and execution plane. Let us learn more about the control and execution plane and their node types before designing your automation mesh topology.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -180,8 +180,8 @@ Grouped and ungrouped means to add the nodes in a particular group name and chan
 </div>
 </div>
 <div class="paragraph">
-<p>The above diagram shows all the Control plane architecture. Where it can be having the nodes as hybrid or control nodes or the mixture of both the nodes.
-The purpose of control nodes is to provide GUI to the user and the jobs gets executed on the execution nodes only whereas the Hybrid nodes are having the GUI as well as it can execute the jobs as well for the users.</p>
+<p>The above diagram shows all the Control plane architecture. Where it can be having the nodes as hybrid or control nodes or a mixture of both the nodes.
+The purpose of control nodes is to provide a GUI for users, and jobs are executed only on the execution nodes. Hybrid nodes, on the other hand, provide a GUI and can also execute jobs.</p>
 </div>
 <div class="imageblock">
 <div class="content">

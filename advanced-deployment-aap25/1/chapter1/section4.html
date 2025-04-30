@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Calculate the Sizing requirement for RPM and Containerized Installation :: Advanced Deployment of AAP 2.5</title>
+    <title>Calculate the Sizing Requirement for RPM and Containerized Installation :: Advanced Deployment of AAP 2.5</title>
     <link rel="prev" href="section3.html">
     <link rel="next" href="section5.html">
     <meta name="generator" content="Antora 3.1.3">
@@ -64,19 +64,19 @@
     <a class="nav-link" href="section2.html">Automation Mesh Example</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on LAB</a>
+    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on calculating the size</a>
+    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration:</a>
+    <a class="nav-link" href="section6.html">Performance Consideration</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation issue.</a>
+    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">section8.adoc</a>
@@ -122,7 +122,7 @@
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
     <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
-    <li><a href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a></li>
+    <li><a href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a></li>
   </ul>
 </nav>
 </div>
@@ -131,9 +131,9 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Calculate the Sizing requirement for RPM and Containerized Installation</h1>
+<h1 class="page">Calculate the Sizing Requirement for RPM and Containerized Installation</h1>
 <div class="paragraph">
-<p>Having the correct sizing of the Ansible automation Platform will help make your automation future proof at not much additional cost and all the sizing requirement depend on multiple factors on what kind of automation you are running in your organization but before that the below points are the focus areas while planning the capacity planning:</p>
+<p>Having the correct sizing of the Ansible automation Platform will help make your automation future-proof at not much additional cost and all the sizing requirements depend on multiple factors on what kind of automation you are running in your organization but before that the below points are the focus areas while planning the capacity planning:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -141,15 +141,15 @@
 <p>Characterizing your workload.</p>
 </li>
 <li>
-<p>Reviewing the capabilities of different node types</p>
+<p>Reviewing the capabilities of different node types.</p>
 </li>
 <li>
-<p>Planning the deployment based on the requirements of your workload</p>
+<p>Planning the deployment based on the requirements of your workload.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>And below are the isolated factors that play a major role while calculating Sizing.</p>
+<p>Below are the isolated factors that play a major role in calculating sizing.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -166,10 +166,10 @@
 <p>Maximum number of forks set on jobs. Forks determine the number of hosts that a job acts on concurrently.</p>
 </li>
 <li>
-<p>Maximum API requests per second</p>
+<p>Maximum API requests per second.</p>
 </li>
 <li>
-<p>Node size that you prefer to deploy (CPU/Memory/Disk)</p>
+<p>Node size that you prefer to deploy (CPU/Memory/Disk).</p>
 </li>
 </ul>
 </div>
@@ -177,21 +177,21 @@
 <p><strong>Unified UI</strong></p>
 </div>
 <div class="paragraph">
-<p>Unified UI provides the authentication and a load-balancing of requests using the GRPC service.  Increasing the CPU and Memory will help to reduce the bottleneck on increasing resources if facing any issues you identify it by when you started facing the 502 error on the gateway while trying to access it.</p>
+<p>Unified UI provides the authentication and load-balancing of requests using the GRPC service. Increasing the CPU and memory will help reduce bottlenecks when resources are under pressure. If you encounter issues, identify them by noting when the 502 gateway error started appearing during access attempts.</p>
 </div>
 <div class="paragraph">
 <p><strong>Automation Execution/Controller</strong></p>
 </div>
 <div class="paragraph">
-<p>There are 4 types of nodes in the RPM based Ansible Automation platform:
-Control plane: Control node and Hybrid node.
-Execution plane: Execution node and Hop node.</p>
+<p>There are 4 types of nodes in the RPM-based Ansible Automation platform:
+- Control plane: Control node and Hybrid node.
+- Execution plane: Execution node and Hop node.</p>
 </div>
 <div class="paragraph">
 <p>Control and hybrid nodes play a key role in managing jobs in a system. Think of them as the "managers" that start jobs and handle their results, feeding that data into a database. Every job needs one control node to manage it.</p>
 </div>
 <div class="paragraph">
-<p>Key Concept for Control Capacity.</p>
+<p>Key Concept for Control Capacity:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -225,12 +225,12 @@ Execution plane: Execution node and Hop node.</p>
 </ol>
 </div>
 <div class="paragraph">
-<p>For vertical scaling as well the best Practices are:</p>
+<p>For vertical scaling the best practices are:</p>
 </div>
 <div class="paragraph">
 <p>Scale CPU and memory together, ideally in a 1 CPU : 4 GB RAM ratio.
 Even if memory seems like the issue, adding more CPU can help because The memory load mostly comes from unprocessed events in a memory queue. More CPU power helps process those events faster, reducing memory pressure.
-Now lets talk about the benefits of the execution node and the hop nodes:</p>
+Now let us talk about the benefits of the execution node and the hop nodes:</p>
 </div>
 <div class="paragraph">
 <p><strong>Execution nodes</strong></p>
@@ -254,7 +254,7 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 <p>Hop nodes on <code>horizontal scaling</code> can increase redundancy and guarantee that traffic will continue to flow even in the event of a node failure.</p>
 </div>
 <div class="paragraph">
-<p>From the above you have got a very decent Idea about what all things are involved while considering the capacity planning and where to use <code>Vertical and horizontal scaling</code> and Apart from the above please consider the below while doing the calculations:</p>
+<p>From the above you have a very decent idea about what all things are involved while considering the capacity planning and where to use <code>Vertical and horizontal scaling</code>. Apart from the above please consider the below while doing the calculations:</p>
 </div>
 <div class="paragraph">
 <p>The fork values are generated on the basis of RAM and CPU.</p>
@@ -263,7 +263,7 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 <p><strong>Memory Relative Capacity</strong></p>
 </div>
 <div class="paragraph">
-<p><code>mem_capacity</code> is calculated relative to the amount of memory needed per-fork and the value is 100 mb RAM = 1 fork. Where as 2 GB of ram is reserved for the AAP services:</p>
+<p><code>mem_capacity</code> is calculated relative to the amount of memory needed per-fork and the value is 100 mb RAM = 1 fork. Whereas 2 GB of RAM is reserved for the AAP services:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -297,7 +297,7 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Choosing the right node type in terms of what your business needs are and the above CPU and RAM capacity calculation will help you in determining the right capacity. Lets calculate the capacity using 1 example in the next section.</p>
+<p>Choosing the right node type in terms of what your business needs are and the above CPU and RAM capacity calculation will help you determine the right capacity. Let us calculate the capacity using 1 example in the next section.</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -305,10 +305,10 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Event-Driven Ansible controller / Automation Decision</strong></p>
+<p><strong>Event-driven Ansible Controller / Automation Decision</strong></p>
 </div>
 <div class="paragraph">
-<p>In Event-Driven Ansible controller, your workload includes the number of rulebook activations and events being received. Consider the following factors to characterize your Event-Driven Ansible controller workload:</p>
+<p>In Event-driven Ansible controller, your workload includes the number of rulebook activations and events being received. Consider the following factors to characterize your Event-Driven Ansible controller workload:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -321,13 +321,13 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>By default, Event-Driven Ansible controller allows 12 rulebook activations per node and 24 activations in total can run simultaneously. It wont run any more activation even if there is enough CPU or RAM due to the variable being set <code>MAX_RUNNING_ACTIVATIONS</code> which needs to be set according to the requirement if its more than 24.</p>
+<p>By default, Event-driven Ansible controller allows 12 rulebook activations per node and 24 activations in total can run simultaneously. It won&#8217;t run any more activation even if there is enough CPU or RAM due to the variable being set <code>MAX_RUNNING_ACTIVATIONS</code> which needs to be set according to the requirement if it&#8217;s more than 24.</p>
 </div>
 <div class="paragraph">
 <p>This can be configured via <code>/etc/ansible-automation-platform/eda/settings</code>.yaml` <code>MAX_RUNNING_ACTIVATIONS = 25</code> and restart the <code>automation-eda-controller-service restart</code> accordingly on the <code>EDA</code> server.</p>
 </div>
 <div class="paragraph">
-<p>Memory usage is based on the number of events that Event-Driven Ansible controller has to process. Each rulebook activation container has a 200MB memory limit. For example, with 4 CPU and 16GB of RAM, one rulebook activation container with an assigned <code>200MB</code> memory limit can not handle more than 150,000 events per minute. If the number of parallel running rulebook activations is higher, then the maximum number of events each rulebook activation can process is reduced. If there are too many incoming events at a very high rate, the container can run out of memory trying to process the events. This will kill the container, and your rulebook activation will fail with a status code of 137.</p>
+<p>Memory usage is based on the number of events that Event-driven Ansible controller has to process. Each rulebook activation container has a 200MB memory limit. For example, with 4 CPUs and 16GB of RAM, one rulebook activation container with an assigned <code>200MB</code> memory limit can not handle more than 150,000 events per minute. If the number of parallel running rulebook activations is higher, then the maximum number of events each rulebook activation can process is reduced. If there are too many incoming events at a very high rate, the container can run out of memory trying to process the events. This will kill the container, and your rulebook activation will fail with a status code of 137.</p>
 </div>
 <div class="paragraph">
 <p>Navigate to the file <code>/etc/ansible-automation-platform/eda/settings.yaml</code> and set <code>PODMAN_MEM_LIMIT = 400m</code> and restart the <code>automation-eda-controller-service restart</code> accordingly on the EDA server.</p>
@@ -336,7 +336,7 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 <p><strong>Automation Content or Private Automation Hub:</strong></p>
 </div>
 <div class="paragraph">
-<p>Since it only provides the execution Environment and collection so there might not be much need of resources for Automation Content or Private Automation Hub.  Meeting the minimum and storage requirements should be enough.</p>
+<p>Since it only provides the execution Environment and collection, there might not be much need of resources for Automation Content or Private Automation Hub. Meeting the minimum and storage requirements should be enough.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -355,8 +355,8 @@ Now lets talk about the benefits of the execution node and the hop nodes:</p>
 <p>Accordingly, provide the Database space to the PAH system. Most of the time minimum should be enough to take care of the environment but the above factors play a major role if you want to calculate it accurately.</p>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="section3.html">Automation Mesh Hands-on LAB</a></span>
-  <span class="next"><a href="section5.html">Example on calculating the size</a></span>
+  <span class="prev"><a href="section3.html">Automation Mesh Hands-on Lab</a></span>
+  <span class="next"><a href="section5.html">Example on Calculating the Size</a></span>
 </nav>
 </article>
   </div>

@@ -64,19 +64,19 @@
     <a class="nav-link" href="section2.html">Automation Mesh Example</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on LAB</a>
+    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on calculating the size</a>
+    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration:</a>
+    <a class="nav-link" href="section6.html">Performance Consideration</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation issue.</a>
+    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">section8.adoc</a>
@@ -133,21 +133,21 @@
 <article class="doc">
 <h1 class="page">Automation Mesh Example</h1>
 <div class="paragraph">
-<p>Lets talk about the Automation mesh in RPM and Containerized installation:</p>
+<p>Let us talk about the Automation mesh in RPM and Containerized installation:</p>
 </div>
 <div class="paragraph">
 <p><strong>RPM</strong></p>
 </div>
 <div class="paragraph">
-<p>The important part is how to make connections between the nodes that is also known as peering. Peer relationships define node-to-node connections. You can define peers within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] groups with peers=&lt;node-name-to-connect-too&gt;</p>
+<p>The important part is how to make connections between the nodes which is also known as peering. Peer relationships define node-to-node connections. You can define peers within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] groups with peers=&lt;node-name-to-connect-too&gt;</p>
 </div>
 <div class="paragraph">
-<p>Let create a examples of 2 Deployment structure  That will help you understand the above concept better:</p>
+<p>Let us create an example of 2 Deployment structures which will help you understand the above concept better:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes are mandatory to have so the below example only share the information related to the</p>
+<p>Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes is mandatory to have. So the below example only shares the information related to that.</p>
 </li>
 </ol>
 </div>
@@ -200,16 +200,16 @@ execution_hostname1.example.com</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>execution_nodes</code> group help the AAP installer script to understand how to install software to make that node work as a execution node for the AAP and the <code>[execution]</code> group will tell the script about the peering how it needs to be done to the automation controller.</p>
+<p>The <code>execution_nodes</code> group helps the AAP installer script to understand how to install software to make that node work as an execution node for the AAP and the <code>[execution]</code> group will tell the script about the peering and how it needs to be done to the automation controller.</p>
 </div>
 <div class="paragraph">
-<p>For more information on the different types of architectures that can be made with the help of <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution">automation mesh</a></p>
+<p>For more information on the different types of architectures that can be made with the help of <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution">automation mesh</a>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Containerized</strong></p>
 </div>
 <div class="paragraph">
-<p>In `Containerized<code> to create the nodes execution or hop we use the `receptor_type</code> value which can be either execution or hop, while the `receptor_protocol<code> is either tcp or udp. By default, the nodes in the `execution_nodes</code> group are added as peers for the controller node. However, you can change the peers configuration by using the receptor_peers variable.</p>
+<p>In `Containerized<code> to create the nodes execution or hop we use the `receptor_type</code> value which can be either execution or hop, while the `receptor_protocol<code> is either tcp or udp. By default, the nodes in the `execution_nodes</code> group are added as peers for the controller node. However, you can change the peer&#8217;s configuration by using the receptor_peers variable.</p>
 </div>
 <div class="paragraph">
 <p>For execution node:</p>
@@ -232,12 +232,12 @@ hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>NOTE: The execution and hop concept remains the same only the deployment will be different  when doing it on the Containerized installer for execution and hop node and for the automation controller there is only 1 node.</pre>
+<pre>NOTE: The execution and hop concept remains the same only the deployment will be different  as you have to use receptor_type to define the hop node and The Containerized installer for have node_type as hybrid only for the Automation Controller.</pre>
 </div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="section1.html">Automation Mesh</a></span>
-  <span class="next"><a href="section3.html">Automation Mesh Hands-on LAB</a></span>
+  <span class="next"><a href="section3.html">Automation Mesh Hands-on Lab</a></span>
 </nav>
 </article>
   </div>
