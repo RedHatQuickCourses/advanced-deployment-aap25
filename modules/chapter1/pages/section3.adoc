@@ -2,7 +2,7 @@
 
 Once the lab is deployed and you are accessing the system via *ssh* terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the video below to perform the operations: 
 
-video::advanced_aap_lab.mp4[align="left",width=800,height=500]
+video::advanced-aap-2.5.mp4[align="left",width=800,height=500]
 
 . Install the required and useful utilities:
 +

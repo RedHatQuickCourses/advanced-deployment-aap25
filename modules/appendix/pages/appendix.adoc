@@ -1,5 +1,4 @@
 = Appendix
 
-FIXME: Content for Appendix...
-
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5[Ansible Automation Platform Documentation, windows=_blank]
 //  Is this left to be updated?

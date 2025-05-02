@@ -1,1 +1,8 @@
-// Is there section left to update?
+= Summary 
+ 
+- We learned about an automation mesh where execution nodes are used to run the jobs. 
+- How to calculate the forks , events and job runs according to the number of hosts and conclude the systems Requirement.
+- Horizontal scaling means adding more nodes and vertical scaling means increasing the resources like CPU and RAM on the node. 
+- The performance consideration section provides certain formulas to help you better calculate the resources needed.  
+- Using `-vvv` while doing the installation provides additional details to resolve the issue. 
+- Always increase the resources in 1 CPU to 4 GB of RAM ratio. 
