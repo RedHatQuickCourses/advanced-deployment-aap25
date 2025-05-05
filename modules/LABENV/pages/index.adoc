@@ -4,9 +4,15 @@
 
 . **Log in** to the xref:#RHDP-Portal-Links[RHDP portal].
 . **Search** for the catalog entry: **Advanced Deployment of Ansible Automation Platform 2.5**.
++
+image::1.png[]
+
 . **Click** on the catalog entry in the search results.
 . On the catalog page, **click** the **Order** button.
 . **Fill out** the required details in the order form.
++
+image::form.png[]
+
 . **Review the warning** at the bottom of the form and **check the box** labeled: +
    *“I confirm that I understand the above warnings.”*
 . **Click** the **Order** button to place your lab order.
