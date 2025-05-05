@@ -15,7 +15,7 @@ The Default Parameters that do not need to be changed unless needed and you know
 . Automation Controller RAM per event fork  is 10 kb. 
 . Automation Controller CPU per event fork 0.0001. 
 . Concurrent API calls per controller is 100 by default and it can reach up to 300 calls. 
-. Controller/execution base Job per capacity unit is 1. 
+. Controller/execution base Job capacity for every job run in unit is 1. 
 
 
 The factors that will depend across different customers and environments: 
