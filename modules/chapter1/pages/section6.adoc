@@ -1,6 +1,6 @@
 = Performance Consideration 
 
-Now from the previous information, you have got a very brief idea about the deployment and calculating the sizing requirement. Where as there are Few tips that will help you better plan the deployment for the Control and Execution plane: 
+Now from the previous information, you have got a very brief idea about the deployment and calculating the sizing requirement. Where as there are few tips that will help you better plan the deployment for the Control and Execution plane: 
 
 The Default Parameters that do not need to be changed unless needed and you know the exact value it needs to be changed to: 
 
