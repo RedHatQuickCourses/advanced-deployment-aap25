@@ -1,9 +1,6 @@
 = Performance Consideration 
 
-Now from the previous information, you have got a very brief idea about the deployment and calculating the sizing requirement. Where as this is not it
-// The second statement looks incomplete.
-
-Few tips that will help you better plan the deployment for the Control and Execution plane: 
+Now from the previous information, you have got a very brief idea about the deployment and calculating the sizing requirement. Where as there are Few tips that will help you better plan the deployment for the Control and Execution plane: 
 
 The Default Parameters that do not need to be changed unless needed and you know the exact value it needs to be changed to: 
 
@@ -18,8 +15,8 @@ The Default Parameters that do not need to be changed unless needed and you know
 . Automation Controller RAM per event fork  is 10 kb. 
 . Automation Controller CPU per event fork 0.0001. 
 . Concurrent API calls per controller is 100 by default and it can reach up to 300 calls. 
-. Controlled base Job per capacity unit is 1. 
-// Controller?
+. Controller/execution base Job capacity for every job run in unit is 1. 
+
 
 The factors that will depend across different customers and environments: 
 

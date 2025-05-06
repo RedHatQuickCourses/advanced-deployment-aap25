@@ -8,7 +8,12 @@ The important part is how to make connections between the nodes which is also kn
 
 Let us create an example of 2 Deployment structures which will help you understand the above concept better: 
 
+
 . Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes is mandatory to have. So the below example only shares the information related to that. 
++ 
+image::2.png[]
++
+Ansible automation platform in the above had nodes Automation Controller/execution, Unified UI and Database.
 
 [source,bash,role=execute]
 ----
@@ -26,6 +31,8 @@ execution_hostname.example.com
 In the above example we can see that there is 1 Automation Controller node mentioned as a node_type= control which acts as a control node to execute jobs on the execution nodes. 
 
 . Creating a 1 hop node and 1 execution node connected to the hop node and the other execution node directly connected to the Automation Controller node.
++ 
+image::2.1.png[]
 
 [source,bash,role=execute]
 ----
@@ -39,17 +46,17 @@ peers=execution
 [execution_nodes]
 execution_hostname1.example.com peers=proxy
 execution_hostname2.example.com
+execution_hop.example.com node_type=hop
 
 
 [execution]
 execution_hostname2.example.com
 
 [proxy:vars]
-node_type=hop
 peers=automationcontroller
 
 [proxy]
-execution_hostname1.example.com
+execution_hop.example.com
 ----
 
 The `execution_nodes` group helps the AAP installer script to understand how to install software to make that node work as an execution node for the AAP and the `[execution]` group will tell the script about the peering and how it needs to be done to the automation controller. 
@@ -77,4 +84,4 @@ execution_hostname2.example.com
 hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname2.example.com"]'
 ----
 
- NOTE: The execution and hop concept remains the same only the deployment will be different  as you have to use receptor_type to define the hop node and The Containerized installer for have node_type as hybrid only for the Automation Controller.
+ NOTE: The execution and hop concept remains the same only the deployment will be different as you have to use receptor_type instead of node_type.

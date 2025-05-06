@@ -57,5 +57,4 @@ You need to deploy 1 execution node, 1 control node, 1 database node, and 1 Unif
 - Forks set to 5 on playbooks. This is the default. 					
 - The average event size is 1 Mb.	
 
- Note: 
- The above is true for RPM and Containerized environments.
+ Note:  The above is true for RPM and Containerized environments. The Openshift realted content will be added later.
