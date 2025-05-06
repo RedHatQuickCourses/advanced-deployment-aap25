@@ -153,7 +153,7 @@ Your browser does not support the video tag.
 </div>
 </li>
 <li>
-<p>Copy the content of the into a notepad locally the <code>/home/devops/inventory</code>.</p>
+<p>Copy the content of the <code>inventory</code> into a notepad locally the <code>/home/devops/inventory</code>.</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cat /home/devops/inventory</code></pre>
@@ -238,6 +238,21 @@ controller_pg_password=redhat</code></pre>
 </li>
 <li>
 <p>After <strong>Login</strong> run the <strong>Project sync</strong> for the <strong>Demo project</strong> to confirm the job is getting executed.</p>
+</li>
+<li>
+<p>In <strong>Automation Execution</strong> click on <strong>Templates</strong> and edit the <strong>Demo Job Template</strong>.</p>
+</li>
+<li>
+<p>Click on <strong>Instance groups</strong> and select <strong>executionplane</strong> and save the job template.</p>
+</li>
+<li>
+<p>Run the job for <strong>Demo Job Template</strong>.</p>
+</li>
+<li>
+<p>Go to jobs <strong>select Demo Job Template</strong> and check the <strong>Details</strong> section in the job and vefiry its getting executed on the execution plane.</p>
+</li>
+<li>
+<p>You can go to <strong>Automation Execution</strong> and then <strong>Infrastructure</strong> and check the <strong>Topology View</strong> for the current architecture of Ansible Automation Platform.</p>
 </li>
 </ol>
 </div>

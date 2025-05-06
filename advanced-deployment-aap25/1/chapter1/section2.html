@@ -148,6 +148,14 @@
 <ol class="arabic">
 <li>
 <p>Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes is mandatory to have. So the below example only shares the information related to that.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/2.png" alt="2">
+</div>
+</div>
+<div class="paragraph">
+<p>Ansible automation platform in the above had nodes Automation Controller/execution, Unified UI and Database.</p>
+</div>
 </li>
 </ol>
 </div>
@@ -171,6 +179,11 @@ execution_hostname.example.com</code></pre>
 <ol class="arabic">
 <li>
 <p>Creating a 1 hop node and 1 execution node connected to the hop node and the other execution node directly connected to the Automation Controller node.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/2.1.png" alt="2.1">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -186,17 +199,17 @@ peers=execution
 [execution_nodes]
 execution_hostname1.example.com peers=proxy
 execution_hostname2.example.com
+execution_hop.example.com node_type=hop
 
 
 [execution]
 execution_hostname2.example.com
 
 [proxy:vars]
-node_type=hop
 peers=automationcontroller
 
 [proxy]
-execution_hostname1.example.com</code></pre>
+execution_hop.example.com</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -232,7 +245,7 @@ hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>NOTE: The execution and hop concept remains the same only the deployment will be different  as you have to use receptor_type to define the hop node and The Containerized installer for have node_type as hybrid only for the Automation Controller.</pre>
+<pre>NOTE: The execution and hop concept remains the same only the deployment will be different as you have to use receptor_type instead of node_type.</pre>
 </div>
 </div>
 <nav class="pagination">
