@@ -1,6 +1,6 @@
 = Example on Calculating the Size
 
-From the previous section you must have figured out the workload capacity that you want to support, thus you must plan your deployment based on the requirements of the workload. To help you with your deployment, review the following planning exercise. 			
+At this point we should have a good idea how to calculate capacity and what factors to consider. Let's go through a planning exercise.
 
 For this example, the cluster must support the following capacity: 	
 
@@ -10,51 +10,27 @@ For this example, the cluster must support the following capacity:
 - Forks set to 5 on playbooks. This is the default. 					
 - The average event size is 1 Mb 					
 
-The virtual machines have 4 CPUs and 16 GB RAM, and disks that have 3000 IOPs. 	
+The virtual machines have 4 CPUs and 16 GB RAM, and disks have 3000 IOPs. 	
 
 *Execution Capacity calculation*
 
 Execution Capacity = (Number of jobs * forks value) + (number of jobs * 1 base task impact of a job)
 
-You calculate this by using the following equation: (10 jobs * 5 forks) + (10 jobs * 1 base task impact of a job) = 60 execution capacity.			
+Calculate this using the equation: (10 jobs * 5 forks) + (10 jobs * 1 base task impact of a job) = 60 execution capacity.			
 
 *Control Capacity*
 
 Total tasks/min = 500 Managed hosts * 16 tasks per minute
-                         = 8000 tasks/ minute 
+                         = 8000 tasks/minute = 133 tasks/second
 
-The above also means that 8000 events will be generated every minute. 
+In other words 133 events will be generated every second. 
 
- Note: You must run the job to see exactly how many events it produces, because this is dependent on the specific task and verbosity. For example, a debug task printing “Hello World” produces 6 job events with the verbosity of 1 on one host. With a verbosity of 3, it produces 34 job events on one host. Therefore, you must estimate that the task produces at least 6 events and the rest depends on the number of jobs and verbosity on which you are running it which varies from organization to organization.
+Note: Usually it's a good idea to run the job to see exactly how many events it produces, as this depends on the specific task and verbosity level. For example, a debug task printing “Hello World” produces 6 job events per host with the verbosity of 1. Verbosity of 3 creates 34 job events per host. Therefore, a task produces at least 6 events.
 
-Let us assume that there are 6 events generated per task and there are `8000/60 tasks/second = 133 tasks per second`
+Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 MB per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.
 
-Now from the above example each event is of 1 mb in size. 
+Considering the reservation and virtual machine we have deployed we get around 140 forks which is more than the required 60. Therefore a minimum of one node is needed. However two nodes are recommended for redundancy.
 
-Let us estimate the event: 
+To summarise, we will need to deploy 1 execution node, 1 control node, 1 database node, and 1 Unified UI node (mandatory for AAP 2.5) of 4 CPUs at 2.5Ghz, 16 GB RAM, and disks that have about 3000 IOPs to handle the infrastructure for the requirements we were given.
 
-Number of tasks/sec * Events per task = events per second. 
-133 * 6 = 798 events per second and each event is of 1 mb so 798 mb per second for logs/event data. 
-
-Your control node must be able to process around 789 events of data per second and it should have an execution capacity of 60. 
-
-Now considering the reservation and virtual machine we have deployed we get around 140 forks. 
-
-Number of Execution Nodes = Required Forks / Forks per Node
-
-[source]
-----
- 60 / 140  which is less than 1. So a minimum 1 node will be needed and 2 nodes to implement a fail-safe mechanism. 
-----
-
-So for the above: 
-
-You need to deploy 1 execution node, 1 control node, 1 database node, and 1 Unified UI node (mandatory for AAP 2.5) of 4 CPUs at 2.5Ghz, 16 GB RAM, and disks that have about 3000 IOPs to handle the Infrastructure for the below requirement: 
-
- - 500 managed hosts 					
-- 1,000 tasks per hour per host or 16 tasks per minute per host 				
-- 10 concurrent jobs 					
-- Forks set to 5 on playbooks. This is the default. 					
-- The average event size is 1 Mb.	
-
- Note:  The above is true for RPM and Containerized environments. The Openshift realted content will be added later.
+Note: The above is true for RPM and Containerized environments. Openshift related content will be added later.

@@ -1,31 +1,31 @@
 = Performance Consideration 
 
-Now from the previous information, you have got a very brief idea about the deployment and calculating the sizing requirement. Where as there are few tips that will help you better plan the deployment for the Control and Execution plane: 
+In the previous chapter we discussed how to calculate node size. The following will also help with planning the deployment for the Control and Execution plane.
 
-The Default Parameters that do not need to be changed unless needed and you know the exact value it needs to be changed to: 
+The Default Parameters that likely do not need to be changed unless we know a specific value and the reason why it's needed:
 
-. Facts size per host is Default 50 kb.
-. Size per event is 2 kb.
-. Events per tasks = 10.
-. Memory for 1 fork = 100mb.
-. 1 CPU provides 4 forks. 
-. Capacity Adjustment by default set 1.0 i.e. take a max of RAM and CPU capacity. 
-. In Execution Environment average Size is approximately 450 MB, and the rest varies from environment to environment. 
-. The Automation Controller processes 400 events/s, based on engineering performance benchmarks using the minimum sizing configuration under load. 
-. Automation Controller RAM per event fork  is 10 kb. 
-. Automation Controller CPU per event fork 0.0001. 
-. Concurrent API calls per controller is 100 by default and it can reach up to 300 calls. 
-. Controller/execution base Job capacity for every job run in unit is 1. 
+. Facts size per host - 50 KB
+. Size per event - 2 KB
+. Events per tasks - 10
+. Memory per fork - 100 MB
+. Forks per CPU - 4
+. Capacity Adjustment - 1.0 (i.e. select highest value)
+. Execution Environment average size - 450 MB
+. Automation Controller capacity - 400 events/s
+. Automation Controller RAM per event fork - 10 KB
+. Automation Controller CPU per event fork - 0.0001 
+. Concurrent API calls per controller - 100 (up to 300 calls is allowed)
+. Controller/execution base job capacity for every job run - 1
 
 
-The factors that will depend across different customers and environments: 
+The factors that vary across different environments: 
 
 - Number of Ansible Managed hosts/nodes.
 - Number of jobs per host per day.
 - Tasks run per playbook or job including the imported roles/tasks/playbooks. 
 - Jobs are running for a specific time-period or 24X7. 
 
-Few formulas for assistance. 
+Few helpful formulas:
 
 [source]
 ----
@@ -46,4 +46,4 @@ Database size for Inventory will be similar to size of database facts.
 Database size for jobs = number of hosts * jobs per host per data * Number of days to keep the data * Number of events * event  size / 1024 
 ----
 
-Database RAM and CPU should be something similar to the RAM and CPU or control plane or  execution plane whichever is higher. 
+Database RAM and CPU should be something similar to the RAM and CPU or control plane or execution plane, whichever is higher. 

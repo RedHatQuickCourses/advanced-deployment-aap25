@@ -1,34 +1,34 @@
 = Automation Mesh
 
-One thing is common in every application that needs to scale the operation globally: communication between the application. For this, the Ansible automation platform has an Automation Mesh. 
+Any application that is expected to scale globally needs reliable communication between its components. In Ansible Automation Platform, Automation Mesh is the feature that enables such inter-component communication.
 
-An automation mesh is an overlay network designed to enable the allocation of work among a sizable and scattered group of workers known as execution nodes by means of nodes that link to one another peer-to-peer via pre-existing networks. Receptor is the service that helps with the maintenance of this network. 
+Automation Mesh is an overlay network designed to enable the allocation of work among a sizable and scattered group of workers known as Execution Nodes. This is achieved by creating peer-to-peer connections between nodes over the existing networks. Receptor is the service that manages these connections.
 
-Automation mesh communicates have TLS encryption, which encrypts traffic traveling across external networks, such as the internet which helped the Ansible automation platform to achieve the below landmarks: 
+Automation Mesh communications are encrypted with TLS, which allows securing traffic that moves across external networks, such as the Internet, and enables AAP to achieve the following:
 
-- Nodes may be created, registered, grouped, ungrouped, and deregistered with less downtime thanks to dynamic cluster capacity that increases independently. 					
-- Control and execution plane separation enables you to scale playbook execution capacity independently from control plane capacity. 	
-- Deployment options that can be reconfigured without an outage, are resilient to latency, and dynamically redirect to select another way in the event of an outage.					
-- Connectivity includes bi-directional, multi-hopped mesh communication possibilities which are Federal Information Processing Standards (FIPS) compliant. 	
+- Nodes may be created, registered, grouped, ungrouped, and deregistered with less downtime thanks to the ability to change cluster capacity dynamically.
+  Note: Register means introducing a node to the architecture and adding it to its first group, deregister means completely removing node from the architecture. Group/ungroup means adding/removing node to/from a particular group. 
 
- Note: Registered means the nodes will be added to a group and deregistered means removing the node from the architecture. 
- Grouped and ungrouped means to add the nodes in a particular group name and changing is by just placing the hostname under a different group name. 
+- Control and Execution Plane separation enables scaling playbook execution capacity independently or using Control Plane capacity when required. 	
+- Deployment options can be reconfigured without a downtime, jobs are resilient to latency and can be re-routed dynamically in the event of an outage.					
+- Connectivity between the components is bi-directional, supports multi-hopped mesh communication and is Federal Information Processing Standards (FIPS) compliant. 	
 
-Automation mesh makes use of unique node types to create both the control and execution plane. Let us learn more about the control and execution plane and their node types before designing your automation mesh topology. 	
+Automation Mesh uses node types to build Control and Execution Planes. It's important to understand these concepts and how they differ from conventional architecture to be able to design suitable Automation Mesh topology.
 
 image::0.png[]
 
-The diagram that follows describes the functions of the control and execution plane as well as the node purpose belongs to the respective plane:
+The following diagram describes the functions of the Control Plane and node types it consist of:
 
 image::1.png[]
 
-The above diagram shows all the Control plane architecture. Where it can be having the nodes as hybrid or control nodes or a mixture of both the nodes. 
-The purpose of control nodes is to provide a GUI for users, and jobs are executed only on the execution nodes. Hybrid nodes, on the other hand, provide a GUI and can also execute jobs. 
+The next diagram shows nodes that can be part of the Execution Plane and their functions.
 
 image::1.2.png[] 
 
-The execution planes are mostly for executing the jobs and reporting the status of the jobs back to the control plane [control + hybrid nodes]. 
+The purpose of Control nodes is to provide a GUI for users, run management tasks and trigger job execution. Once triggered, jobs are being run by the Execution nodes. Hybrid nodes, on the other hand, can perform either of these tasks.
 
-The hop nodes are only used in this to provide the communication between the execution nodes and the control plane whereas the execution nodes are used to execute the jobs: 
+The main purpose of the Execution Plane is to run jobs and report their status back to the Control Plane (i.e. back to Control or Hybrid nodes).
 
- Note: For an operator-based environment, there are no hybrid or control nodes. There is a concept called container groups, which make up containers running on the Kubernetes cluster. That comprises the control plane. That control plane is local to the Kubernetes cluster in which Red Hat Ansible Automation Platform is deployed. 
+Hop nodes are used to provide the communication between the Control nodes and Execution nodes in cases when direct communication is not possible. 
+
+Note: Operator-based environments (such as deployments on OpenShift), have no Hybrid or Control nodes. These deployments use Container Groups, which make up containers running on the Kubernetes cluster. That comprises the Control Plane local to the Kubernetes cluster where Red Hat Ansible Automation Platform is deployed. 
