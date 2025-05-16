@@ -67,7 +67,7 @@
     <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
@@ -133,17 +133,15 @@
 <article class="doc">
 <h1 class="page">Troubleshooting Ansible Automation Platform Installation Issue</h1>
 <div class="paragraph">
-<p>For the RPM/Containerized Installation:</p>
+<p>In case of RPM/Containerized installation the scripts are only automating the tasks that can be performed manually. So the basic rule of thumb for resolving AAP installation issues is to troubleshoot by running tasks manually. This helps isolate the issue and also ensures that the steps are executed under the same user.</p>
 </div>
 <div class="paragraph">
-<p>As the scripts are only automating the tasks that can be performed manually, the basic thumb rule for resolving installation issues for the Ansible Automation Platform on the RPM and containerized installer is to implement the steps manually.
-This helps isolate the issue and also ensures that the steps are run with the same normal user the script uses.
-Use the sudo command while running it to depict the same behaviour as of Ansible:</p>
+<p>Troubleshooting suggestions:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Increase the verbosity  while running the script by just adding -vvv in the last and it will provide more verbose output while running the automation script tasks for setting up for the ansible automation platform.</p>
+<p>Increase the verbosity while running the script by just adding -vvv in the last and it will provide more verbose output while running the automation script tasks for setting up for the ansible automation platform.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -159,7 +157,7 @@ Use the sudo command while running it to depict the same behaviour as of Ansible
 <li>
 <p>Useful for seeing why something failed.</p>
 <div class="paragraph">
-<p>For eg:</p>
+<p>For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -169,7 +167,7 @@ ok: [localhost] =&gt; {"ansible_facts": {"ostree": false}, "changed": false}</co
 </div>
 </li>
 <li>
-<p>The above is useful for simple debugging, checking why something changed or failed, and identifying which file and which task was where it failed.</p>
+<p>This level is helpful for simple debugging, checking why something changed or failed, and identifying which file and which task was where it failed.</p>
 </li>
 </ul>
 </div>
@@ -201,7 +199,7 @@ ok: [localhost] =&gt; {
 </div>
 </li>
 <li>
-<p>This will be helpful to see what variables or args are being used.</p>
+<p>This level can be used to see variables or arguments.</p>
 </li>
 </ul>
 </div>
@@ -239,7 +237,7 @@ Using module file /usr/lib/python3.9/site-packages/ansible/modules/setup.py
 </div>
 </li>
 <li>
-<p>This will help in Debugging SSH issues or checking the exact remote commands.</p>
+<p>This level helps with Debugging SSH issues or checking the exact remote commands.</p>
 </li>
 </ul>
 </div>
@@ -248,8 +246,7 @@ Using module file /usr/lib/python3.9/site-packages/ansible/modules/setup.py
 </div>
 </li>
 <li>
-<p>If you are facing any issue with the script you will be facing an issue with the manual tasks as well. Thus, identify the task and fix the issue manually with the help of System
-administrator if needed.</p>
+<p>If you are facing any issue with the script you will be facing an issue with the manual tasks as well. Thus, identify the task and fix the issue manually with the help of your RHEL administrator if needed.</p>
 </li>
 <li>
 <p>Using the Red Hat suggested rpm repositories and reading the error properly will help you resolve 90% of the issues:</p>
@@ -265,10 +262,13 @@ fatal: [127.0.0.1]: FAILED! =&gt; {"changed": false, "msg": "This machine does n
 <div class="ulist">
 <ul>
 <li>
-<p>From the above error, if we read it, it points to the issue with the RAM, so increasing it will resolve the issue. Similarly, the other errors also point to common issues of the system that result in the installation issues.</p>
+<p>The error suggests an issue with the RAM, so increasing memory should resolve the problem. Similarly, the other errors also point to common issues of the system that result in the installation issues.</p>
 </li>
 </ul>
 </div>
+</li>
+<li>
+<p>In addition consider searching through KB articles <a href="https://access.redhat.com/search/">Red Hat Knowledge Base</a> for known issues/solutions and Jira tickets for reported bugs <a href="https://issues.redhat.com/projects/AAP/issues">Jira</a></p>
 </li>
 </ol>
 </div>

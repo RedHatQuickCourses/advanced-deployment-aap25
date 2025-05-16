@@ -67,7 +67,7 @@
     <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
@@ -133,28 +133,28 @@
 <article class="doc">
 <h1 class="page">Automation Mesh Example</h1>
 <div class="paragraph">
-<p>Let us talk about the Automation mesh in RPM and Containerized installation:</p>
+<p>Let&#8217;s take a closer look at Automation Mesh in RPM and Containerized installations.</p>
 </div>
 <div class="paragraph">
 <p><strong>RPM</strong></p>
 </div>
 <div class="paragraph">
-<p>The important part is how to make connections between the nodes which is also known as peering. Peer relationships define node-to-node connections. You can define peers within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] groups with peers=&lt;node-name-to-connect-too&gt;</p>
+<p>Mesh configuration includes defining connections between nodes, which is also known as peering. Peer relations are defined within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] sections with peers=&lt;node-name-to-connect-too&gt; setting.</p>
 </div>
 <div class="paragraph">
-<p>Let us create an example of 2 Deployment structures which will help you understand the above concept better:</p>
+<p>To understand the concept better, let&#8217;s look at two deployment scenarios:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Creating a simple 1 controller node connected to the 1 execution node with 1 Unified UI node and the database nodes is mandatory to have. So the below example only shares the information related to that.</p>
+<p>Basic example of a Controller node connected to an Execution node with one Unified UI node and the Database node. This is the minimum possible configuration and all these nodes are mandatory.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/2.png" alt="2">
 </div>
 </div>
 <div class="paragraph">
-<p>Ansible automation platform in the above had nodes Automation Controller/execution, Unified UI and Database.</p>
+<p>On the diagram above Ansible automation platform 2.5 square represents all four nodes: Controller, Execution, Unified UI and Database. Below is an example of the inventory for this scenario:</p>
 </div>
 </li>
 </ol>
@@ -173,12 +173,12 @@ execution_hostname.example.com</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In the above example we can see that there is 1 Automation Controller node mentioned as a node_type= control which acts as a control node to execute jobs on the execution nodes.</p>
+<p>In this example node_type for Controller node is set to hybrid which means it can also act as an Execution node. This hybrid node is peered to an additional Execution node.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Creating a 1 hop node and 1 execution node connected to the hop node and the other execution node directly connected to the Automation Controller node.</p>
+<p>More advanced structure with one more Execution node connected via Hop node.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/2.1.png" alt="2.1">
@@ -213,19 +213,19 @@ execution_hop.example.com</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>execution_nodes</code> group helps the AAP installer script to understand how to install software to make that node work as an execution node for the AAP and the <code>[execution]</code> group will tell the script about the peering and how it needs to be done to the automation controller.</p>
+<p>In the inventory configuration we see that the additional Execution node is peered to the proxy group, which contains Hop node.</p>
 </div>
 <div class="paragraph">
-<p>For more information on the different types of architectures that can be made with the help of <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution">automation mesh</a>.</p>
+<p>For more information on the different types of architectures refer to <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution">automation mesh</a>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Containerized</strong></p>
 </div>
 <div class="paragraph">
-<p>In `Containerized<code> to create the nodes execution or hop we use the `receptor_type</code> value which can be either execution or hop, while the `receptor_protocol<code> is either tcp or udp. By default, the nodes in the `execution_nodes</code> group are added as peers for the controller node. However, you can change the peer&#8217;s configuration by using the receptor_peers variable.</p>
+<p>In <code>Containerized<code> environments to create Execution or Hop nodes we need to use the `receptor_type</code> value which can be either execution or hop. `receptor_protocol`</code> can be set to either tcp or udp. By default, the nodes in the [execution_nodes] group are added as peers to nodes from the [automationcontroller] group. This can be overwritten with the receptor_peers variable.</p>
 </div>
 <div class="paragraph">
-<p>For execution node:</p>
+<p>For example, for execution node:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
@@ -243,10 +243,17 @@ execution_hostname2.example.com
 hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname2.example.com"]'</code></pre>
 </div>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>NOTE: The execution and hop concept remains the same only the deployment will be different as you have to use receptor_type instead of node_type.</pre>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In this example, the concept behind Execution and Hop nodes remains the same but the deployment will be different since we are using receptor_type instead of node_type.
+</td>
+</tr>
+</table>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="section1.html">Automation Mesh</a></span>

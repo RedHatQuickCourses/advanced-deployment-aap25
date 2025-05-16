@@ -67,7 +67,7 @@
     <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
@@ -133,7 +133,7 @@
 <article class="doc">
 <h1 class="page">Automation Mesh Hands-on Lab</h1>
 <div class="paragraph">
-<p>Once the lab is deployed and you are accessing the system via <strong>ssh</strong> terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the video below to perform the operations:</p>
+<p>Once the lab is deployed, access the system via <strong>ssh</strong> terminal and make sure to run all commands as a regular user and use the sudo command to perform any root-level operations. Watch the video or simply follow the steps below.</p>
 </div>
 <div class="videoblock text-left">
 <div class="content">
@@ -145,7 +145,7 @@ Your browser does not support the video tag.
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Install the required and useful utilities:</p>
+<p>Install required tools:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> $ sudo dnf install -y wget git-core rsync vim ansible-core</code></pre>
@@ -153,7 +153,7 @@ Your browser does not support the video tag.
 </div>
 </li>
 <li>
-<p>Copy the content of the <code>inventory</code> into a notepad locally the <code>/home/devops/inventory</code>.</p>
+<p>Copy the content of the <code>/home/devops/inventory</code> file into a notepad for further use.</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cat /home/devops/inventory</code></pre>
@@ -161,7 +161,7 @@ Your browser does not support the video tag.
 </div>
 </li>
 <li>
-<p>Extract the <strong>installer file</strong> using the following command:</p>
+<p>Extract <strong>installer file</strong> contents:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ tar -xvf ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.tar.gz
@@ -170,7 +170,7 @@ $ cd ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.</code>
 </div>
 </li>
 <li>
-<p>The <code>inventory-growth</code> should have the below values set:</p>
+<p>Ensure the <code>inventory-growth</code> file has the following:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationgateway]
@@ -210,7 +210,7 @@ controller_pg_password=redhat</code></pre>
 </div>
 </li>
 <li>
-<p>Once the inventory file is ready follow the below steps to do the installation:</p>
+<p>Perform AAP installation:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ansible-playbook -i inventory-growth ansible.containerized_installer.install</code></pre>
@@ -218,23 +218,28 @@ controller_pg_password=redhat</code></pre>
 </div>
 </li>
 <li>
-<p>Access the system using the <code>aap2</code> hostname by removing the <code>internal</code> from last and adding the <code>sandboxid</code> to the hostname from the <code>RHDP</code> lab login details section.</p>
+<p>Access AAP using the <code>aap2</code> hostname by removing the <code>internal</code> at the end and adding the <code>sandboxid</code> to the hostname from the <code>RHDP</code> lab login details section.</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">aap2.g8hpb.sandbox3274.opentlc.com</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>Use the user <strong>admin</strong> and the <strong>password</strong> set during the time of installation. In the above video I have set it to <strong>redhat</strong>.</p>
 <div class="literalblock">
 <div class="content">
-<pre>Note: Try to use a stronger password while doing the enterprise deployment</pre>
+<pre>Note: `aap2.&lt;random-ID-according-to-your-deplyoment&gt;.&lt;sandboxid&gt;.opentlc.com` will be your main URL to access it via web.</pre>
 </div>
 </div>
 </li>
 <li>
-<p>Provide the <strong>Red Hat login ID</strong> to get the subscription for attaching it to the AAP and a <strong>60-day subscription to Red Hat Ansible® Automation Platform</strong> or <strong>Red Hat Developer Subscription for Individuals</strong> subscription can be used for this lab.</p>
+<p>Use the user <strong>admin</strong> and the <strong>password</strong> set in the inventory-growth file. In the video it was set to <strong>redhat</strong>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Note: Use a stronger password while doing the real-life deployment.</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Provide the <strong>Red Hat login ID</strong> to get the available subscriptions and choose <strong>60-day subscription to Red Hat Ansible® Automation Platform</strong> or <strong>Red Hat Developer Subscription for Individuals</strong> for this lab.</p>
 </li>
 <li>
 <p>After <strong>Login</strong> run the <strong>Project sync</strong> for the <strong>Demo project</strong> to confirm the job is getting executed.</p>
@@ -249,16 +254,16 @@ controller_pg_password=redhat</code></pre>
 <p>Run the job for <strong>Demo Job Template</strong>.</p>
 </li>
 <li>
-<p>Go to jobs <strong>select Demo Job Template</strong> and check the <strong>Details</strong> section in the job and vefiry its getting executed on the execution plane.</p>
+<p>Go to jobs <strong>select Demo Job Template</strong> and check the <strong>Details</strong> section in the job and verify it&#8217;s getting executed on the Execution Plane node.</p>
 </li>
 <li>
-<p>You can go to <strong>Automation Execution</strong> and then <strong>Infrastructure</strong> and check the <strong>Topology View</strong> for the current architecture of Ansible Automation Platform.</p>
+<p>Go to <strong>Automation Execution</strong> then <strong>Infrastructure</strong> and check the <strong>Topology View</strong> for the current architecture of Ansible Automation Platform.</p>
 </li>
 </ol>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="section2.html">Automation Mesh Example</a></span>
-  <span class="next"><a href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a></span>
+  <span class="next"><a href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a></span>
 </nav>
 </article>
   </div>

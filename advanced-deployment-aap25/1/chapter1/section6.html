@@ -67,7 +67,7 @@
     <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirement for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
@@ -133,53 +133,53 @@
 <article class="doc">
 <h1 class="page">Performance Consideration</h1>
 <div class="paragraph">
-<p>Now from the previous information, you have got a very brief idea about the deployment and calculating the sizing requirement. Where as there are few tips that will help you better plan the deployment for the Control and Execution plane:</p>
+<p>In the previous chapter we discussed how to calculate node size. The following will also help with planning the deployment for the Control and Execution plane.</p>
 </div>
 <div class="paragraph">
-<p>The Default Parameters that do not need to be changed unless needed and you know the exact value it needs to be changed to:</p>
+<p>The Default Parameters that likely do not need to be changed unless we know a specific value and the reason why it&#8217;s needed:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Facts size per host is Default 50 kb.</p>
+<p>Facts size per host - 50 KB</p>
 </li>
 <li>
-<p>Size per event is 2 kb.</p>
+<p>Size per event - 2 KB</p>
 </li>
 <li>
-<p>Events per tasks = 10.</p>
+<p>Events per tasks - 10</p>
 </li>
 <li>
-<p>Memory for 1 fork = 100mb.</p>
+<p>Memory per fork - 100 MB</p>
 </li>
 <li>
-<p>1 CPU provides 4 forks.</p>
+<p>Forks per CPU - 4</p>
 </li>
 <li>
-<p>Capacity Adjustment by default set 1.0 i.e. take a max of RAM and CPU capacity.</p>
+<p>Capacity Adjustment - 1.0 (i.e. select highest value)</p>
 </li>
 <li>
-<p>In Execution Environment average Size is approximately 450 MB, and the rest varies from environment to environment.</p>
+<p>Execution Environment average size - 450 MB</p>
 </li>
 <li>
-<p>The Automation Controller processes 400 events/s, based on engineering performance benchmarks using the minimum sizing configuration under load.</p>
+<p>Automation Controller capacity - 400 events/s</p>
 </li>
 <li>
-<p>Automation Controller RAM per event fork  is 10 kb.</p>
+<p>Automation Controller RAM per event fork - 10 KB</p>
 </li>
 <li>
-<p>Automation Controller CPU per event fork 0.0001.</p>
+<p>Automation Controller CPU per event fork - 0.0001</p>
 </li>
 <li>
-<p>Concurrent API calls per controller is 100 by default and it can reach up to 300 calls.</p>
+<p>Concurrent API calls per controller - 100 (up to 300 calls is allowed)</p>
 </li>
 <li>
-<p>Controller/execution base Job capacity for every job run in unit is 1.</p>
+<p>Controller/execution base job capacity for every job run - 1</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>The factors that will depend across different customers and environments:</p>
+<p>The factors that vary across different environments:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -198,7 +198,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Few formulas for assistance.</p>
+<p>Few helpful formulas:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -220,7 +220,7 @@ Database size for jobs = number of hosts * jobs per host per data * Number of da
 </div>
 </div>
 <div class="paragraph">
-<p>Database RAM and CPU should be something similar to the RAM and CPU or control plane or  execution plane whichever is higher.</p>
+<p>Database RAM and CPU should be something similar to the RAM and CPU or control plane or execution plane, whichever is higher.</p>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="section5.html">Example on Calculating the Size</a></span>
