@@ -80,6 +80,7 @@ $ ansible-playbook -i inventory-growth ansible.containerized_installer.install
 ----
 aap2.g8hpb.sandbox3274.opentlc.com
 ----
+ Note: `aap2.<random-ID-according-to-your-deplyoment>.<sandboxid>.opentlc.com` will be your main URL to access it via web.  
 
 . Use the user *admin* and the *password* set in the inventory-growth file. In the video it was set to *redhat*. 
 
