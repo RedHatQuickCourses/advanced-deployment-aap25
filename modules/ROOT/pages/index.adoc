@@ -3,18 +3,18 @@
 
 == Introduction
 
-The Advanced Ansible Automation Platform enables scalable IT automation across complex environments. It features an Automation Mesh for efficient task distribution and coordination and Proper sizing based on workload and infrastructure is crucial for optimal deployment in this training you will get to know the aspect that needs consideration while doing that and a few tips for effective troubleshooting for installation issues involves understanding. 
+Ansible Automation Platform (AAP) enables scalable IT automation across complex environments. One of its features is an Automation Mesh which helps with efficient task distribution and coordination. Proper AAP sizing based on workload and infrastructure is crucial for optimal deployment. In this training we will look at what needs to be considered during AAP deployment to ensure performance, and learn some tips for effective troubleshooting of installation issues.
 
 Duration: 60 minutes
 
 == Objectives
 
-On completing this course, you should be able to:
+On completing this course, you will:
 
-- Understanding of Automation Mesh.
-- Calculate the Sizing requirement of Ansible Automation platform.
-- Troubleshooting Ansible Automation Platform Installation issue.
-- Performance consideration of Ansible Automation Platform.
+- Understand the Automation Mesh;
+- Learn how to calculate the sizing requirements for AAP;
+- Know how to troubleshoot AAP installation issues;
+- Performance consideration while doing the deployment. 
 
 == Prerequisites
 
@@ -28,7 +28,7 @@ This course assumes that you have the following prior experience:
 
 The PTL team acknowledges the valuable contributions of the following Red Hat associates:
 
-- Nikhil Jain (Principal Software Engineer)
+- Konstantin Kuminsky (Contributor)
 - Amrinder Singh (Content Architect)
 - Rutuja Deshmukh (Editor)
 - Anna Swicegood (Learning Product Manager)

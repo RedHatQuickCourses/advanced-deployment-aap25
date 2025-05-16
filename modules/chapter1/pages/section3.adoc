@@ -1,24 +1,24 @@
 = Automation Mesh Hands-on Lab
 
-Once the lab is deployed and you are accessing the system via *ssh* terminal make sure to run everything as a normal user only and use the sudo command to perform any root-level operations refer to the video below to perform the operations: 
+Once the lab is deployed, access the system via *ssh* terminal and make sure to run all commands as a regular user and use the sudo command to perform any root-level operations. Watch the video or simply follow the steps below.
 
 video::advanced-aap-2.5.mp4[align="left",width=800,height=500]
 
-. Install the required and useful utilities:
+. Install required tools:
 +
 [source,bash,role=execute]
 ----
  $ sudo dnf install -y wget git-core rsync vim ansible-core
 ----
 
-. Copy the content of the `inventory` into a notepad locally the `/home/devops/inventory`. 
+. Copy the content of the `/home/devops/inventory` file into a notepad for further use. 
 +
 [source,bash,role=execute]
 ----
 $ cat /home/devops/inventory
 ----
 
-. Extract the *installer file* using the following command:
+. Extract *installer file* contents:
 +
 [source,bash,role=execute]
 ----
@@ -26,8 +26,7 @@ $ tar -xvf ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.t
 $ cd ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.
 ----
 
-
-. The `inventory-growth` should have the below values set: 
+. Ensure the `inventory-growth` file has the following: 
 
 +
 [source,bash,role=execute]
@@ -68,25 +67,27 @@ controller_pg_password=redhat
 ----
 
 
-. Once the inventory file is ready follow the below steps to do the installation:
+. Perform AAP installation:
 +
 [source,bash,role=execute]
 ----
 $ ansible-playbook -i inventory-growth ansible.containerized_installer.install
 ----
 
-. Access the system using the `aap2` hostname by removing the `internal` from last and adding the `sandboxid` to the hostname from the `RHDP` lab login details section. 
+. Access AAP using the `aap2` hostname by removing the `internal` at the end and adding the `sandboxid` to the hostname from the `RHDP` lab login details section. 
 +
 [source,bash,role=execute]
 ----
 aap2.g8hpb.sandbox3274.opentlc.com
 ----
 
-. Use the user *admin* and the *password* set during the time of installation. In the above video I have set it to *redhat*. 
+ Note: `aap2.<random-ID-according-to-your-deplyoment>.<sandboxid>.opentlc.com` will be your main URL to access it via web.  
 
- Note: Try to use a stronger password while doing the enterprise deployment 
+. Use the user *admin* and the *password* set in the inventory-growth file. In the video it was set to *redhat*. 
 
-. Provide the *Red Hat login ID* to get the subscription for attaching it to the AAP and a *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* subscription can be used for this lab.
+ Note: Use a stronger password while doing the real-life deployment.
+
+. Provide the *Red Hat login ID* to get the available subscriptions and choose *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* for this lab.
 
 . After *Login* run the *Project sync* for the *Demo project* to confirm the job is getting executed.
 
@@ -96,6 +97,6 @@ aap2.g8hpb.sandbox3274.opentlc.com
 
 . Run the job for *Demo Job Template*. 
 
-. Go to jobs *select Demo Job Template* and check the *Details* section in the job and vefiry its getting executed on the execution plane.
+. Go to jobs *select Demo Job Template* and check the *Details* section in the job and verify it's getting executed on the Execution Plane node.
 
-. You can go to *Automation Execution* and then *Infrastructure* and check the *Topology View* for the current architecture of Ansible Automation Platform.
+. Go to *Automation Execution* then *Infrastructure* and check the *Topology View* for the current architecture of Ansible Automation Platform.
