@@ -28,7 +28,7 @@ This course assumes that you have the following prior experience:
 
 The PTL team acknowledges the valuable contributions of the following Red Hat associates:
 
-- Nikhil Jain (Principal Software Engineer)
+- Konstantin Kuminsky (Contributor)
 - Amrinder Singh (Content Architect)
 - Rutuja Deshmukh (Editor)
 - Anna Swicegood (Learning Product Manager)
