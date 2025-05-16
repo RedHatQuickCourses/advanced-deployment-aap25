@@ -11,10 +11,10 @@ Duration: 60 minutes
 
 On completing this course, you will:
 
-- understand Automation Mesh;
-- learn how to calculate the sizing requirements for AAP;
-- know how to troubleshoot AAP installation issues;
-- be able to manage the performance of the platform.
+- Understand the Automation Mesh;
+- Learn how to calculate the sizing requirements for AAP;
+- Know how to troubleshoot AAP installation issues;
+- Performance consideration while doing the deployment. 
 
 == Prerequisites
 
