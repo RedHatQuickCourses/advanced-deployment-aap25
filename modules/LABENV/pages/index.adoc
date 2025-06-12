@@ -29,5 +29,4 @@ image::form.png[]
 [[RHDP-Portal-Links]]
 === RHDP Portal Links
 - RedHat associates: https://catalog.demo.redhat.com/catalog?search=advanced&item=babylon-catalog-prod%2Fpert.advanced25-aap-deployment.prod[https://demo.redhat.com/,window=_blank]
-- RedHat partners: https://partner.demo.redhat.com/[https://partner.demo.redhat.com/,window=_blank]
-
+- RedHat partners: https://catalog.partner.demo.redhat.com/catalog?search=Product+Enablement&item=babylon-catalog-prod%2Fpartner.advanced25-aap-deployment.prod[https://partner.demo.redhat.com/,window=_blank]
