@@ -8,7 +8,7 @@ For this example, the cluster must support the following capacity:
 - 1,000 tasks per hour per host or 16 tasks per minute per host 				
 - 10 concurrent jobs 					
 - Forks set to 5 on playbooks. This is the default. 					
-- The average event size is 1 Mb 					
+- The average event size is 1 Kb 					
 
 The virtual machines have 4 CPUs and 16 GB RAM, and disks have 3000 IOPs. 	
 
@@ -27,7 +27,7 @@ In other words 133 events will be generated every second.
 
 Note: Usually it's a good idea to run the job to see exactly how many events it produces, as this depends on the specific task and verbosity level. For example, a debug task printing “Hello World” produces 6 job events per host with the verbosity of 1. Verbosity of 3 creates 34 job events per host. Therefore, a task produces at least 6 events.
 
-Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 MB per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.
+Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 Kb per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.
 
 Considering the reservation and virtual machine we have deployed we get around 140 forks which is more than the required 60. Therefore a minimum of one node is needed. However two nodes are recommended for redundancy.
 
