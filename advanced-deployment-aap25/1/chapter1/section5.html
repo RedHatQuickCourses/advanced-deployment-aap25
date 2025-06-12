@@ -153,7 +153,7 @@
 <p>Forks set to 5 on playbooks. This is the default.</p>
 </li>
 <li>
-<p>The average event size is 1 Mb</p>
+<p>The average event size is 1 Kb</p>
 </li>
 </ul>
 </div>
@@ -183,7 +183,7 @@
 <p>Note: Usually it&#8217;s a good idea to run the job to see exactly how many events it produces, as this depends on the specific task and verbosity level. For example, a debug task printing “Hello World” produces 6 job events per host with the verbosity of 1. Verbosity of 3 creates 34 job events per host. Therefore, a task produces at least 6 events.</p>
 </div>
 <div class="paragraph">
-<p>Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 MB per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.</p>
+<p>Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 Kb per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.</p>
 </div>
 <div class="paragraph">
 <p>Considering the reservation and virtual machine we have deployed we get around 140 forks which is more than the required 60. Therefore a minimum of one node is needed. However two nodes are recommended for redundancy.</p>
