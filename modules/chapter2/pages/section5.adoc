@@ -1,0 +1,80 @@
+= Example: Calculating Sizing for a Containerized Deployment
+
+At this point we should have a good idea how to calculate capacity and what factors to consider. Let's go through a planning exercise for a containerized AAP 2.7 deployment.
+
+For this example, the cluster must support the following capacity:
+
+- 500 managed hosts
+- 1,000 tasks per hour per host (16 tasks per minute per host)
+- 10 concurrent jobs
+- Forks set to 5 on playbooks (the default)
+- The average event size is 1 KB
+
+Target virtual machine size: 4 CPUs and 16 GB RAM, disks with 3,000 IOPS.
+
+== Execution Capacity Calculation
+
+Execution Capacity = (Number of jobs × forks value) + (Number of jobs × 1 base task impact)
+
+[source]
+----
+(10 jobs × 5 forks) + (10 jobs × 1) = 60 execution capacity units
+----
+
+== Control Capacity Calculation
+
+[source]
+----
+Total tasks/min = 500 managed hosts × 16 tasks/min = 8,000 tasks/min = 133 tasks/sec
+----
+
+In other words, 133 events are generated every second.
+
+NOTE: It is a good practice to run the job first and count exactly how many events it produces — this depends on the specific task and verbosity level. For example, a debug task printing "Hello World" produces 6 job events per host at verbosity 1, and 34 at verbosity 3.
+
+Assuming 6 events per task:
+
+[source]
+----
+133 tasks/sec × 6 events/task = 798 events/sec
+798 events × 1 KB/event = 798 KB/sec of log/event data
+----
+
+Our controller node must be able to process approximately 798 events per second and provide an execution capacity of 60 forks.
+
+Given the 16 GB node we selected:
+
+[source]
+----
+(16384 - 2048) / 100 = 140 forks available
+140 forks > 60 required → 1 execution node is sufficient
+----
+
+Two nodes are recommended for redundancy.
+
+== Sizing Summary
+
+To summarize, for this workload on a containerized deployment deploy the following RHEL hosts with 4 CPUs at 2.5 GHz, 16 GB RAM, and disks with ~3,000 IOPS:
+
+- *1 Automation Gateway node* (mandatory for AAP 2.7)
+- *1 Automation Controller node* (hybrid, handles both control and execution)
+- *1 Execution node* (minimum; 2 recommended for redundancy)
+- *1 Database node*
+
+NOTE: Automation Hub and EDA nodes should be added based on workload — start with the minimum requirements from the https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7[AAP 2.7 system requirements,windows=_blank] and scale based on observed usage.
+
+== Database Sizing
+
+[source]
+----
+Database size for facts  = Facts size per host × number of hosts / 1024
+                         = 50 KB × 500 / 1024 ≈ 24 MB
+
+Database size for inventory ≈ same as facts ≈ 24 MB
+
+Database size for jobs   = number of hosts × jobs/host/day × days to keep
+                           × number of events × event size / 1024
+                         = 500 × 24 × 30 × 6 × 1 KB / 1024 ≈ 2 GB (30-day retention)
+----
+
+Database RAM and CPU should match the higher of the controller or execution node resource values — in this case, 4 CPUs and 16 GB RAM.

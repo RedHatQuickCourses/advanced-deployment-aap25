@@ -1,88 +1,172 @@
-= Automation Mesh Example 
+= Automation Mesh Configuration on OpenShift hands-on Lab
 
-Let's take a closer look at Automation Mesh in RPM and Containerized installations.
+In an operator-based AAP deployment, Automation Mesh is configured entirely through the AAP UI and OpenShift custom resources — not through installer inventory files. This section walks through the remote execution for extending the mesh beyond the cluster.
 
-*RPM*
+== Lets setup the VM and connect it to Ansible Automation Platform for the execution node:
 
-Mesh configuration includes defining connections between nodes, which is also known as peering. Peer relations are defined within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] sections with peers=<node-name-to-connect-too> setting.
-
-To understand the concept better, let's look at two deployment scenarios: 
-
-
-. Basic example of a Controller node connected to an Execution node with one Unified UI node and the Database node. This is the minimum possible configuration and all these nodes are mandatory.
-+ 
-image::2.png[]
+. *OpenShift Console Access:*
 +
+Open the OpenShift Console at `{openshift_console_url}` and log in with username `{openshift_username}` and password `{common_admin_password}`.
 
-On the diagram above Ansible automation platform 2.5 square represents all four nodes: Controller, Execution, Unified UI and Database. Below is an example of the inventory for this scenario:
+.. Navigate to *Virtualization* → *VirtualMachines*.
 
+
+.. Select namespace: `aap-lab`
+.. Click on `aap-lab-execution`
++
+image::1.1.png[]
+
+.. Click on the *Open Web Console* button.
++
+image::1.2.png[]
+
+.. Use the *Serial* tab for terminal access.
++
+image::1.3.png[]
+
+. Log in to the VM using username `{bastion_ansible_user}` and password `{common_user_password}`. Copy and paste with CTRL+SHIFT+V in the terminal.
+
+. Register the system with Red Hat Subscription Management and attach the subscription to the system.
++
 [source,bash,role=execute]
 ----
-[automationcontroller]
-control_hostname.example.com
-
-[automationcontroller:vars]
-node_type=hybrid
-peers=execution_nodes
-
-[execution_nodes]
-execution_hostname.example.com
+sudo subscription-manager register
 ----
-
-In this example node_type for Controller node is set to hybrid which means it can also act as an Execution node. This hybrid node is peered to an additional Execution node.
-
-. More advanced structure with one more Execution node connected via Hop node.
-+ 
-image::2.1.png[]
-
++
 [source,bash,role=execute]
 ----
-[automationcontroller]
-control_hostname.example.com
-
-[automationcontroller:vars]
-node_type=hybrid
-peers=execution
-
-[execution_nodes]
-execution_hostname1.example.com peers=proxy
-execution_hostname2.example.com
-execution_hop.example.com node_type=hop
-
-
-[execution]
-execution_hostname2.example.com
-
-[proxy:vars]
-peers=automationcontroller
-
-[proxy]
-execution_hop.example.com
+username: <YOUR-RHN_LOGIN>
+password: <YOUR-RHN_PASSWORD>
 ----
++
+image::1.4.png[]
 
-In the inventory configuration we see that the additional Execution node is peered to the proxy group, which contains Hop node.
-
-For more information on the different types of architectures refer to https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution[automation mesh,windows=_blank].
-
-*Containerized*
-
-In `Containerized`` environments to create Execution or Hop nodes we need to use the `receptor_type`` value which can be either execution or hop. `receptor_protocol`` can be set to either tcp or udp. By default, the nodes in the [execution_nodes] group are added as peers to nodes from the [automationcontroller] group. This can be overwritten with the receptor_peers variable.
-
-For example, for execution node: 
-
+.. Enable the required repository for AAP 2.7:
++
 [source,bash,role=execute]
 ----
-[execution_nodes]
-execution_hostname.example.com
+sudo subscription-manager repos --enable ansible-automation-platform-2.7-for-rhel-10-x86_64-rpms
 ----
++
+image::1.5.png[]
 
-For hop node:			
-
+. Install the required and useful utilities:
++
 [source,bash,role=execute]
 ----
-[execution_nodes]
-execution_hostname2.example.com
-hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname2.example.com"]'
+sudo dnf install -y vim ansible-core
 ----
 
-NOTE: In this example, the concept behind Execution and Hop nodes remains the same but the deployment will be different since we are using receptor_type instead of node_type.
+== Install Receptor on the Execution Node: 
+
+=== Ansible Automation Platform UI Configuration:
+
+. Login to the AAP UI for that go to openshift cluster and then go to **Networking > Routes > Location for the aap Service** open the URL in the browser in the new tab.
++
+image::1.6.png[]
+
+. Go to **Workloads > Secrets > aap-admin-password** and copy the password to login to the AAP UI. for this lab you can use this for admin password: `{common_admin_password}`. 
++
+image::1.7.png[]
+
+. Download the Receptor install bundle from the AAP UI and copy it to the execution node. Use the following command to extract the bundle:
+
+.. From the navigation panel, select **Automation Execution > Infrastructure > Instances**.
++
+image::1.8.png[]
+
+.. On the **Instances** list page, click **Add instance**. Fill in the following fields:
++
+|===
+| Field | Description 
+| **Host name** | Fully qualified domain name (public DNS) or IP address. Use IP if private DNS cannot be resolved from the control cluster. 
+| **Description** | (Optional) A description for the instance. 
+| **Instance state** | Auto-populated (`Installed`); cannot be modified. 
+| **Listener port** | Port for Receptor to listen on for incoming connections. Default: **27199**. 
+| **Instance type** | Only `execution` and `hop` are supported on OpenShift operator deployments. 
+|===
++
+.. Add the VM `aap-lab-execution` FQDN from the Openshift cluster **Virtualization > VirtualMachines > aap-lab > aap-lab-execution ** and the port `27199` to the instance and click **Save**.
++
+image::1.9.png[]
++
+image::1.10.png[]
++
+image::1.11.png[]
+
+
+.. Copy the URL of the bundle from the AAP UI and download it on the execution node using the following command:
++
+image::1.12.png[]
+
+=== Setup Receptor on the Execution Node:
+
+. Download and Extract the bundle on the remote machine:
++
+[source,bash,role=execute]
+----
+curl -u admin:{common_admin_password} --output aap.tar.gz <Paste the URL of the bundle from the AAP UI>
+----
++
+image::1.13.png[]
++
+[source,bash,role=execute]
+----
+tar -xzf aap.tar.gz
+----
+
+. Move into the extracted directory and run the install script:
++
+[source,bash,role=execute]
+----
+cd <extracted directory>
+----
+
+. Edit `inventory.yml`
++
+[source,bash,role=execute]
+----
+vim inventory.yml
+----
++
+[source,bash,role=execute]
+----
+all:
+  hosts:
+    remote-execution:
+      ansible_host: <this-should-be-the-mesh-node-host-name>   # change to the mesh node host name if its not
+      ansible_user: lab-user # this should have the username of the remote execution node
+ #     ansible_ssh_private_key_file: ~/.ssh/<id_rsa>
+----
++
+image::1.14.png[]
+
+
+. Install the `ansible.receptor` collection:
++
+[source,bash,role=execute]
+----
+sudo ansible-galaxy install -r requirements.yml
+----
++
+image::1.15.png[]
++
+[Note] 
+  Open port 27199 for Receptor communication on the Firewall of the execution node and the communication should be allowed bi-directionally between the execution node and the control plane nodes.
+
+. Run the installation playbook and provide the password: `{common_admin_password}` for the execution node when prompted. This will install Receptor on the execution node and configure it to connect to the control plane nodes.:
++
+[source,bash,role=execute]
+----
+sudo ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.yml install_receptor.yml -k
+---- 
++
+image::1.16.png[]
+
+. Once the installation is complete successfully. Proceed to the next step to verify the connection between the execution node and the control plane nodes by clicking on the *Run Health Check* button in the AAP UI and soon the status will show *Ready* for the Execution node.
++
+image::1.17.png[]
++
+image::1.18.png[]
+
+Let run a JOB on the execution node to verify if it will get executed. The job might be failing due to EE but the execution node should be the `aap-lab-execution` node that we have assigned. 

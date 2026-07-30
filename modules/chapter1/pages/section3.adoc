@@ -1,102 +1,47 @@
-= Automation Mesh Hands-on Lab
+=  Ansible Automation Platform 2.7 Job run on execution nodes: 
 
-Once the lab is deployed, access the system via *ssh* terminal and make sure to run all commands as a regular user and use the sudo command to perform any root-level operations. Watch the video or simply follow the steps below.
+== Part 1: Create a Instance Group:
 
-video::advanced-aap-2.5.mp4[align="left",width=800,height=500]
-
-. Install required tools:
+- Navigate to *Automation Execution > Infrastructure > Instance Groups*.
+- Click *Create group* and select *Create instance Groups*.
+- Enter `IG` as the name and then go to the *Instances* tab and add the Instance you created in the previous step. Click *Save*.
 +
-[source,bash,role=execute]
-----
- $ sudo dnf install -y wget git-core rsync vim ansible-core
-----
-
-. Copy the content of the `/home/devops/inventory` file into a notepad for further use. 
+image::2.1.png[]
 +
-[source,bash,role=execute]
-----
-$ cat /home/devops/inventory
-----
+image::2.2.png[]
 
-. Extract *installer file* contents:
+- Assign the Instance to this Instance Group and click on `aap-lab-execution.headless.aap.svc.cluster.local` and then Confirm the selection. 
 +
-[source,bash,role=execute]
-----
-$ tar -xvf ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.tar.gz
-$ cd ansible-automation-platform-containerized-setup-bundle-2.5-3-x86_64.
-----
-
-. Ensure the `inventory-growth` file has the following: 
-
+image::2.3.png[]
 +
-[source,bash,role=execute]
-----
-[automationgateway]
-aap2.g8hpb.internal
+image::2.4.png[]
 
-[automationcontroller]
-aap-controller.g8hpb.internal
+== Part 2: Run a Job Using the Instance Group
 
-[automationhub]
-
-[automationeda]
-
-[database]
-aap-database.g8hpb.internal
-
-[execution_nodes]
-aap-execution.g8hpb.internal
-
-[all:vars]
-
-postgresql_admin_username=postgres
-postgresql_admin_password=redhat
-
-bundle_install=true
-bundle_dir='{{ lookup("ansible.builtin.env", "PWD") }}/bundle'
-
-redis_mode=standalone
-
-gateway_admin_password=redhat
-gateway_pg_host=aap-database.g8hpb.internal
-gateway_pg_password=redhat
-
-controller_admin_password=redhat
-controller_pg_host=aap-database.g8hpb.internal
-controller_pg_password=redhat
-----
-
-
-. Perform AAP installation:
+. In the AAP UI, navigate to *Automation Execution > Templates*.
+. Click the *edit* (pencil) icon on the Demo Job Template to open its settings.
 +
-[source,bash,role=execute]
-----
-$ ansible-playbook -i inventory-growth ansible.containerized_installer.install
-----
+image::2.5.png[]
 
-. Access AAP using the `aap2` hostname by removing the `internal` at the end and adding the `sandboxid` to the hostname from the `RHDP` lab login details section. 
+. Click *Instance groups* and select `IG`, then save the template.
 +
-[source,bash,role=execute]
-----
-aap2.g8hpb.sandbox3274.opentlc.com
-----
+image::2.6.png[]
++
+image::2.7.png[]
 
- Note: `aap2.<random-ID-according-to-your-deplyoment>.<sandboxid>.opentlc.com` will be your main URL to access it via web.  
+. Launch the *Demo Job Template*.
 
-. Use the user *admin* and the *password* set in the inventory-growth file. In the video it was set to *redhat*. 
+. In the AAP UI navigate to *Automation Execution > Jobs*, select the running job and check the *Details* section to verify it is executing via the Instance group via the execution node.
++
+image::2.8.png[]
++
+image::2.9.png[]
 
- Note: Use a stronger password while doing the real-life deployment.
+== Part 3: View the Topology
 
-. Provide the *Red Hat login ID* to get the available subscriptions and choose *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* for this lab.
+. In the AAP UI, navigate to *Automation Execution > Infrastructure > Topology View*.
+. Verify the graphical representation shows your Instance Group connected to the Control Plane.
+. Refer to the *Legend* to identify node types and link statuses.
++
+image::2.10.png[]
 
-. After *Login* run the *Project sync* for the *Demo project* to confirm the job is getting executed.
-
-. In *Automation Execution* click on *Templates* and edit the *Demo Job Template*. 
-
-. Click on *Instance groups* and select *executionplane* and save the job template. 
-
-. Run the job for *Demo Job Template*. 
-
-. Go to jobs *select Demo Job Template* and check the *Details* section in the job and verify it's getting executed on the Execution Plane node.
-
-. Go to *Automation Execution* then *Infrastructure* and check the *Topology View* for the current architecture of Ansible Automation Platform.

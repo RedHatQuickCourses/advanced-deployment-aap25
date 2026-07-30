@@ -1,0 +1,15 @@
+= Summary
+
+In this chapter we learned the following about deploying Automation Mesh on a containerized AAP 2.7 installation:
+
+- In a containerized deployment, the Control Plane uses *Hybrid nodes* (default) and *Control nodes* running as `podman` containers on RHEL hosts — unlike OCP deployments which have no hybrid or control nodes.
+- Mesh topology is defined in the *installer inventory file* using `receptor_type` (`execution` or `hop`) and `receptor_peers` (a comma-separated hostname list) — not through the AAP UI.
+- *Execution nodes* (`receptor_type=execution`) run jobs using `ansible-runner` with `podman` isolation; *Hop nodes* (`receptor_type=hop`) route Receptor traffic and cannot execute automation.
+- The fork capacity model applies: 1 CPU = 4 forks and 100 MB RAM = 1 fork, with `capacity_adjustment` controlling the balance.
+- Sizing is expressed in terms of host VM specifications (CPU, RAM, disk IOPS) rather than pod resource requests.
+- EDA activation limits and memory caps are configured via `/etc/ansible-automation-platform/eda/settings.yaml`, using `MAX_RUNNING_ACTIVATIONS` and `PODMAN_MEM_LIMIT`.
+- Troubleshooting uses the `-vvv` verbosity flag on the installer, `podman ps`, `systemctl status`, and `journalctl` — not `oc` CLI commands.
+- Common issues include blocked port 27199, SELinux denials, image pull failures from `registry.redhat.io`, and insufficient RAM/disk preflight failures.
+- *PostgreSQL tuning* is critical at scale: set `shared_buffers` to 25% of RAM, size `max_connections` to cover all AAP component connection pools, and set `checkpoint_completion_target=0.9` to reduce write I/O spikes.
+- *EDA horizontal scaling*: separate API and worker roles using `eda_type=api` and `eda_type=worker` in the `[automationeda]` inventory group to scale activation execution independently of API handling.
+- Use key performance indicators (high API latency, 502 gateway errors, PostgreSQL `too many clients`, activation queue buildup) to determine whether to scale vertically, add nodes, or tune configuration.

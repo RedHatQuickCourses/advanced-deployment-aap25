@@ -1,117 +1,103 @@
-= Calculate the Sizing Requirements for RPM and Containerized Installation
+= Calculate Sizing Requirements for an OpenShift Deployment
 
-Having the right amount of resources for the Ansible Automation Platform helps to make the platform reliable and reduce cost. Sizing requirements depend on multiple factors, including the type of automation we are planning to run. High level points that should be considered during capacity planning are:
+Having the right amount of resources for Ansible Automation Platform helps make the platform reliable and reduces cost. In an operator-based deployment on OpenShift, sizing is expressed as Pod resource *requests* and *limits* rather than VM specifications. The high-level points that should be considered during capacity planning are:
 
 - Characterizing the workloads.
-- Reviewing the capabilities of different node types.
+- Reviewing the capabilities of different component pods.
 - Planning the deployment based on the requirements of the workload.
 
-Below are the isolated factors that play a major role in calculating sizing. 
+The same isolated factors apply as in a VM-based deployment:
 
-- Number of the Managed hosts controlled by the AAP. 
-- Jobs or Tasks running per hour per host.
-- Maximum number of concurrent jobs that you want to support.			
-- Maximum number of forks set on jobs. Forks determine the number of hosts that a job acts on concurrently. 						
-- Maximum API requests per second.						
-- Node size that you prefer to deploy (CPU/Memory/Disk).			
+- Number of managed hosts controlled by AAP.
+- Jobs or tasks running per hour per host.
+- Maximum number of concurrent jobs to support.
+- Maximum number of forks set on jobs.
+- Maximum API requests per second.
+- Target Pod CPU and memory sizes.
 
-*Unified UI*
+== Automation Controller Pods
 
-Unified UI provides the authentication and load-balancing of requests using the GRPC service. Increasing the CPU and memory will help to reduce bottlenecks when resources are under pressure. You may be having issues with Unified UI capacity if you see 502 gateway errors during access attempts.
+The AAP Operator deploys automation controller as multiple pods. The two primary workload pods are:
 
-*Automation Execution/Controller*
+- *web*: Handles the UI and REST API. Scales horizontally — add more web pod replicas to handle more concurrent API requests.
+- *task*: Dispatches jobs, processes job events, and updates the database. CPU and memory on this pod determine control capacity (events per second).
 
-There are 4 types of nodes in the RPM-based Ansible Automation platform: 
-- Control Plane: Control node and Hybrid node.
-- Execution Plane: Execution node and Hop node. 
+Scale the `task` pod vertically (increase CPU and memory) to increase event processing throughput. Scale `web` pods horizontally to increase API concurrency.
 
-Control and hybrid nodes play a key role in managing jobs. These nodes are the "managers" that start jobs and handle their results, feeding the data into a database. Every job needs one Control node to manage it.
+Recommended ratio for the `task` pod: *1 CPU to 4 GB RAM*. Add CPU together with memory even if CPU is not a bottleneck — during high memory utilization the queue fills with unprocessed events, and higher CPU helps drain the queue faster.
 
-Key Concept for control capacity:
+== Container Groups (Execution Capacity on OCP)
 
-- Each job needs 1 unit of control capacity.
-- A node with 100 capacity units can control up to 100 jobs at once.
+Container Groups run jobs as ephemeral pods. Execution capacity is determined by the resource limits set on each pod in the *Pod spec override*, not by a node's total memory. Key points:
 
-Control nodes can be scaled vertically by adding more CPU and memory (i.e., using a larger virtual machine). This increase Control Plane's ability to:
+- Forks are set at the job template level and passed directly to the container.
+- Container groups do *not* use the fork capacity algorithm (memory / 100 MB) used by execution nodes.
+- Use `LimitRange` objects in your namespace to set namespace-wide pod resource limits.
+- Set `resources.requests` and `resources.limits` in the pod spec override for fine-grained control.
 
-. manage more jobs simultaneously.
-. process job events faster (by processing more events at the same time).
+[source,yaml,role=execute]
+----
+resources:
+  requests:
+    cpu: 250m
+    memory: 100Mi
+  limits:
+    cpu: "2"
+    memory: 2Gi
+----
 
-Note: Vertically scaling a Control node does not automatically increase the number of workers that handle web requests. To achieve that, instead of making one Control node larger (vertical scaling), add more Control nodes (horizontal scaling). This spreads the workload and web traffic across multiple nodes using a load balancer. It also adds redundancy in case of node failure. Horizontal scaling is often preferred for better reliability and performance.
+== Remote Execution Nodes (RHEL VMs peered to OCP)
 
-Recommended practices for vertical scaling are:
-
-. Scale CPU and memory together, ideally in a 1 CPU to 4 GB RAM ratio.
-. Add CPU together with memory even if CPU was not a bottleneck. During high memory utilization, the queue fills up with unprocessed events. Higher CPU capacity helps to process these events faster.
-
-*Execution nodes*
- 
-Execution and Hybrid nodes provide execution capacity. The capacity consumed by a job running against one host is called fork. The amount of forks consumed by a running job is equal to either the number of forks set in the job template settings or equals the number of hosts in the inventory the job is running against, whichever value is lower.
-
-`Vertically scaling` an Execution node by deploying a larger virtual machine with more resources provides more forks for job execution. This increases the number of concurrent jobs that an instance can run. 				
-
-You can configure an instance group that can only be used for running jobs against a certain Inventory. In this scenario, by `horizontally scaling` the Execution node, you can ensure that lower-priority jobs do not block higher-priority jobs. 
-
-Hop nodes use minimal resources, so vertical scaling doesn't increase capacity. Instead, monitor bandwidth especially for Hop nodes that connect large amounts of Execution nodes. Consider a network upgrade if bandwidth is close to the capacity.
-
-Hop nodes on `horizontal scaling` can increase redundancy and guarantee that traffic continues to flow even in the event of a node failure.
-
-In addition to all the above let's keep in mind that the amount of available forks is calculated based on available memory and CPU.
+Remote execution nodes are RHEL VMs that extend the mesh beyond the OCP cluster. Their capacity is calculated the same way as in a VM-based deployment:
 
 *Memory Relative Capacity*
 
-`mem_capacity` setting is the maximum amount of memory needed by one fork. Default value is 100 MB. Knowing the value allows calculating the amount of forks available on a specific host. 2 GB of memory is reserved for the AAP services.
+`mem_capacity` is the maximum memory needed by one fork. The default value is 100 MB. 2 GB of memory is reserved for AAP services.
 
 [source]
 ----
-For example, 16 GB of available node memory means (16384 - 2048)/100 ~ 140 forks 
+Example: 16 GB of available node memory → (16384 - 2048) / 100 ≈ 140 forks
 ----
 
 *CPU Relative Capacity*
 
-Ansible workloads are often processor-bound. In these cases sometimes reducing the simultaneous workload allows more tasks to run faster and reduces the average time-to-completion of those jobs.
-
-Just as the `mem_capacity` defines the amount of memory required per fork, the `cpu_capacity` defines the amount of processing resources required per fork. The baseline value for this is 1 CPU = 4 forks.
+The baseline value is 1 CPU = 4 forks.
 
 [source]
 ----
-4 cpu * 4 forks per cpu = 16 forks
+4 CPUs × 4 forks per CPU = 16 forks
 ----
 
-Determining the amount of forks available for a specific node is a choice on a scale between the calculated CPU-bound capacity and the memory-bound capacity.
-
-`capacity_adjustment`` value determines how close this choice is to the highest number. The value is between 0 and 1. If set to 1, then the highest number is used. For the calculation examples above adjustment value of 1 means 140 forks. The value of 0 means 16 forks. In case of 0.5 the calculation is:
-
+The `capacity_adjustment` value (0 to 1) determines whether fork count is closer to the CPU-bound or memory-bound limit. At 0.5:
 
 [source]
 ----
-Capacity = [140 forks memory * 0.50] + [16 forks of CPU * 0.50] 	
-	  = 70 + 8 = 78 forks. 
+Capacity = [140 forks memory × 0.50] + [16 forks CPU × 0.50]
+         = 70 + 8 = 78 forks
 ----
 
-Everything discussed so far is applicable to both RPM and Containerized deployments. The only difference between the two is that Containerized deployment doesn't have Control nodes as explained in the previous chapter.
+== Automation Hub (Private Automation Hub)
 
-When planning capacity it's important to know the expected workload types and additional components involved. Let's consider the examples in the following two sections.
+Private Automation Hub provides Execution Environments and collections, so it has modest CPU and memory needs. Storage sizing dominates:
 
-*Event-driven Ansible Controller / Automation Decision*
+- Number of Execution Environments stored.
+- Size of each Execution Environment.
+- Number of versions of each Execution Environment.
 
-Event-driven Ansible workloads include the number of rulebook activations and events being received. The following factors should be considered: 		
+In an OCP deployment, storage is provided by Persistent Volume Claims (PVCs). Ensure the selected StorageClass supports `ReadWriteMany` if multiple hub pods are needed, or `ReadWriteOnce` for single-pod deployments.
 
-- Number of simultaneous rulebook activations 					
-- Number of events received by Event-Driven Ansible controller 				
+== Event-Driven Ansible Controller (AutomationEDA)
 
-By default, Event-driven Ansible controller allows 12 rulebook activations per node and 24 activations in total can run simultaneously. Even if there are more resources available, this limit will not be exceeded unless overwritten by `MAX_RUNNING_ACTIVATIONS` setting in /etc/ansible-automation-platform/eda/settings.yaml file. Run `automation-eda-controller-service restart` after changing the value.
+Event-Driven Ansible workloads are sized based on:
 
-Memory usage is based on the number of events that the Event-driven Ansible controller has to process. Each rulebook activation container has a 200MB memory limit. For example, with 4 CPUs and 16GB of RAM, one rulebook activation container with an assigned `200MB` memory limit can not handle more than 150,000 events per minute. If the number of parallel running rulebook activations is higher, then the maximum number of events each rulebook activation can process is reduced. If there are too many incoming events at a very high rate, the container can run out of memory trying to process the events. This will kill the container, which causes rulebook activation to fail with a status code of 137.
+- Number of simultaneous rulebook activations.
+- Number of events received per minute.
 
-To increase this limit to 400MB, as an example, open /etc/ansible-automation-platform/eda/settings.yaml, set `PODMAN_MEM_LIMIT = 400m` and restart the `automation-eda-controller-service restart` on the EDA server.
+In an OCP deployment, rulebook activation limits are configured via the `AutomationEDA` custom resource spec rather than a file-based settings file. The default is 12 rulebook activations per node and 24 activations total. Memory per activation container is set as a Pod resource limit in the CR — the equivalent of the `PODMAN_MEM_LIMIT` setting in non-OCP deployments.
 
-*Automation Content or Private Automation Hub (PAH)* 
+== Database (PostgreSQL)
 
-PAH provides Execution Environments and collections therefore there is not much need for memory or CPU resources by this component. Meeting the minimum and storage requirements should be enough:
+The AAP Operator integrates with managed PostgreSQL (via Crunchy Data operator or an external database). Database Pod sizing should match or exceed the higher of the Control Plane or Execution Plane resource requirements:
 
-- Number of Execution Environments you have. 
-- Size of each execution environment. 
-- Number of versions of each execution environment. 
-
-In addition, make sure there is enough Database space for the PAH system. Most of the time the default amount should be enough however the above factors need to be taken into consideration, especially if the requirement is to calculate the amount of space more precisely.
+- Database storage: see xref:section5.adoc[sizing example] for formulas.
+- Database RAM and CPU: align with the `task` pod sizing.

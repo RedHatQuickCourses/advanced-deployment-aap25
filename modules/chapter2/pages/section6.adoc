@@ -1,0 +1,155 @@
+= Performance Considerations for Containerized Deployments
+
+In the previous section we discussed how to calculate node size. The following default parameters and containerized-specific factors will also help with planning control and execution capacity.
+
+== Default Parameters
+
+The following parameters likely do not need to be changed unless you know a specific value and the reason it is needed:
+
+[cols="1,1",options="header"]
+|===
+|Parameter |Default value
+
+|Facts size per host |50 KB
+|Size per event |1 KB
+|Events per task |6–10
+|Memory per fork |100 MB
+|Forks per CPU |4
+|Capacity Adjustment |1.0 (select highest value)
+|Execution Environment average size |450 MB
+|Automation Controller capacity |~400 events/sec
+|Automation Controller RAM per event fork |10 KB
+|Automation Controller CPU per event fork |0.0001
+|Concurrent API calls per controller |100 (up to 300 allowed)
+|Controller/execution base job capacity per job run |1
+|===
+
+== Factors That Vary Across Environments
+
+- Number of Ansible managed hosts/nodes.
+- Number of jobs per host per day.
+- Tasks run per playbook or job including imported roles/tasks/playbooks.
+- Whether jobs run for a specific time period or 24×7.
+
+== Containerized-Specific Performance Considerations
+
+=== Podman and systemd overhead
+
+Containerized AAP runs each service as a `podman` container under `systemd`. There is a small overhead compared to native RPM services, but it is negligible for typical workloads. Ensure `podman` is at least version 4.x for best performance and full feature support.
+
+=== Container storage driver
+
+Podman uses `overlay` storage by default. Ensure the underlying filesystem supports `overlay` (ext4 and XFS are both supported). Avoid using `vfs` in production — it has significantly worse I/O performance.
+
+=== Network performance
+
+Receptor communication between nodes uses TCP over port 27199 by default. For hop nodes routing traffic across WAN links, monitor bandwidth closely — a hop node connecting many execution nodes over a slow link becomes a throughput bottleneck before its CPU or memory is exhausted. Use `iperf3` or similar tools to validate bandwidth before deploying a multi-hop topology.
+
+=== EDA event rate limits
+
+Each rulebook activation container is limited to 200 MB of memory by default. If event rates are very high or activations require more state, increase `PODMAN_MEM_LIMIT` in `/etc/ansible-automation-platform/eda/settings.yaml` and restart the EDA service. Increase `MAX_RUNNING_ACTIVATIONS` if you need more than the default 12 activations per node.
+
+=== Disk I/O
+
+The database is the most I/O-intensive component in any AAP deployment. Ensure the database host uses fast storage — SSDs or NVMe-backed volumes with at least 3,000 IOPS. Controller and execution nodes also need adequate I/O for project syncs and execution environment pulls from Private Automation Hub.
+
+== Tune the PostgreSQL Database
+
+PostgreSQL performance directly affects job scheduling, event processing, and API response times. Key configuration parameters to review for production workloads — set in `/var/lib/pgsql/data/postgresql.conf`:
+
+[cols="1,1,2",options="header"]
+|===
+|Parameter |Recommended starting value |Effect
+
+|`shared_buffers` |25% of total RAM |Caches frequently accessed data pages in memory; reduces disk reads
+|`work_mem` |64MB–256MB |Per-sort and per-hash operation memory; increase for complex queries under load
+|`max_connections` |Sum of all AAP component connections + 20% headroom |Prevents connection exhaustion under load
+|`checkpoint_completion_target` |0.9 |Spreads checkpoint I/O over a longer window, reducing write I/O spikes
+|`wal_buffers` |16MB |Buffers WAL writes; increase on high-write workloads
+|===
+
+Apply changes and restart:
+
+[source,bash,role=execute]
+----
+sudo systemctl restart postgresql
+----
+
+IMPORTANT: Underprovisioning `max_connections` causes `FATAL: sorry, too many clients already` errors when the automation controller, hub, and EDA each attempt to open their connection pools simultaneously. Each AAP component opens multiple database connections per process. Account for all components when setting this value.
+
+For very high connection counts, consider deploying PgBouncer as a connection pooler in front of PostgreSQL to multiplex many application connections into fewer actual database connections.
+
+== EDA Horizontal Scaling
+
+In a containerized AAP deployment, Event-Driven Ansible controller supports multi-node deployments that separate API handling from activation execution. This allows you to scale each function independently based on your workload, without over-provisioning a single hybrid node.
+
+=== Node types
+
+[cols="1,2",options="header"]
+|===
+|Node type |Role
+
+|`api` |Handles HTTP REST API requests and WebSocket connections from users and external systems
+|`worker` |Runs rulebook activations and processes event streams; does not serve API requests
+|`hybrid` (default) |Combines API and worker functions on a single node; sufficient for small workloads
+|===
+
+=== Inventory file configuration
+
+Define node types using the `eda_type` variable in the `[automationeda]` inventory group:
+
+[source,ini,role=execute]
+----
+[automationeda]
+eda-api.example.com      eda_type=api
+eda-worker1.example.com  eda_type=worker
+eda-worker2.example.com  eda_type=worker
+----
+
+Re-run the installer after updating the inventory to apply the configuration.
+
+=== Sizing guidelines
+
+- Size *API nodes* based on the number of concurrent users and API request rates — a single API node is typically sufficient unless you have many concurrent UI sessions.
+- Size *worker nodes* based on the number of simultaneous rulebook activations and event throughput — add worker nodes when `MAX_RUNNING_ACTIVATIONS` is consistently reached.
+- Separating roles allows worker nodes to be scaled independently without disrupting the API layer.
+
+NOTE: Unlike OCP-based deployments, scaling containerized EDA requires re-running the installer. Existing activations are interrupted during the operation. Plan scaling during maintenance windows.
+
+== Key Performance Indicators
+
+Monitor these signals to determine when scaling or tuning is needed:
+
+[cols="1,1,2",options="header"]
+|===
+|Indicator |Signal |Action
+
+|High API latency |Response time > 2 seconds for UI or API requests |Add controller nodes to distribute web workers; check database connection count
+|502 Bad Gateway |Returned by automation gateway |Scale gateway node vertically; check backend service health with `podman ps` and `systemctl status`
+|`FATAL: too many clients` in DB logs |PostgreSQL connection limit exceeded |Increase `max_connections` in `postgresql.conf`; consider PgBouncer connection pooling
+|Activation failures |Rulebook activations failing to start or being queued |Check `MAX_RUNNING_ACTIVATIONS` in EDA settings; add `worker` nodes to the EDA cluster
+|Receptor peer disconnected |Mesh topology shows node offline in AAP UI |Verify port 27199 is reachable; check `systemctl status ansible-automation-platform-receptor` on the affected node
+|High disk I/O wait |`iostat` shows > 50% iowait on the database host |Upgrade to faster storage tier; tune `checkpoint_completion_target` to 0.9
+|===
+
+== Helpful Formulas
+
+[source]
+----
+Total Jobs = (Number of Hosts × Jobs per Host per Day) ÷ Hosts Required per Job
+
+Job Duration = Job Duration per Host × CEILING(Hosts per Job ÷ Parallel Forks)
+
+Workload Utilization = (Jobs per Day × Job Duration) ÷ Automation Hours per Day
+
+Polling Load = (Jobs per Day × Job Duration) ÷ Polling Interval
+
+API Utilization = (API Calls per Day × API Call Duration) ÷ Automation Hours per Day
+
+Database size for facts  = Facts size per host × number of hosts / 1024
+
+Database size for jobs = number of hosts × jobs per host per day × number of days
+                        to keep the data × number of events × event size / 1024
+----
+
+Database RAM and CPU should match or exceed the higher of the controller or execution node resource values.

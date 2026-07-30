@@ -1,0 +1,139 @@
+= Troubleshooting Containerized AAP Installation Issues
+
+In a containerized installation, the installer automates tasks that can also be performed manually using `podman` and `systemd`. The basic rule of thumb: if the installer fails on a task, that same task will fail when run manually — identify it and fix the root cause, then re-run the installer. This helps isolate the issue and ensures steps execute under the same user and environment.
+
+== Step 1: Increase Verbosity
+
+Add `-vvv` to the installer `ansible-playbook` command for verbose output:
+
+[source,bash,role=execute]
+----
+ansible-playbook -i inventory-growth ansible.containerized_installer.install -vvv
+----
+
+Verbosity levels:
+
+- *Level 1 (-v)*: Task results, changed/failed details, module stdout/stderr. Useful for seeing why something failed.
+
+[source]
+----
+TASK [ansible.containerized_installer.common : Set ostree-based OS fact] ****
+ok: [localhost] => {"ansible_facts": {"ostree": false}, "changed": false}
+----
+
+- *Level 2 (-vv)*: More info on variables, task parameters, SSH arguments, and remote command details.
+
+[source]
+----
+TASK [ansible.containerized_installer.preflight : Ensure postgresql admin password is provided] ***
+task path: .../roles/preflight/tasks/database.yml:30
+ok: [localhost] => {"changed": false, "msg": "All assertions passed"}
+----
+
+- *Level 3 (-vvv)*: Connection details, exact shell commands on the remote machine, fact gathering, module file paths.
+
+[source]
+----
+TASK [Gather facts] ****
+<127.0.0.1> ESTABLISH LOCAL CONNECTION FOR USER: lab-user
+<127.0.0.1> EXEC /bin/sh -c 'echo ~lab-user && sleep 0'
+----
+
+== Step 2: Reproduce the Failing Task Manually
+
+If a task fails in the installer, try running the equivalent `podman` or `systemd` command manually on the affected host. This confirms whether the issue is environmental (file permissions, SELinux, missing packages) rather than a bug in the installer logic.
+
+== Step 3: Read Error Messages Carefully
+
+Most preflight errors are self-explanatory. For example:
+
+[source]
+----
+TASK [ansible.containerized_installer.preflight : Preflight check - Fail if this machine
+lacks sufficient RAM.] ***
+fatal: [127.0.0.1]: FAILED! => {"changed": false,
+"msg": "This machine does not have sufficient RAM to run Ansible Automation Platform."}
+----
+
+This error indicates insufficient memory on the target host. Increasing RAM resolves it. The same pattern applies to disk space, CPU count, and OS version preflight checks.
+
+== Step 4: Check Container and Service Status
+
+After installation, verify all containers are running:
+
+[source,bash,role=execute]
+----
+sudo podman ps --all
+----
+
+Check systemd service status for individual components:
+
+[source,bash,role=execute]
+----
+sudo systemctl status automation-controller-web
+sudo systemctl status automation-controller-task
+sudo systemctl status automation-gateway
+sudo systemctl status automation-eda
+----
+
+View service logs:
+
+[source,bash,role=execute]
+----
+sudo journalctl -u automation-controller-task -f
+sudo podman logs automation-controller-web
+----
+
+== Common Containerized Installation Issues
+
+*Receptor port blocked (execution nodes not connecting)*
+
+Ensure port 27199 is open in the firewall on all nodes:
+
+[source,bash,role=execute]
+----
+sudo firewall-cmd --permanent --zone=public --add-port=27199/tcp
+sudo firewall-cmd --reload
+----
+
+Verify Receptor is listening:
+
+[source,bash,role=execute]
+----
+ss -ntlp | grep 27199
+----
+
+*SELinux denials*
+
+Check for SELinux audit denials:
+
+[source,bash,role=execute]
+----
+sudo ausearch -m avc -ts recent
+----
+
+If denials are present, generate and apply a local policy, or set the boolean that allows container networking if applicable.
+
+*Image pull failures*
+
+Ensure the host is registered to Red Hat and has access to `registry.redhat.io`:
+
+[source,bash,role=execute]
+----
+sudo podman login registry.redhat.io
+----
+
+*PostgreSQL connection failures*
+
+Verify the database container is running and the password in the inventory matches what was configured:
+
+[source,bash,role=execute]
+----
+sudo podman exec -it automation-postgresql psql -U postgres -c "\l"
+----
+
+== Additional Resources
+
+- https://access.redhat.com/search/[Red Hat Knowledge Base,windows=_blank]
+- https://issues.redhat.com/projects/AAP/issues[Jira — AAP Bug Tracker,windows=_blank]
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7[Ansible Automation Platform 2.7 Documentation,windows=_blank]

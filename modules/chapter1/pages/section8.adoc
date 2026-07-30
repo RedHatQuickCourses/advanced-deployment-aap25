@@ -1,10 +1,17 @@
-= Summary 
+= Summary
 
-In this training we learned the following:
+In this chapter we learned the following about deploying Automation Mesh on OpenShift Container Platform:
 
-- Automation Mesh where execution nodes are used to run the jobs.
-- Approach to calculate the number of forks, events and job runs according to the number of hosts and create systems requirements.
-- Difference between horizontal and vertical scaling.
-- Formulas used to calculate resource requirements.
-- Installation troubleshooting tips, such as using `-vvv` parameter.
-- Proper ratio for increasing resources.
+- In operator-based deployments there are *no Hybrid or Control nodes* — the Control Plane is made up of pods managed by the AAP Operator running inside the Kubernetes cluster.
+- *Container Groups* are the in-cluster execution mechanism: jobs run as ephemeral pods provisioned on-demand, using a service account with RBAC permissions to create and manage pods.
+- Remote execution and hop nodes are RHEL VMs peered to the OCP-hosted controller through Receptor; they are added dynamically via the AAP UI *Instances* page without re-running the installer.
+- *Mesh Ingress* (`AutomationControllerMeshIngress` CR) enables pull-based connectivity for remote nodes in networks that forbid inbound connections.
+- Sizing on OCP is expressed as Pod *resource requests and limits* in the `AutomationController` CR, rather than VM memory/CPU specifications.
+- The 1 CPU = 4 forks and 100 MB per fork rules still apply to remote execution nodes; Container Group pods set forks at the job template level.
+- Troubleshooting uses `oc describe automationcontroller`, `oc get pods`, and `oc logs` rather than manual RPM installer steps.
+- Common OCP-specific issues include PVC not bound, missing pull secrets, resource quota exhaustion, and wildcard DNS misconfiguration.
+- *CPU throttling*: always set CPU `requests` equal to CPU `limits` on AAP pods. Setting a limit without an equal request causes CFS throttling even when the node has spare capacity — monitor with `container_cpu_cfs_throttled_seconds_total`.
+- Live event streaming to the UI can be disabled with `UI_LIVE_UPDATES_ENABLED=false` to reduce controller load under heavy workloads; event rate and buffer settings further tune the trade-off between live visibility and system load.
+- Job types (standard, sliced, workflow, system) have different capacity impacts — size the task pod based on your actual workload mix, not just concurrent job count.
+- Use key performance indicators (API latency > 2s, sustained CPU > 80%, 502/503/429 error codes) to determine whether to scale web pods horizontally or the task pod vertically.
+- Increase the OpenShift Route timeout (`haproxy.router.openshift.io/timeout`) on all AAP routes when clients report 504 errors on long-running operations.

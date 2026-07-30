@@ -1,0 +1,4 @@
+
+. Do a ssh to the VM execution node using FQDN and verify if the password authentication is working fine and the connection is successful after that we will proceed with the installation of Receptor on the execution node. VM password is: `{common_user_password}`
+
+

@@ -1,0 +1,106 @@
+= Calculate Sizing Requirements for Containerized Deployment
+
+Having the right amount of resources for Ansible Automation Platform helps make the platform reliable and reduces cost. In a containerized deployment, AAP components run as containers on RHEL hosts managed by `podman` and `systemd`. Sizing is expressed in terms of host VM (or bare-metal) CPU, memory, and disk — but the capacity calculations are the same as for traditional VM deployments.
+
+The high-level points to consider during capacity planning:
+
+- Characterizing the workloads.
+- Reviewing the capabilities of different node types.
+- Planning the deployment based on workload requirements.
+
+Isolated factors that play a major role in calculating sizing:
+
+- Number of managed hosts controlled by AAP.
+- Jobs or tasks running per hour per host.
+- Maximum number of concurrent jobs to support.
+- Maximum number of forks set on jobs.
+- Maximum API requests per second.
+- Node size preferred for deployment (CPU/Memory/Disk).
+
+== Unified UI / Automation Gateway
+
+The Automation Gateway provides authentication and load-balancing of requests using the gRPC service. Increasing CPU and memory reduces bottlenecks under load. If you see 502 gateway errors during access attempts, the gateway may be a bottleneck.
+
+== Automation Controller (Control Plane)
+
+In a containerized deployment, the Control Plane is made up of *Hybrid nodes* (default) and *Control nodes*:
+
+- *Hybrid nodes*: Can manage jobs (control) and run playbooks (execution). Default type in the `[automationcontroller]` group.
+- *Control nodes*: Manage and dispatch jobs but do not run playbooks. Set `receptor_type=control` to configure.
+
+Key concept for control capacity:
+
+- Each job needs 1 unit of control capacity.
+- A node with 100 capacity units can control up to 100 concurrent jobs.
+
+*Vertical scaling* a controller node (more CPU/RAM on the RHEL host) increases:
+
+. The number of jobs manageable simultaneously.
+. The speed of job event processing.
+
+NOTE: Vertically scaling a controller node does not automatically increase the number of web workers. For more web concurrency, scale *horizontally* by adding more controller nodes — a load balancer distributes requests across them. Horizontal scaling also adds redundancy.
+
+Recommended vertical scaling practice: scale CPU and memory together in a *1 CPU to 4 GB RAM ratio*. Add CPU even when it is not a bottleneck — during high memory utilization, higher CPU processes the accumulated event queue faster.
+
+== Execution Nodes
+
+Execution and Hybrid nodes provide execution capacity. The capacity consumed by a job running against one host equals one fork.
+
+*Vertical scaling* an execution node (larger RHEL VM with more resources) provides more forks for job execution, increasing the number of concurrent jobs.
+
+*Horizontal scaling* execution nodes (adding more nodes to an instance group) ensures lower-priority jobs do not block higher-priority jobs when nodes are grouped by workload.
+
+Hop nodes use minimal resources; vertical scaling does not increase their capacity. Instead, monitor bandwidth — especially for hop nodes connecting large numbers of execution nodes. Consider a network upgrade if bandwidth approaches capacity.
+
+Horizontal scaling of hop nodes increases redundancy and keeps traffic flowing if a hop node fails.
+
+== Memory Relative Capacity
+
+`mem_capacity` is the maximum memory needed by one fork. The default value is 100 MB. 2 GB of memory is reserved for AAP services.
+
+[source]
+----
+Example: 16 GB of available node memory → (16384 - 2048) / 100 ≈ 140 forks
+----
+
+== CPU Relative Capacity
+
+Ansible workloads are often processor-bound. The baseline is 1 CPU = 4 forks.
+
+[source]
+----
+4 CPUs × 4 forks per CPU = 16 forks
+----
+
+The `capacity_adjustment` value (0 to 1) determines how close the chosen fork count is to the memory-bound maximum. At 0.5:
+
+[source]
+----
+Capacity = [140 forks (memory) × 0.50] + [16 forks (CPU) × 0.50]
+         = 70 + 8 = 78 forks
+----
+
+== Event-Driven Ansible Controller (AutomationEDA)
+
+EDA workloads are sized based on:
+
+- Number of simultaneous rulebook activations.
+- Number of events received per minute.
+
+By default, EDA allows 12 rulebook activations per node and 24 total. Override with `MAX_RUNNING_ACTIVATIONS` in `/etc/ansible-automation-platform/eda/settings.yaml`. Restart the service after changing the value:
+
+[source,bash,role=execute]
+----
+automation-eda-controller-service restart
+----
+
+Each rulebook activation container has a 200 MB memory limit by default. For example, with 4 CPUs and 16 GB RAM, one activation with 200 MB cannot handle more than 150,000 events per minute. To increase the limit to 400 MB, set `PODMAN_MEM_LIMIT = 400m` in `/etc/ansible-automation-platform/eda/settings.yaml` and restart the service.
+
+== Automation Hub (Private Automation Hub)
+
+PAH provides Execution Environments and collections. Storage requirements dominate:
+
+- Number of Execution Environments stored.
+- Size and version count of each Execution Environment.
+
+Ensure adequate disk space on the PAH host. The default database allocation is usually sufficient, but calculate precisely using the factors above for large environments.

@@ -1,0 +1,144 @@
+= Automation Mesh Hands-on Lab (Containerized)
+
+The following steps demonstrate how to install all AAP 2.7 components on a single system using the all-in-one pattern and adding the execution environment to the mesh. The lab will also demonstrate how to configure the execution node and verify that it is peered with the controller.:
+
+
+. *OpenShift Console Access:*
++
+Open the OpenShift Console at `{openshift_console_url}` and log in with username `{openshift_username}` and password `{common_admin_password}`.
+
+.. Navigate to *Virtualization* → *VirtualMachines*
+
+.. Select namespace: `aap-lab`
+.. Click on `aap-lab-rhel10`
+.. Click on the *Open Web Console* button. 
+.. Use the *Serial* tab for terminal access.
+
+. Log in to the VM using username `{bastion_ansible_user}` and password `{common_user_password}`. Copy and paste with CTRL+SHIFT+V in the terminal.
+
+. Register the system with Red Hat Subscription Management and attach the subscription to the system.
++
+[source,bash,role=execute]
+----
+sudo subscription-manager register
+----
++
+[source,bash,role=execute]
+----
+username: <YOUR-RHN_LOGIN>
+password: <YOUR-RHN_PASSWORD>
+----
+
+
+. Install the required and useful utilities:
++
+[source,bash,role=execute]
+----
+sudo dnf install -y wget git-core rsync vim ansible-core
+----
+
+. Go to the https://access.redhat.com/downloads/content/480/ver=2.7/rhel---10/2.7/x86_64/product-software[Installer,window=_blank] link and Get the installer link for *Ansible Automation Platform 2.7 Containerized Setup Bundle* for RHEL 10.
++
+Note: Please follow steps 5 and 6 one after another in order to avoid the link expiration error, as the copied URL has an expiration time. Reload the website, repeat step 5, and copy the link if you are having trouble.  
+
+. Download the installer file to the VM: 
++ 
+[source,bash,role=execute]
+---- 
+wget -O aap.tar.gz "<paste-link-here taken from step 5>"
+----
+
+
+. Extract the *aap.tar.gz* file using the following command:
++ 
+[source,bash,role=execute]
+---- 
+tar -xvf aap.tar.gz
+----
+
+. Get the hostname from the system and copy it.
++ 
+[source,bash,role=execute]
+---- 
+hostname -f
+----
++
+[IMPORTANT]
+====
+*Password security guidelines*:
+
+* Use strong, unique passwords for each component.
+* Do NOT use special characters like `,`, `"`, or `@` in passwords — they can break the installer.
+* Supported special characters: `!`, `#`, `$`, `%`, and `&`.
+* Store the inventory file securely after installation — it contains sensitive credentials.
+====
+
+. Using the *cd* command, enter the extracted folder. Then, use the *vim* command, open the *inventory-growth* file and make the following changes, wherever they appear throughout the entire *inventory-growth* file:
++
+[source,bash,role=execute]
+----
+ cd <extracted-folder-from-step-6>
+ vim inventory-growth
+aap.example.org → < paste system hostname>
+<set your own> → redhat
+
+<set your own> ← This value can be customized as per your need but remember to use the same while doing the login after the deployment.
+----
++
+To replace all occurrences at once, use vim's global substitute command instead of editing each line manually. While in vim, type the following in *command mode* (press *Esc* first):
++
+[source,bash,role=execute]
+----
+# Replace every occurrence of aap.example.org with your actual hostname
+:%s/aap.example.org/<your-hostname>/g
+
+# Replace every occurrence of <set your own> with your chosen password
+:%s/<set your own>/redhat/g
+----
++
+[NOTE]
+====
+* `:%s` — runs the substitution across *all lines* in the file.
+* `/g` — replaces *every match on a line*, not just the first.
+* After running both commands, type *`:wq`* and press *Enter* to save and quit.
+* If you chose a different password instead of `redhat`, use that value in the second command. Use the same password when logging in after deployment.
+====
++
+[NOTE]
+====
+Click this link to learn how to use https://www.geeksforgeeks.org/basic-vim-commands/[Vim basic operations, window=_blank].
+====
+
+. Once the inventory file is ready follow the below steps to do the installation:
++
+[source,bash,role=execute]
+----
+ansible-playbook -i inventory-growth ansible.containerized_installer.install
+----
+
+. Simply go to the RHDP login page from the lab deployment and access the AAP web interface. 
+
+. Use the user *admin* and the *password* set during the time of installation. The example above uses `redhat` as the password.
++
+[NOTE]
+====
+Use a stronger password for enterprise deployments.
+====
+
+. Select the Username and Password fields and provide the *Red Hat login ID* to get the subscription for attaching it to the AAP and *60-day subscription to Red Hat Ansible® Automation Platform* or *Red Hat Developer Subscription for Individuals* subscription can be used for this lab.
+
+. You can access the AAP web interface using the *admin* user and the *password* set according to the Step 9. and use the link given in the RHDP login page: *After AAP Installation* to access the AAP web interface. 
+
+. After login, run the *Project sync* for the *Demo project* to confirm job execution is working.
+
+. In *Automation Execution* click on *Templates* and edit the *Demo Job Template*.
+
+. Click on *Instance groups* and select *executionplane*, then save the job template.
+
+. Run the *Demo Job Template*.
+
+. Go to *Jobs*, select *Demo Job Template*, and check the *Details* section to verify the job executed on the Execution Plane node.
+
+. Go to *Automation Execution > Infrastructure > Topology View* to confirm the current mesh architecture showing the controller peered to the execution node.
+
+NOTE: Use a stronger password than `redhat` in production deployments.

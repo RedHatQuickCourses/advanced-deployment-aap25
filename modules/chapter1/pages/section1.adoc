@@ -1,34 +1,58 @@
-= Automation Mesh
+= Automation Mesh on OpenShift
 
-Any application that is expected to scale globally needs reliable communication between its components. In Ansible Automation Platform, Automation Mesh is the feature that enables such inter-component communication.
+Automation Mesh is an overlay network designed to enable the allocation of work among a large and dispersed group of workers known as Execution Nodes. This is achieved by creating peer-to-peer connections between nodes over existing networks. Receptor is the service that manages these connections.
 
-Automation Mesh is an overlay network designed to enable the allocation of work among a sizable and scattered group of workers known as Execution Nodes. This is achieved by creating peer-to-peer connections between nodes over the existing networks. Receptor is the service that manages these connections.
+Automation Mesh communications are encrypted with TLS, which allows securing traffic that moves across external networks such as the Internet, and enables AAP to achieve the following:
 
-Automation Mesh communications are encrypted with TLS, which allows securing traffic that moves across external networks, such as the Internet, and enables AAP to achieve the following:
+**Key capabilities automation mesh introduces:**
 
-- Nodes may be created, registered, grouped, ungrouped, and deregistered with less downtime thanks to the ability to change cluster capacity dynamically.
-  Note: Register means introducing a node to the architecture and adding it to its first group, deregister means completely removing node from the architecture. Group/ungroup means adding/removing node to/from a particular group. 
+|===
+| Capability | Description 
+| Dynamic cluster capacity | Create, register, group, ungroup, and deregister nodes with minimal downtime 
+| Plane separation | Scale playbook execution capacity independently from control plane capacity 
+| Resilient deployment | Reconfigurable without outage; dynamically re-routes when outages occur 
+| FIPS-compliant connectivity | Bi-directional, multi-hopped mesh communication 
+| TLS encryption | All traffic traversing external networks is encrypted in transit 
+|===
 
-- Control and Execution Plane separation enables scaling playbook execution capacity independently or using Control Plane capacity when required. 	
-- Deployment options can be reconfigured without a downtime, jobs are resilient to latency and can be re-routed dynamically in the event of an outage.					
-- Connectivity between the components is bi-directional, supports multi-hopped mesh communication and is Federal Information Processing Standards (FIPS) compliant. 	
+**Automation mesh is useful for:**
 
-Automation Mesh uses node types to build Control and Execution Planes. It's important to understand these concepts and how they differ from conventional architecture to be able to design suitable Automation Mesh topology.
+- Traversing difficult network topologies
+- Bringing execution capabilities (the machine running `ansible-playbook`) closer to your target hosts
 
-image::0.png[]
+== Control Plane on OpenShift
 
-The following diagram describes the functions of the Control Plane and node types it consist of:
+In an operator-based (OCP) deployment, the Control Plane is comprised of pods running inside the Kubernetes cluster — there are *no Hybrid or Control nodes* as in a VM-based deployment. The AAP Operator manages these pods and runs persistent Ansible Automation Platform services: 
 
-image::1.png[]
+- Web server
+- Task dispatcher
+- Project updates
+- Management jobs
 
-The next diagram shows nodes that can be part of the Execution Plane and their functions.
+The key difference from a VM-based deployment is that the Control Plane local to the Kubernetes cluster is made up of *Container Groups* — containers running on the cluster — rather than Hybrid or Control nodes.
 
-image::1.2.png[] 
+== Execution Plane on OpenShift
 
-The purpose of Control nodes is to provide a GUI for users, run management tasks and trigger job execution. Once triggered, jobs are being run by the Execution nodes. Hybrid nodes, on the other hand, can perform either of these tasks.
+The Execution Plane consists of execution nodes that execute automation on behalf of the Control Plane and have no control functions. Hop nodes serve to route traffic. Execution Plane nodes only run user-space jobs, and may be geographically separated, with high latency, from the Control Plane.
 
-The main purpose of the Execution Plane is to run jobs and report their status back to the Control Plane (i.e. back to Control or Hybrid nodes).
+- *Execution nodes*: Run jobs using `ansible-runner` with `podman` isolation. These are standalone RHEL VMs registered to the automation controller as type `execution` instances. They are only used to run jobs, not dispatch work or handle web requests.
 
-Hop nodes are used to provide the communication between the Control nodes and Execution nodes in cases when direct communication is not possible. 
+- *Hop nodes*: Similar to a jump host, hop nodes route traffic to other execution nodes. Hop nodes cannot execute automation. They are registered in automation controller as an instance of type `hop`, handling inbound and outbound traffic for otherwise unreachable nodes in different or more strict networks.
 
-Note: Operator-based environments (such as deployments on OpenShift), have no Hybrid or Control nodes. These deployments use Container Groups, which make up containers running on the Kubernetes cluster. That comprises the Control Plane local to the Kubernetes cluster where Red Hat Ansible Automation Platform is deployed. 
+NOTE: In operator-based environments only `execution` and `hop` instance types can be created. Operator-based deployments do *not* support Control or Hybrid nodes.
+
+== Container Groups
+
+Container Groups are a special type of Instance Group available in operator-based deployments. They enable automation controller to run jobs in containers provisioned on-demand as pods that exist only for the duration of the playbook run. This is known as the ephemeral execution model and ensures a clean environment for every job run.
+
+Container Groups act as a pool of resources within an OpenShift namespace. You can create instance groups to point to an OpenShift container, using a service account and a bearer token to authenticate to the cluster.
+
+NOTE: Container groups do not use the capacity algorithm that normal execution nodes use. You set the number of forks at the job template level. The fork setting is passed directly to the container.
+
+== Peers
+
+Peer relationships define the node-to-node connections that form the automation mesh. In an operator-based environment, peers are defined through the AAP UI for individual instances — not via an installer inventory file.
+
+When you add an execution or hop node through the UI, you configure whether it peers directly from control nodes (*Peers from control nodes*) or is peered through a hop node.
+
+Now let's move on to the practical implementation of Automation Mesh on OpenShift. In the next section, we will cover how to set up and configure the Control Plane and Execution Plane, as well as how to establish peer relationships between nodes.

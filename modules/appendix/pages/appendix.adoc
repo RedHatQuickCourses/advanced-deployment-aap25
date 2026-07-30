@@ -1,4 +1,24 @@
 = Appendix
 
-- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5[Ansible Automation Platform Documentation, windows=_blank]
-//  Is this left to be updated?
+== AAP 2.7 Documentation
+
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7[Ansible Automation Platform 2.7 Documentation,windows=_blank]
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/administer_ansible_automation_platform[Administer Ansible Automation Platform 2.7,windows=_blank]
+
+== Automation Mesh
+
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/administer_ansible_automation_platform/scale-automation-mesh-operator-environment[Automation Mesh for Operator (OCP) Environments,windows=_blank]
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/administer_ansible_automation_platform/scale-automation-mesh-containerized-vm-environment[Automation Mesh for Containerized and VM Environments,windows=_blank]
+
+== Installation
+
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/containerized_ansible_automation_platform_installation_guide[Containerized AAP Installation Guide,windows=_blank]
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/deploying_ansible_automation_platform_on_openshift_container_platform[Deploying AAP on OpenShift Container Platform,windows=_blank]
+
+== Sizing and Capacity Planning
+
+- https://access.redhat.com/solutions/ansible-automation-platform-sizing[Red Hat Ansible Automation Platform Sizing Guide,windows=_blank]
+
+== Performance Optimization
+
+- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/optimize_ansible_automation_platform[Optimize Ansible Automation Platform 2.7,windows=_blank]

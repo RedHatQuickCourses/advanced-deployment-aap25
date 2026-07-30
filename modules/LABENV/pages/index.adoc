@@ -3,7 +3,7 @@
 == Instructions to Launch Your Lab on the Red Hat Demo Platform (RHDP)
 
 . **Log in** to the xref:#RHDP-Portal-Links[RHDP portal].
-. **Search** for the catalog entry: **Advanced Deployment of Ansible Automation Platform 2.5**.
+. **Search** for the catalog entry: **Advanced Deployment of Ansible Automation Platform 2.7**.
 +
 image::1.png[]
 

@@ -1,10 +1,10 @@
-= Advanced Deployment of Ansible Automation Platform 2.5
+= Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift
 
-Ansible Automation Platform offers scalable and effective IT automation, including large and complex environments. In addition to the best practices for sizing, deployment, and troubleshooting, this course offers a deailed review of important AAP features such as Automation Mesh, which improves job distribution and coordination.
+Ansible Automation Platform on OpenShift Container Platform provides scalable, operator-managed IT automation. This course focuses on Automation Mesh in operator-based environments, where the Control Plane runs as pods inside the Kubernetes cluster and remote execution nodes peer to it via Receptor over TLS.
 
 Participants will acquire practical skills in:
 
-- Creating and deploying Automation Mesh for distributed automation.
-- Determining cluster sizing taking into accout infrastructure and workload requirements.
-- Troubleshooting common installation issues.
-- Assessing performance factors to keep the Ansible Automation Platform operating at peak efficiency.
+- Configuring Automation Mesh for an operator-based (OCP) deployment using Container Groups and the AAP UI.
+- Adding remote execution and hop nodes using the `AutomationControllerMeshIngress` custom resource.
+- Determining cluster sizing by translating fork and event calculations into Pod resource requests and limits.
+- Troubleshooting common installation and mesh issues using `oc` CLI and operator status conditions.

@@ -1,36 +1,104 @@
-= Example on Calculating the Size
+= Example: Calculating Sizing for an OpenShift Deployment
 
-At this point we should have a good idea how to calculate capacity and what factors to consider. Let's go through a planning exercise.
+At this point we should have a good idea how to calculate capacity and what factors to consider. Let's go through the same planning exercise applied to an OCP deployment.
 
-For this example, the cluster must support the following capacity: 	
+For this example, the cluster must support the following capacity:
 
-- 500 managed hosts 					
-- 1,000 tasks per hour per host or 16 tasks per minute per host 				
-- 10 concurrent jobs 					
-- Forks set to 5 on playbooks. This is the default. 					
-- The average event size is 1 Kb 					
+- 500 managed hosts
+- 1,000 tasks per hour per host (16 tasks per minute per host)
+- 10 concurrent jobs
+- Forks set to 5 on playbooks (the default)
+- The average event size is 1 KB
 
-The virtual machines have 4 CPUs and 16 GB RAM, and disks have 3000 IOPs. 	
+Target pod sizes: 4 vCPU and 16 GB RAM each.
 
-*Execution Capacity calculation*
+== Execution Capacity Calculation
 
-Execution Capacity = (Number of jobs * forks value) + (number of jobs * 1 base task impact of a job)
+Execution Capacity = (Number of jobs × forks value) + (Number of jobs × 1 base task impact)
 
-Calculate this using the equation: (10 jobs * 5 forks) + (10 jobs * 1 base task impact of a job) = 60 execution capacity.			
+[source]
+----
+(10 jobs × 5 forks) + (10 jobs × 1) = 60 execution capacity units
+----
 
-*Control Capacity*
+For a Container Group, this means each pod spec should allow at least 5 forks. Set the fork limit at the job template level. No special node sizing formula applies — forks are passed directly to the pod.
 
-Total tasks/min = 500 Managed hosts * 16 tasks per minute
-                         = 8000 tasks/minute = 133 tasks/second
+For a remote execution node peered to OCP:
 
-In other words 133 events will be generated every second. 
+[source]
+----
+16 GB RAM → (16384 - 2048) / 100 = 140 forks available
+140 forks > 60 required → 1 execution node is sufficient
+----
 
-Note: Usually it's a good idea to run the job to see exactly how many events it produces, as this depends on the specific task and verbosity level. For example, a debug task printing “Hello World” produces 6 job events per host with the verbosity of 1. Verbosity of 3 creates 34 job events per host. Therefore, a task produces at least 6 events.
+Two nodes are recommended for redundancy.
 
-Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 Kb per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.
+== Control Capacity Calculation
 
-Considering the reservation and virtual machine we have deployed we get around 140 forks which is more than the required 60. Therefore a minimum of one node is needed. However two nodes are recommended for redundancy.
+[source]
+----
+Total tasks/min = 500 managed hosts × 16 tasks/min = 8,000 tasks/min = 133 tasks/sec
+----
 
-To summarise, we will need to deploy 1 execution node, 1 control node, 1 database node, and 1 Unified UI node (mandatory for AAP 2.5) of 4 CPUs at 2.5Ghz, 16 GB RAM, and disks that have about 3000 IOPs to handle the infrastructure for the requirements we were given.
+Assuming 6 events per task:
 
-Note: The above is true for RPM and Containerized environments. Openshift related content will be added later.
+[source]
+----
+133 tasks/sec × 6 events/task = 798 events/sec
+798 events × 1 KB/event = 798 KB/sec of event log data
+----
+
+The automation controller `task` pod must be able to process approximately 798 events per second. The default automation controller throughput is ~400 events/second per `task` pod replica.
+
+Therefore, for this workload *2 task pod replicas* are recommended. Set this in the `AutomationController` CR:
+
+[source,yaml,role=execute]
+----
+apiVersion: automationcontroller.ansible.com/v1beta1
+kind: AutomationController
+metadata:
+  name: aap-controller
+  namespace: aap
+spec:
+  replicas: 2
+  task_resource_requirements:
+    requests:
+      cpu: "4"
+      memory: 16Gi
+    limits:
+      cpu: "4"
+      memory: 16Gi
+  web_resource_requirements:
+    requests:
+      cpu: "2"
+      memory: 8Gi
+    limits:
+      cpu: "2"
+      memory: 8Gi
+----
+
+NOTE: In the `AutomationController` CR, `replicas` controls the number of automation controller instances (task pods). The `web` pod scales independently and handles API and UI requests. Vertical scaling (more CPU/RAM) on the task pod is the primary lever for event throughput. Always set CPU `requests` equal to CPU `limits` to prevent CFS throttling — as shown in the YAML above.
+
+== Database Sizing
+
+[source]
+----
+Database size for facts  = Facts size per host × number of hosts / 1024
+                         = 50 KB × 500 / 1024 ≈ 24 MB
+
+Database size for jobs   = hosts × jobs/host/day × retention days × events × event size / 1024
+                         = 500 × 24 × 30 × 6 × 1 KB / 1024 ≈ 2,109 MB ≈ 2 GB (30-day retention)
+----
+
+For an OCP deployment, provision a PVC for PostgreSQL sized to at least *50 GB* to account for growth and WAL logs.
+
+== Summary
+
+To summarize, for this workload on OpenShift:
+
+- *Automation Controller*: 2 replicas, 4 vCPU / 16 GB RAM per task pod; 2 vCPU / 8 GB RAM per web pod.
+- *Container Group (in-cluster execution)*: Pod spec with resources appropriate to the fork count (250m–2 CPU, 100Mi–2Gi per worker pod).
+- *Remote Execution Node (if needed)*: 1–2 RHEL VMs, 4 vCPU / 16 GB RAM each.
+- *PostgreSQL PVC*: 50 GB minimum.
+
+NOTE: For Automation Hub and EDA, start with the default operator sizing and scale based on observed storage and activation usage.
