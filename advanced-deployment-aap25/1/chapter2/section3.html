@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Automation Mesh Hands-on Lab (Containerized) :: Advanced Deployment of AAP 2.5</title>
+    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../chapter1/index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section1.html">Automation Mesh on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section6.html">Performance Considerations for OpenShift Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="section3.html">Automation Mesh Hands-on Lab (Containerized)</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Automation Mesh Hands-on Lab (Containerized)</h1>
+<div class="paragraph">
+<p>The following steps demonstrate how to install all AAP 2.7 components on a single system using the all-in-one pattern and adding the execution environment to the mesh. The lab will also demonstrate how to configure the execution node and verify that it is peered with the controller.:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>OpenShift Console Access:</strong></p>
+<div class="paragraph">
+<p>Open the OpenShift Console at <code>{openshift_console_url}</code> and log in with username <code>{openshift_username}</code> and password <code>{common_admin_password}</code>.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Navigate to <strong>Virtualization</strong> → <strong>VirtualMachines</strong></p>
+</li>
+<li>
+<p>Select namespace: <code>aap-lab</code></p>
+</li>
+<li>
+<p>Click on <code>aap-lab-rhel10</code></p>
+</li>
+<li>
+<p>Click on the <strong>Open Web Console</strong> button.</p>
+</li>
+<li>
+<p>Use the <strong>Serial</strong> tab for terminal access.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Log in to the VM using username <code>{bastion_ansible_user}</code> and password <code>{common_user_password}</code>. Copy and paste with CTRL+SHIFT+V in the terminal.</p>
+</li>
+<li>
+<p>Register the system with Red Hat Subscription Management and attach the subscription to the system.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo subscription-manager register</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">username: &lt;YOUR-RHN_LOGIN&gt;
+password: &lt;YOUR-RHN_PASSWORD&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Install the required and useful utilities:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo dnf install -y wget git-core rsync vim ansible-core</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Go to the <a href="https://access.redhat.com/downloads/content/480/ver=2.7/rhel---10/2.7/x86_64/product-software" target="_blank" rel="noopener">Installer</a> link and Get the installer link for <strong>Ansible Automation Platform 2.7 Containerized Setup Bundle</strong> for RHEL 10.</p>
+<div class="paragraph">
+<p>Note: Please follow steps 5 and 6 one after another in order to avoid the link expiration error, as the copied URL has an expiration time. Reload the website, repeat step 5, and copy the link if you are having trouble.</p>
+</div>
+</li>
+<li>
+<p>Download the installer file to the VM:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget -O aap.tar.gz "&lt;paste-link-here taken from step 5&gt;"</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Extract the <strong>aap.tar.gz</strong> file using the following command:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tar -xvf aap.tar.gz</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Get the hostname from the system and copy it.</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">hostname -f</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><strong>Password security guidelines</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use strong, unique passwords for each component.</p>
+</li>
+<li>
+<p>Do NOT use special characters like <code>,</code>, <code>"</code>, or <code>@</code> in passwords — they can break the installer.</p>
+</li>
+<li>
+<p>Supported special characters: <code>!</code>, <code>#</code>, <code>$</code>, <code>%</code>, and <code>&amp;</code>.</p>
+</li>
+<li>
+<p>Store the inventory file securely after installation — it contains sensitive credentials.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Using the <strong>cd</strong> command, enter the extracted folder. Then, use the <strong>vim</strong> command, open the <strong>inventory-growth</strong> file and make the following changes, wherever they appear throughout the entire <strong>inventory-growth</strong> file:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> cd &lt;extracted-folder-from-step-6&gt;
+ vim inventory-growth
+aap.example.org → &lt; paste system hostname&gt;
+&lt;set your own&gt; → redhat
+
+&lt;set your own&gt; ← This value can be customized as per your need but remember to use the same while doing the login after the deployment.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To replace all occurrences at once, use vim&#8217;s global substitute command instead of editing each line manually. While in vim, type the following in <strong>command mode</strong> (press <strong>Esc</strong> first):</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Replace every occurrence of aap.example.org with your actual hostname
+:%s/aap.example.org/&lt;your-hostname&gt;/g
+
+# Replace every occurrence of &lt;set your own&gt; with your chosen password
+:%s/&lt;set your own&gt;/redhat/g</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><code>:%s</code> — runs the substitution across <strong>all lines</strong> in the file.</p>
+</li>
+<li>
+<p><code>/g</code> — replaces <strong>every match on a line</strong>, not just the first.</p>
+</li>
+<li>
+<p>After running both commands, type <strong><code>:wq</code></strong> and press <strong>Enter</strong> to save and quit.</p>
+</li>
+<li>
+<p>If you chose a different password instead of <code>redhat</code>, use that value in the second command. Use the same password when logging in after deployment.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Click this link to learn how to use <a href="https://www.geeksforgeeks.org/basic-vim-commands/" target="_blank" rel="noopener">Vim basic operations</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Once the inventory file is ready follow the below steps to do the installation:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook -i inventory-growth ansible.containerized_installer.install</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Simply go to the RHDP login page from the lab deployment and access the AAP web interface.</p>
+</li>
+<li>
+<p>Use the user <strong>admin</strong> and the <strong>password</strong> set during the time of installation. The example above uses <code>redhat</code> as the password.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Use a stronger password for enterprise deployments.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Select the Username and Password fields and provide the <strong>Red Hat login ID</strong> to get the subscription for attaching it to the AAP and <strong>60-day subscription to Red Hat Ansible® Automation Platform</strong> or <strong>Red Hat Developer Subscription for Individuals</strong> subscription can be used for this lab.</p>
+</li>
+<li>
+<p>You can access the AAP web interface using the <strong>admin</strong> user and the <strong>password</strong> set according to the Step 9. and use the link given in the RHDP login page: <strong>After AAP Installation</strong> to access the AAP web interface.</p>
+</li>
+<li>
+<p>After login, run the <strong>Project sync</strong> for the <strong>Demo project</strong> to confirm job execution is working.</p>
+</li>
+<li>
+<p>In <strong>Automation Execution</strong> click on <strong>Templates</strong> and edit the <strong>Demo Job Template</strong>.</p>
+</li>
+<li>
+<p>Click on <strong>Instance groups</strong> and select <strong>executionplane</strong>, then save the job template.</p>
+</li>
+<li>
+<p>Run the <strong>Demo Job Template</strong>.</p>
+</li>
+<li>
+<p>Go to <strong>Jobs</strong>, select <strong>Demo Job Template</strong>, and check the <strong>Details</strong> section to verify the job executed on the Execution Plane node.</p>
+</li>
+<li>
+<p>Go to <strong>Automation Execution &gt; Infrastructure &gt; Topology View</strong> to confirm the current mesh architecture showing the controller peered to the execution node.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Use a stronger password than <code>redhat</code> in production deployments.
+</td>
+</tr>
+</table>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+  </body>
+</html>

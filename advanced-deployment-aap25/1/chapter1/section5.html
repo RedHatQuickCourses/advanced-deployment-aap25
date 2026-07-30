@@ -3,11 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Example on Calculating the Size :: Advanced Deployment of AAP 2.5</title>
+    <title>Example: Calculating Sizing for an OpenShift Deployment :: Advanced Deployment of AAP 2.5</title>
     <link rel="prev" href="section4.html">
     <link rel="next" href="section6.html">
-    <meta name="generator" content="Antora 3.1.3">
+    <meta name="generator" content="Antora 3.2.0-rc.2">
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
     <script>var uiRootPath = '../../../_'</script>
   </head>
   <body class="article">
@@ -55,28 +59,28 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section1.html">Automation Mesh</a>
+    <a class="nav-link" href="section1.html">Automation Mesh on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section2.html">Automation Mesh Example</a>
+    <a class="nav-link" href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
+    <a class="nav-link" href="section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
+    <a class="nav-link" href="section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration</a>
+    <a class="nav-link" href="section6.html">Performance Considerations for OpenShift Deployments</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
+    <a class="nav-link" href="section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">Summary</a>
@@ -121,8 +125,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
-    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
-    <li><a href="section5.html">Example on Calculating the Size</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a></li>
+    <li><a href="section5.html">Example: Calculating Sizing for an OpenShift Deployment</a></li>
   </ul>
 </nav>
 </div>
@@ -131,9 +135,11 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Example on Calculating the Size</h1>
+<h1 class="page">Example: Calculating Sizing for an OpenShift Deployment</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>At this point we should have a good idea how to calculate capacity and what factors to consider. Let&#8217;s go through a planning exercise.</p>
+<p>At this point we should have a good idea how to calculate capacity and what factors to consider. Let&#8217;s go through the same planning exercise applied to an OCP deployment.</p>
 </div>
 <div class="paragraph">
 <p>For this example, the cluster must support the following capacity:</p>
@@ -144,59 +150,170 @@
 <p>500 managed hosts</p>
 </li>
 <li>
-<p>1,000 tasks per hour per host or 16 tasks per minute per host</p>
+<p>1,000 tasks per hour per host (16 tasks per minute per host)</p>
 </li>
 <li>
 <p>10 concurrent jobs</p>
 </li>
 <li>
-<p>Forks set to 5 on playbooks. This is the default.</p>
+<p>Forks set to 5 on playbooks (the default)</p>
 </li>
 <li>
-<p>The average event size is 1 Kb</p>
+<p>The average event size is 1 KB</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The virtual machines have 4 CPUs and 16 GB RAM, and disks have 3000 IOPs.</p>
+<p>Target pod sizes: 4 vCPU and 16 GB RAM each.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execution_capacity_calculation"><a class="anchor" href="#_execution_capacity_calculation"></a>Execution Capacity Calculation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Execution Capacity = (Number of jobs × forks value) + (Number of jobs × 1 base task impact)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">(10 jobs × 5 forks) + (10 jobs × 1) = 60 execution capacity units</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><strong>Execution Capacity calculation</strong></p>
+<p>For a Container Group, this means each pod spec should allow at least 5 forks. Set the fork limit at the job template level. No special node sizing formula applies — forks are passed directly to the pod.</p>
 </div>
 <div class="paragraph">
-<p>Execution Capacity = (Number of jobs * forks value) + (number of jobs * 1 base task impact of a job)</p>
+<p>For a remote execution node peered to OCP:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">16 GB RAM → (16384 - 2048) / 100 = 140 forks available
+140 forks &gt; 60 required → 1 execution node is sufficient</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Calculate this using the equation: (10 jobs * 5 forks) + (10 jobs * 1 base task impact of a job) = 60 execution capacity.</p>
+<p>Two nodes are recommended for redundancy.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_control_capacity_calculation"><a class="anchor" href="#_control_capacity_calculation"></a>Control Capacity Calculation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Total tasks/min = 500 managed hosts × 16 tasks/min = 8,000 tasks/min = 133 tasks/sec</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p><strong>Control Capacity</strong></p>
+<p>Assuming 6 events per task:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">133 tasks/sec × 6 events/task = 798 events/sec
+798 events × 1 KB/event = 798 KB/sec of event log data</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Total tasks/min = 500 Managed hosts * 16 tasks per minute
-                         = 8000 tasks/minute = 133 tasks/second</p>
+<p>The automation controller <code>task</code> pod must be able to process approximately 798 events per second. The default automation controller throughput is ~400 events/second per <code>task</code> pod replica.</p>
 </div>
 <div class="paragraph">
-<p>In other words 133 events will be generated every second.</p>
+<p>Therefore, for this workload <strong>2 task pod replicas</strong> are recommended. Set this in the <code>AutomationController</code> CR:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: automationcontroller.ansible.com/v1beta1
+kind: AutomationController
+metadata:
+  name: aap-controller
+  namespace: aap
+spec:
+  replicas: 2
+  task_resource_requirements:
+    requests:
+      cpu: "4"
+      memory: 16Gi
+    limits:
+      cpu: "4"
+      memory: 16Gi
+  web_resource_requirements:
+    requests:
+      cpu: "2"
+      memory: 8Gi
+    limits:
+      cpu: "2"
+      memory: 8Gi</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In the <code>AutomationController</code> CR, <code>replicas</code> controls the number of automation controller instances (task pods). The <code>web</code> pod scales independently and handles API and UI requests. Vertical scaling (more CPU/RAM) on the task pod is the primary lever for event throughput. Always set CPU <code>requests</code> equal to CPU <code>limits</code> to prevent CFS throttling — as shown in the YAML above.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_sizing"><a class="anchor" href="#_database_sizing"></a>Database Sizing</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Database size for facts  = Facts size per host × number of hosts / 1024
+                         = 50 KB × 500 / 1024 ≈ 24 MB
+
+Database size for jobs   = hosts × jobs/host/day × retention days × events × event size / 1024
+                         = 500 × 24 × 30 × 6 × 1 KB / 1024 ≈ 2,109 MB ≈ 2 GB (30-day retention)</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Note: Usually it&#8217;s a good idea to run the job to see exactly how many events it produces, as this depends on the specific task and verbosity level. For example, a debug task printing “Hello World” produces 6 job events per host with the verbosity of 1. Verbosity of 3 creates 34 job events per host. Therefore, a task produces at least 6 events.</p>
+<p>For an OCP deployment, provision a PVC for PostgreSQL sized to at least <strong>50 GB</strong> to account for growth and WAL logs.</p>
 </div>
-<div class="paragraph">
-<p>Assuming 6 events per task, 133 tasks/second will generate 133 * 6 = 798 events/second consuming 798 Kb per second for logs/event data. In other words, our Control node must be able to process around 789 events of data per second and it should have an execution capacity of 60 forks.</p>
 </div>
-<div class="paragraph">
-<p>Considering the reservation and virtual machine we have deployed we get around 140 forks which is more than the required 60. Therefore a minimum of one node is needed. However two nodes are recommended for redundancy.</p>
 </div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>To summarise, we will need to deploy 1 execution node, 1 control node, 1 database node, and 1 Unified UI node (mandatory for AAP 2.5) of 4 CPUs at 2.5Ghz, 16 GB RAM, and disks that have about 3000 IOPs to handle the infrastructure for the requirements we were given.</p>
+<p>To summarize, for this workload on OpenShift:</p>
 </div>
-<div class="paragraph">
-<p>Note: The above is true for RPM and Containerized environments. Openshift related content will be added later.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Automation Controller</strong>: 2 replicas, 4 vCPU / 16 GB RAM per task pod; 2 vCPU / 8 GB RAM per web pod.</p>
+</li>
+<li>
+<p><strong>Container Group (in-cluster execution)</strong>: Pod spec with resources appropriate to the fork count (250m–2 CPU, 100Mi–2Gi per worker pod).</p>
+</li>
+<li>
+<p><strong>Remote Execution Node (if needed)</strong>: 1–2 RHEL VMs, 4 vCPU / 16 GB RAM each.</p>
+</li>
+<li>
+<p><strong>PostgreSQL PVC</strong>: 50 GB minimum.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For Automation Hub and EDA, start with the default operator sizing and scale based on observed storage and activation usage.
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a></span>
-  <span class="next"><a href="section6.html">Performance Consideration</a></span>
+  <span class="prev"><a href="section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a></span>
+  <span class="next"><a href="section6.html">Performance Considerations for OpenShift Deployments</a></span>
 </nav>
 </article>
   </div>
@@ -206,5 +323,7 @@
   <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
 </footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
   </body>
 </html>

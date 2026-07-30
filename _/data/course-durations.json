@@ -1,0 +1,66 @@
+{
+  "totalSeconds": 1545,
+  "pageCount": 12,
+  "pages": [
+    {
+      "module": "ROOT",
+      "page": "index.adoc",
+      "seconds": 61
+    },
+    {
+      "module": "LABENV",
+      "page": "index.adoc",
+      "seconds": 47
+    },
+    {
+      "module": "chapter1",
+      "page": "index.adoc",
+      "seconds": 31
+    },
+    {
+      "module": "chapter1",
+      "page": "section1.adoc",
+      "seconds": 188
+    },
+    {
+      "module": "chapter1",
+      "page": "section2.adoc",
+      "seconds": 351
+    },
+    {
+      "module": "chapter1",
+      "page": "section3.adoc",
+      "seconds": 168
+    },
+    {
+      "module": "chapter1",
+      "page": "section4.adoc",
+      "seconds": 167
+    },
+    {
+      "module": "chapter1",
+      "page": "section5.adoc",
+      "seconds": 99
+    },
+    {
+      "module": "chapter1",
+      "page": "section6.adoc",
+      "seconds": 204
+    },
+    {
+      "module": "chapter1",
+      "page": "section7.adoc",
+      "seconds": 90
+    },
+    {
+      "module": "chapter1",
+      "page": "section8.adoc",
+      "seconds": 105
+    },
+    {
+      "module": "appendix",
+      "page": "appendix.adoc",
+      "seconds": 34
+    }
+  ]
+}

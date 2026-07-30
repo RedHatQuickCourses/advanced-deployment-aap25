@@ -3,11 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Automation Mesh :: Advanced Deployment of AAP 2.5</title>
+    <title>Automation Mesh on OpenShift :: Advanced Deployment of AAP 2.5</title>
     <link rel="prev" href="index.html">
     <link rel="next" href="section2.html">
-    <meta name="generator" content="Antora 3.1.3">
+    <meta name="generator" content="Antora 3.2.0-rc.2">
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
     <script>var uiRootPath = '../../../_'</script>
   </head>
   <body class="article">
@@ -55,28 +59,28 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="section1.html">Automation Mesh</a>
+    <a class="nav-link" href="section1.html">Automation Mesh on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section2.html">Automation Mesh Example</a>
+    <a class="nav-link" href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
+    <a class="nav-link" href="section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
+    <a class="nav-link" href="section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration</a>
+    <a class="nav-link" href="section6.html">Performance Considerations for OpenShift Deployments</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
+    <a class="nav-link" href="section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">Summary</a>
@@ -121,8 +125,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
-    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
-    <li><a href="section1.html">Automation Mesh</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a></li>
+    <li><a href="section1.html">Automation Mesh on OpenShift</a></li>
   </ul>
 </nav>
 </div>
@@ -131,72 +135,162 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Automation Mesh</h1>
+<h1 class="page">Automation Mesh on OpenShift</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>Any application that is expected to scale globally needs reliable communication between its components. In Ansible Automation Platform, Automation Mesh is the feature that enables such inter-component communication.</p>
+<p>Automation Mesh is an overlay network designed to enable the allocation of work among a large and dispersed group of workers known as Execution Nodes. This is achieved by creating peer-to-peer connections between nodes over existing networks. Receptor is the service that manages these connections.</p>
 </div>
 <div class="paragraph">
-<p>Automation Mesh is an overlay network designed to enable the allocation of work among a sizable and scattered group of workers known as Execution Nodes. This is achieved by creating peer-to-peer connections between nodes over the existing networks. Receptor is the service that manages these connections.</p>
+<p>Automation Mesh communications are encrypted with TLS, which allows securing traffic that moves across external networks such as the Internet, and enables AAP to achieve the following:</p>
 </div>
 <div class="paragraph">
-<p>Automation Mesh communications are encrypted with TLS, which allows securing traffic that moves across external networks, such as the Internet, and enables AAP to achieve the following:</p>
+<p><strong>Key capabilities automation mesh introduces:</strong></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Capability</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dynamic cluster capacity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create, register, group, ungroup, and deregister nodes with minimal downtime</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Plane separation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scale playbook execution capacity independently from control plane capacity</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resilient deployment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reconfigurable without outage; dynamically re-routes when outages occur</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FIPS-compliant connectivity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bi-directional, multi-hopped mesh communication</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TLS encryption</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">All traffic traversing external networks is encrypted in transit</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Automation mesh is useful for:</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Nodes may be created, registered, grouped, ungrouped, and deregistered with less downtime thanks to the ability to change cluster capacity dynamically.
-Note: Register means introducing a node to the architecture and adding it to its first group, deregister means completely removing node from the architecture. Group/ungroup means adding/removing node to/from a particular group.</p>
+<p>Traversing difficult network topologies</p>
 </li>
 <li>
-<p>Control and Execution Plane separation enables scaling playbook execution capacity independently or using Control Plane capacity when required.</p>
+<p>Bringing execution capabilities (the machine running <code>ansible-playbook</code>) closer to your target hosts</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_control_plane_on_openshift"><a class="anchor" href="#_control_plane_on_openshift"></a>Control Plane on OpenShift</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In an operator-based (OCP) deployment, the Control Plane is comprised of pods running inside the Kubernetes cluster — there are <strong>no Hybrid or Control nodes</strong> as in a VM-based deployment. The AAP Operator manages these pods and runs persistent Ansible Automation Platform services:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Web server</p>
 </li>
 <li>
-<p>Deployment options can be reconfigured without a downtime, jobs are resilient to latency and can be re-routed dynamically in the event of an outage.</p>
+<p>Task dispatcher</p>
 </li>
 <li>
-<p>Connectivity between the components is bi-directional, supports multi-hopped mesh communication and is Federal Information Processing Standards (FIPS) compliant.</p>
+<p>Project updates</p>
+</li>
+<li>
+<p>Management jobs</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Automation Mesh uses node types to build Control and Execution Planes. It&#8217;s important to understand these concepts and how they differ from conventional architecture to be able to design suitable Automation Mesh topology.</p>
+<p>The key difference from a VM-based deployment is that the Control Plane local to the Kubernetes cluster is made up of <strong>Container Groups</strong> — containers running on the cluster — rather than Hybrid or Control nodes.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/0.png" alt="0">
 </div>
+</div>
+<div class="sect1">
+<h2 id="_execution_plane_on_openshift"><a class="anchor" href="#_execution_plane_on_openshift"></a>Execution Plane on OpenShift</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Execution Plane consists of execution nodes that execute automation on behalf of the Control Plane and have no control functions. Hop nodes serve to route traffic. Execution Plane nodes only run user-space jobs, and may be geographically separated, with high latency, from the Control Plane.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Execution nodes</strong>: Run jobs using <code>ansible-runner</code> with <code>podman</code> isolation. These are standalone RHEL VMs registered to the automation controller as type <code>execution</code> instances. They are only used to run jobs, not dispatch work or handle web requests.</p>
+</li>
+<li>
+<p><strong>Hop nodes</strong>: Similar to a jump host, hop nodes route traffic to other execution nodes. Hop nodes cannot execute automation. They are registered in automation controller as an instance of type <code>hop</code>, handling inbound and outbound traffic for otherwise unreachable nodes in different or more strict networks.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In operator-based environments only <code>execution</code> and <code>hop</code> instance types can be created. Operator-based deployments do <strong>not</strong> support Control or Hybrid nodes.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_container_groups"><a class="anchor" href="#_container_groups"></a>Container Groups</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Container Groups are a special type of Instance Group available in operator-based deployments. They enable automation controller to run jobs in containers provisioned on-demand as pods that exist only for the duration of the playbook run. This is known as the ephemeral execution model and ensures a clean environment for every job run.</p>
 </div>
 <div class="paragraph">
-<p>The following diagram describes the functions of the Control Plane and node types it consist of:</p>
+<p>Container Groups act as a pool of resources within an OpenShift namespace. You can create instance groups to point to an OpenShift container, using a service account and a bearer token to authenticate to the cluster.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/1.png" alt="1">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Container groups do not use the capacity algorithm that normal execution nodes use. You set the number of forks at the job template level. The fork setting is passed directly to the container.
+</td>
+</tr>
+</table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_peers"><a class="anchor" href="#_peers"></a>Peers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Peer relationships define the node-to-node connections that form the automation mesh. In an operator-based environment, peers are defined through the AAP UI for individual instances — not via an installer inventory file.</p>
 </div>
 <div class="paragraph">
-<p>The next diagram shows nodes that can be part of the Execution Plane and their functions.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/1.2.png" alt="1.2">
-</div>
+<p>When you add an execution or hop node through the UI, you configure whether it peers directly from control nodes (<strong>Peers from control nodes</strong>) or is peered through a hop node.</p>
 </div>
 <div class="paragraph">
-<p>The purpose of Control nodes is to provide a GUI for users, run management tasks and trigger job execution. Once triggered, jobs are being run by the Execution nodes. Hybrid nodes, on the other hand, can perform either of these tasks.</p>
+<p>Now let&#8217;s move on to the practical implementation of Automation Mesh on OpenShift. In the next section, we will cover how to set up and configure the Control Plane and Execution Plane, as well as how to establish peer relationships between nodes.</p>
 </div>
-<div class="paragraph">
-<p>The main purpose of the Execution Plane is to run jobs and report their status back to the Control Plane (i.e. back to Control or Hybrid nodes).</p>
 </div>
-<div class="paragraph">
-<p>Hop nodes are used to provide the communication between the Control nodes and Execution nodes in cases when direct communication is not possible.</p>
-</div>
-<div class="paragraph">
-<p>Note: Operator-based environments (such as deployments on OpenShift), have no Hybrid or Control nodes. These deployments use Container Groups, which make up containers running on the Kubernetes cluster. That comprises the Control Plane local to the Kubernetes cluster where Red Hat Ansible Automation Platform is deployed.</p>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></span>
-  <span class="next"><a href="section2.html">Automation Mesh Example</a></span>
+  <span class="prev"><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a></span>
+  <span class="next"><a href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a></span>
 </nav>
 </article>
   </div>
@@ -206,5 +300,7 @@ Note: Register means introducing a node to the architecture and adding it to its
   <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
 </footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
   </body>
 </html>

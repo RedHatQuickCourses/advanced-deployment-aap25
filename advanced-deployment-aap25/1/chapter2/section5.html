@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Example: Calculating Sizing for a Containerized Deployment :: Advanced Deployment of AAP 2.5</title>
+    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../chapter1/index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section1.html">Automation Mesh on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section6.html">Performance Considerations for OpenShift Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="section5.html">Example: Calculating Sizing for a Containerized Deployment</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Example: Calculating Sizing for a Containerized Deployment</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>At this point we should have a good idea how to calculate capacity and what factors to consider. Let&#8217;s go through a planning exercise for a containerized AAP 2.7 deployment.</p>
+</div>
+<div class="paragraph">
+<p>For this example, the cluster must support the following capacity:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>500 managed hosts</p>
+</li>
+<li>
+<p>1,000 tasks per hour per host (16 tasks per minute per host)</p>
+</li>
+<li>
+<p>10 concurrent jobs</p>
+</li>
+<li>
+<p>Forks set to 5 on playbooks (the default)</p>
+</li>
+<li>
+<p>The average event size is 1 KB</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Target virtual machine size: 4 CPUs and 16 GB RAM, disks with 3,000 IOPS.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execution_capacity_calculation"><a class="anchor" href="#_execution_capacity_calculation"></a>Execution Capacity Calculation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Execution Capacity = (Number of jobs × forks value) + (Number of jobs × 1 base task impact)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">(10 jobs × 5 forks) + (10 jobs × 1) = 60 execution capacity units</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_control_capacity_calculation"><a class="anchor" href="#_control_capacity_calculation"></a>Control Capacity Calculation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Total tasks/min = 500 managed hosts × 16 tasks/min = 8,000 tasks/min = 133 tasks/sec</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In other words, 133 events are generated every second.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is a good practice to run the job first and count exactly how many events it produces — this depends on the specific task and verbosity level. For example, a debug task printing "Hello World" produces 6 job events per host at verbosity 1, and 34 at verbosity 3.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Assuming 6 events per task:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">133 tasks/sec × 6 events/task = 798 events/sec
+798 events × 1 KB/event = 798 KB/sec of log/event data</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Our controller node must be able to process approximately 798 events per second and provide an execution capacity of 60 forks.</p>
+</div>
+<div class="paragraph">
+<p>Given the 16 GB node we selected:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">(16384 - 2048) / 100 = 140 forks available
+140 forks &gt; 60 required → 1 execution node is sufficient</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Two nodes are recommended for redundancy.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sizing_summary"><a class="anchor" href="#_sizing_summary"></a>Sizing Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To summarize, for this workload on a containerized deployment deploy the following RHEL hosts with 4 CPUs at 2.5 GHz, 16 GB RAM, and disks with ~3,000 IOPS:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>1 Automation Gateway node</strong> (mandatory for AAP 2.7)</p>
+</li>
+<li>
+<p><strong>1 Automation Controller node</strong> (hybrid, handles both control and execution)</p>
+</li>
+<li>
+<p><strong>1 Execution node</strong> (minimum; 2 recommended for redundancy)</p>
+</li>
+<li>
+<p><strong>1 Database node</strong></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Automation Hub and EDA nodes should be added based on workload — start with the minimum requirements from the <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7">AAP 2.7 system requirements</a> and scale based on observed usage.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_database_sizing"><a class="anchor" href="#_database_sizing"></a>Database Sizing</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Database size for facts  = Facts size per host × number of hosts / 1024
+                         = 50 KB × 500 / 1024 ≈ 24 MB
+
+Database size for inventory ≈ same as facts ≈ 24 MB
+
+Database size for jobs   = number of hosts × jobs/host/day × days to keep
+                           × number of events × event size / 1024
+                         = 500 × 24 × 30 × 6 × 1 KB / 1024 ≈ 2 GB (30-day retention)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Database RAM and CPU should match the higher of the controller or execution node resource values — in this case, 4 CPUs and 16 GB RAM.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+  </body>
+</html>

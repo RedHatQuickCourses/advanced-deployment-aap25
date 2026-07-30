@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Performance Considerations for Containerized Deployments :: Advanced Deployment of AAP 2.5</title>
+    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../chapter1/index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section1.html">Automation Mesh on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section6.html">Performance Considerations for OpenShift Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="section6.html">Performance Considerations for Containerized Deployments</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Performance Considerations for Containerized Deployments</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the previous section we discussed how to calculate node size. The following default parameters and containerized-specific factors will also help with planning control and execution capacity.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_default_parameters"><a class="anchor" href="#_default_parameters"></a>Default Parameters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following parameters likely do not need to be changed unless you know a specific value and the reason it is needed:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Facts size per host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50 KB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Size per event</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1 KB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Events per task</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6–10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Memory per fork</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100 MB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Forks per CPU</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Capacity Adjustment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0 (select highest value)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Execution Environment average size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">450 MB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Automation Controller capacity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">~400 events/sec</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Automation Controller RAM per event fork</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 KB</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Automation Controller CPU per event fork</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Concurrent API calls per controller</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100 (up to 300 allowed)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controller/execution base job capacity per job run</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_factors_that_vary_across_environments"><a class="anchor" href="#_factors_that_vary_across_environments"></a>Factors That Vary Across Environments</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Number of Ansible managed hosts/nodes.</p>
+</li>
+<li>
+<p>Number of jobs per host per day.</p>
+</li>
+<li>
+<p>Tasks run per playbook or job including imported roles/tasks/playbooks.</p>
+</li>
+<li>
+<p>Whether jobs run for a specific time period or 24×7.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_containerized_specific_performance_considerations"><a class="anchor" href="#_containerized_specific_performance_considerations"></a>Containerized-Specific Performance Considerations</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_podman_and_systemd_overhead"><a class="anchor" href="#_podman_and_systemd_overhead"></a>Podman and systemd overhead</h3>
+<div class="paragraph">
+<p>Containerized AAP runs each service as a <code>podman</code> container under <code>systemd</code>. There is a small overhead compared to native RPM services, but it is negligible for typical workloads. Ensure <code>podman</code> is at least version 4.x for best performance and full feature support.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_container_storage_driver"><a class="anchor" href="#_container_storage_driver"></a>Container storage driver</h3>
+<div class="paragraph">
+<p>Podman uses <code>overlay</code> storage by default. Ensure the underlying filesystem supports <code>overlay</code> (ext4 and XFS are both supported). Avoid using <code>vfs</code> in production — it has significantly worse I/O performance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_network_performance"><a class="anchor" href="#_network_performance"></a>Network performance</h3>
+<div class="paragraph">
+<p>Receptor communication between nodes uses TCP over port 27199 by default. For hop nodes routing traffic across WAN links, monitor bandwidth closely — a hop node connecting many execution nodes over a slow link becomes a throughput bottleneck before its CPU or memory is exhausted. Use <code>iperf3</code> or similar tools to validate bandwidth before deploying a multi-hop topology.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_eda_event_rate_limits"><a class="anchor" href="#_eda_event_rate_limits"></a>EDA event rate limits</h3>
+<div class="paragraph">
+<p>Each rulebook activation container is limited to 200 MB of memory by default. If event rates are very high or activations require more state, increase <code>PODMAN_MEM_LIMIT</code> in <code>/etc/ansible-automation-platform/eda/settings.yaml</code> and restart the EDA service. Increase <code>MAX_RUNNING_ACTIVATIONS</code> if you need more than the default 12 activations per node.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disk_io"><a class="anchor" href="#_disk_io"></a>Disk I/O</h3>
+<div class="paragraph">
+<p>The database is the most I/O-intensive component in any AAP deployment. Ensure the database host uses fast storage — SSDs or NVMe-backed volumes with at least 3,000 IOPS. Controller and execution nodes also need adequate I/O for project syncs and execution environment pulls from Private Automation Hub.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tune_the_postgresql_database"><a class="anchor" href="#_tune_the_postgresql_database"></a>Tune the PostgreSQL Database</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>PostgreSQL performance directly affects job scheduling, event processing, and API response times. Key configuration parameters to review for production workloads — set in <code>/var/lib/pgsql/data/postgresql.conf</code>:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Recommended starting value</th>
+<th class="tableblock halign-left valign-top">Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shared_buffers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25% of total RAM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Caches frequently accessed data pages in memory; reduces disk reads</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>work_mem</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64MB–256MB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Per-sort and per-hash operation memory; increase for complex queries under load</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>max_connections</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sum of all AAP component connections + 20% headroom</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Prevents connection exhaustion under load</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>checkpoint_completion_target</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spreads checkpoint I/O over a longer window, reducing write I/O spikes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wal_buffers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16MB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Buffers WAL writes; increase on high-write workloads</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Apply changes and restart:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo systemctl restart postgresql</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Underprovisioning <code>max_connections</code> causes <code>FATAL: sorry, too many clients already</code> errors when the automation controller, hub, and EDA each attempt to open their connection pools simultaneously. Each AAP component opens multiple database connections per process. Account for all components when setting this value.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For very high connection counts, consider deploying PgBouncer as a connection pooler in front of PostgreSQL to multiplex many application connections into fewer actual database connections.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_eda_horizontal_scaling"><a class="anchor" href="#_eda_horizontal_scaling"></a>EDA Horizontal Scaling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a containerized AAP deployment, Event-Driven Ansible controller supports multi-node deployments that separate API handling from activation execution. This allows you to scale each function independently based on your workload, without over-provisioning a single hybrid node.</p>
+</div>
+<div class="sect2">
+<h3 id="_node_types"><a class="anchor" href="#_node_types"></a>Node types</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Node type</th>
+<th class="tableblock halign-left valign-top">Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>api</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Handles HTTP REST API requests and WebSocket connections from users and external systems</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>worker</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Runs rulebook activations and processes event streams; does not serve API requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hybrid</code> (default)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Combines API and worker functions on a single node; sufficient for small workloads</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_inventory_file_configuration"><a class="anchor" href="#_inventory_file_configuration"></a>Inventory file configuration</h3>
+<div class="paragraph">
+<p>Define node types using the <code>eda_type</code> variable in the <code>[automationeda]</code> inventory group:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ini hljs" data-lang="ini">[automationeda]
+eda-api.example.com      eda_type=api
+eda-worker1.example.com  eda_type=worker
+eda-worker2.example.com  eda_type=worker</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Re-run the installer after updating the inventory to apply the configuration.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sizing_guidelines"><a class="anchor" href="#_sizing_guidelines"></a>Sizing guidelines</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Size <strong>API nodes</strong> based on the number of concurrent users and API request rates — a single API node is typically sufficient unless you have many concurrent UI sessions.</p>
+</li>
+<li>
+<p>Size <strong>worker nodes</strong> based on the number of simultaneous rulebook activations and event throughput — add worker nodes when <code>MAX_RUNNING_ACTIVATIONS</code> is consistently reached.</p>
+</li>
+<li>
+<p>Separating roles allows worker nodes to be scaled independently without disrupting the API layer.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Unlike OCP-based deployments, scaling containerized EDA requires re-running the installer. Existing activations are interrupted during the operation. Plan scaling during maintenance windows.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_key_performance_indicators"><a class="anchor" href="#_key_performance_indicators"></a>Key Performance Indicators</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Monitor these signals to determine when scaling or tuning is needed:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Indicator</th>
+<th class="tableblock halign-left valign-top">Signal</th>
+<th class="tableblock halign-left valign-top">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High API latency</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Response time &gt; 2 seconds for UI or API requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Add controller nodes to distribute web workers; check database connection count</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">502 Bad Gateway</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returned by automation gateway</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Scale gateway node vertically; check backend service health with <code>podman ps</code> and <code>systemctl status</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FATAL: too many clients</code> in DB logs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PostgreSQL connection limit exceeded</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Increase <code>max_connections</code> in <code>postgresql.conf</code>; consider PgBouncer connection pooling</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Activation failures</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rulebook activations failing to start or being queued</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Check <code>MAX_RUNNING_ACTIVATIONS</code> in EDA settings; add <code>worker</code> nodes to the EDA cluster</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Receptor peer disconnected</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mesh topology shows node offline in AAP UI</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify port 27199 is reachable; check <code>systemctl status ansible-automation-platform-receptor</code> on the affected node</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">High disk I/O wait</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>iostat</code> shows &gt; 50% iowait on the database host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Upgrade to faster storage tier; tune <code>checkpoint_completion_target</code> to 0.9</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_helpful_formulas"><a class="anchor" href="#_helpful_formulas"></a>Helpful Formulas</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Total Jobs = (Number of Hosts × Jobs per Host per Day) ÷ Hosts Required per Job
+
+Job Duration = Job Duration per Host × CEILING(Hosts per Job ÷ Parallel Forks)
+
+Workload Utilization = (Jobs per Day × Job Duration) ÷ Automation Hours per Day
+
+Polling Load = (Jobs per Day × Job Duration) ÷ Polling Interval
+
+API Utilization = (API Calls per Day × API Call Duration) ÷ Automation Hours per Day
+
+Database size for facts  = Facts size per host × number of hosts / 1024
+
+Database size for jobs = number of hosts × jobs per host per day × number of days
+                        to keep the data × number of events × event size / 1024</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Database RAM and CPU should match or exceed the higher of the controller or execution node resource values.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+  </body>
+</html>

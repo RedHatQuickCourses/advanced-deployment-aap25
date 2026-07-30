@@ -3,11 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Troubleshooting Ansible Automation Platform Installation Issue :: Advanced Deployment of AAP 2.5</title>
+    <title>Troubleshooting AAP Installation Issues on OpenShift :: Advanced Deployment of AAP 2.5</title>
     <link rel="prev" href="section6.html">
     <link rel="next" href="section8.html">
-    <meta name="generator" content="Antora 3.1.3">
+    <meta name="generator" content="Antora 3.2.0-rc.2">
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
     <script>var uiRootPath = '../../../_'</script>
   </head>
   <body class="article">
@@ -55,28 +59,28 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section1.html">Automation Mesh</a>
+    <a class="nav-link" href="section1.html">Automation Mesh on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section2.html">Automation Mesh Example</a>
+    <a class="nav-link" href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
+    <a class="nav-link" href="section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
+    <a class="nav-link" href="section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration</a>
+    <a class="nav-link" href="section6.html">Performance Considerations for OpenShift Deployments</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
+    <a class="nav-link" href="section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">Summary</a>
@@ -121,8 +125,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
-    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
-    <li><a href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a></li>
+    <li><a href="section7.html">Troubleshooting AAP Installation Issues on OpenShift</a></li>
   </ul>
 </nav>
 </div>
@@ -131,165 +135,202 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Troubleshooting Ansible Automation Platform Installation Issue</h1>
+<h1 class="page">Troubleshooting AAP Installation Issues on OpenShift</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>In case of RPM/Containerized installation the scripts are only automating the tasks that can be performed manually. So the basic rule of thumb for resolving AAP installation issues is to troubleshoot by running tasks manually. This helps isolate the issue and also ensures that the steps are executed under the same user.</p>
+<p>In an operator-based deployment, the AAP Operator reconciles custom resources and manages pod lifecycle. Most installation and configuration issues surface as failed operator reconciliation conditions, pods stuck in <code>Pending</code> or <code>CrashLoopBackOff</code>, or custom resources that never reach a <code>Running</code> state. The basic rule of thumb: check the operator conditions first, then the pod logs.</p>
 </div>
-<div class="paragraph">
-<p>Troubleshooting suggestions:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Increase the verbosity while running the script by just adding -vvv in the last and it will provide more verbose output while running the automation script tasks for setting up for the ansible automation platform.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Level 1 (-v)  describes the below:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Task results including any changed/failed details.</p>
+<p>Login to the <code>{bastion_public_hostname}</code> using the command`{bastion_ssh_command}` and perform the following steps to know how to troubleshoot the AAP installation issues on OpenShift.</p>
 </li>
 <li>
-<p>Module output (stdout/stderr of commands).</p>
+<p>Login to the OpenShift cluster using the command <code>oc login -u admin -p {openshift_cluster_admin_password} {openshift_api_server_url}</code>.</p>
 </li>
-<li>
-<p>Useful for seeing why something failed.</p>
-<div class="paragraph">
-<p>For example:</p>
+</ul>
 </div>
-<div class="listingblock">
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_1_check_the_operator_csv_status"><a class="anchor" href="#_step_1_check_the_operator_csv_status"></a>Step 1: Check the Operator CSV Status</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Verify the AAP Operator is installed and healthy:</p>
+</div>
+<div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.common : Set ostree-based OS fact] ********************************
-ok: [localhost] =&gt; {"ansible_facts": {"ostree": false}, "changed": false}</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get csv -n aap</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>This level is helpful for simple debugging, checking why something changed or failed, and identifying which file and which task was where it failed.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Level 2 (-vv) describes the below:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>More info on variables and task parameters</p>
-</li>
-<li>
-<p>SSH arguments and remote command details</p>
-</li>
-<li>
-<p>What Ansible is sending to the remote host and the location of the file which is getting executed.</p>
 <div class="paragraph">
-<p>Example:</p>
+<p>The <code>PHASE</code> column should show <code>Succeeded</code>. If it shows <code>Failed</code> or <code>Pending</code>, describe the CSV for details:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.preflight : Ensure postgresql admin password is provided] *********
-task path: /home/lab-user/ansible-automation-platform-containerized-setup-bundle-2.5-12-x86_64/collections/ansible_collections/ansible/containerized_installer/roles/preflight/tasks/database.yml:30
-ok: [localhost] =&gt; {
-	"changed": false,
-	"msg": "All assertions passed"
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe csv &lt;csv-name&gt; -n aap</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>This level can be used to see variables or arguments.</p>
-</li>
-</ul>
 </div>
-</li>
-<li>
-<p>Level 3 (-vvv) describes the below:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Connection details, SSH-level debug</p>
-</li>
-<li>
-<p>Exact shell commands being executed on the remote machine</p>
-</li>
-<li>
-<p>Fact gathering (detailed facts about hosts)</p>
-</li>
-<li>
-<p>Module file paths</p>
+</div>
+<div class="sect1">
+<h2 id="_step_2_check_custom_resource_conditions"><a class="anchor" href="#_step_2_check_custom_resource_conditions"></a>Step 2: Check Custom Resource Conditions</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Example :</p>
+<p>Check the status of your <code>AutomationController</code> CR:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">TASK [Gather facts] *************************************************************************************
-task path: /home/lab-user/ansible-automation-platform-containerized-setup-bundle-2.5-12-x86_64/collections/ansible_collections/ansible/containerized_installer/playbooks/install.yml:8
-&lt;127.0.0.1&gt; ESTABLISH LOCAL CONNECTION FOR USER: lab-user
-&lt;127.0.0.1&gt; EXEC /bin/sh -c 'echo ~lab-user &amp;&amp; sleep 0'
-&lt;127.0.0.1&gt; EXEC /bin/sh -c '( umask 77 &amp;&amp; mkdir -p "` echo /home/lab-user/.ansible/tmp `"&amp;&amp; mkdir "` echo /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629 `" &amp;&amp; echo ansible-tmp-1745343613.5557938-21925-131051723522629="` echo /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629 `" ) &amp;&amp; sleep 0'
-Using module file /usr/lib/python3.9/site-packages/ansible/modules/setup.py
-&lt;127.0.0.1&gt; PUT /home/lab-user/.ansible/tmp/ansible-local-21921anxpgqif/tmpqek1dip5 TO /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/AnsiballZ_setup.py
-&lt;127.0.0.1&gt; EXEC /bin/sh -c 'chmod u+x /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/ /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/AnsiballZ_setup.py &amp;&amp; sleep 0'
-&lt;127.0.0.1&gt; EXEC /bin/sh -c '/usr/bin/python3 /home/lab-user/.ansible/tmp/ansible-tmp-1745343613.5557938-21925-131051723522629/AnsiballZ_setup.py &amp;&amp; sleep 0'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe automationcontroller aap-controller -n aap</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Look at the <code>Status.Conditions</code> section. Common conditions include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Running</code>: Controller is up and healthy.</p>
 </li>
 <li>
-<p>This level helps with Debugging SSH issues or checking the exact remote commands.</p>
+<p><code>Failure</code>: The operator encountered an error — the <code>message</code> field describes the cause.</p>
+</li>
+<li>
+<p><code>Degraded</code>: Some components are not ready.</p>
 </li>
 </ul>
 </div>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>If you are facing any issue with the script you will be facing an issue with the manual tasks as well. Thus, identify the task and fix the issue manually with the help of your RHEL administrator if needed.</p>
-</li>
-<li>
-<p>Using the Red Hat suggested rpm repositories and reading the error properly will help you resolve 90% of the issues:</p>
 <div class="paragraph">
-<p>For example:</p>
+<p>Similarly for other CRs:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.automation_platform_installer.preflight : Preflight check - Fail if this machine lacks sufficient RAM.] ***
-fatal: [127.0.0.1]: FAILED! =&gt; {"changed": false, "msg": "This machine does not have sufficient RAM to run Ansible Automation Platform."}</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe automationhub aap-hub -n aap
+oc describe automationeda aap-eda -n aap</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>The error suggests an issue with the RAM, so increasing memory should resolve the problem. Similarly, the other errors also point to common issues of the system that result in the installation issues.</p>
-</li>
-</ul>
 </div>
-</li>
-<li>
-<p>In addition consider searching through KB articles <a href="https://access.redhat.com/search/">Red Hat Knowledge Base</a> for known issues/solutions and Jira tickets for reported bugs <a href="https://issues.redhat.com/projects/AAP/issues">Jira</a></p>
-</li>
-</ol>
+</div>
+<div class="sect1">
+<h2 id="_step_3_check_pod_status_and_logs"><a class="anchor" href="#_step_3_check_pod_status_and_logs"></a>Step 3: Check Pod Status and Logs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>List all pods in the AAP namespace:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n aap</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>The above should be enough to resolve the installation issues. Further, here are a few commonly faced installation issues:</p>
+<p>For pods in <code>Pending</code> state, check events:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://access.redhat.com/solutions/7096052">Ansible Automation Platform 2.5 Installer fails with Bad API request: 502 Server Error: Bad Gateway for url</a></p>
-</li>
-<li>
-<p><a href="https://access.redhat.com/solutions/7105447">Ansible Automation Platform 2.5 Installer fails at TASK "ansible.automation_platform_installer.automationgateway : Migrate data"</a></p>
-</li>
-<li>
-<p><a href="https://access.redhat.com/solutions/7099900">RPM Installation of AAP 2.5 throws (HTTP Error 502: Bad Gateway): api/gateway/v1/</a></p>
-</li>
-</ul>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe pod &lt;pod-name&gt; -n aap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For pods in <code>CrashLoopBackOff</code> or with errors, check logs:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs -n aap deployment/aap-controller-web
+oc logs -n aap deployment/aap-controller-task
+oc logs -n aap deployment/aap-controller-task --previous</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_4_increase_ansible_verbosity"><a class="anchor" href="#_step_4_increase_ansible_verbosity"></a>Step 4: Increase Ansible Verbosity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To get more verbose output from the operator&#8217;s internal automation, add <code>task_args</code> to the <code>AutomationController</code> CR spec:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spec:
+  task_args:
+    - "-vvv"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Apply the change and monitor the <code>task</code> pod logs.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_openshift_specific_issues"><a class="anchor" href="#_common_openshift_specific_issues"></a>Common OpenShift-Specific Issues</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>PVC not bound (wrong StorageClass)</strong></p>
+</div>
+<div class="paragraph">
+<p>Issue: PostgreSQL pod stays in <code>Pending</code>.<br>
+Fix: Check that the <code>StorageClass</code> specified in the CR exists and supports dynamic provisioning:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pvc -n aap
+oc get storageclass</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Route not created (missing wildcard DNS)</strong></p>
+</div>
+<div class="paragraph">
+<p>Issue: AAP UI is unreachable.<br>
+Fix: Verify that your OCP cluster has a wildcard DNS entry for the router domain and that the <code>Route</code> resource was created:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n aap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Image pull failures (missing pull secret)</strong></p>
+</div>
+<div class="paragraph">
+<p>Issue: Pods show <code>ImagePullBackOff</code>.<br>
+Fix: Create a pull secret for <code>registry.redhat.io</code> and link it to the namespace service account:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create secret docker-registry rh-registry-secret \
+  --docker-server=registry.redhat.io \
+  --docker-username=&lt;rh-username&gt; \
+  --docker-password=&lt;rh-password&gt; \
+  -n aap
+oc secrets link default rh-registry-secret --for=pull -n aap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Resource quota exceeded</strong></p>
+</div>
+<div class="paragraph">
+<p>Issue: Pods are <code>Pending</code> with <code>exceeded quota</code> in events.<br>
+Fix: Check namespace quota and either increase it or reduce resource requests in the CR spec:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe quota -n aap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Execution node not connecting to controller</strong></p>
+</div>
+<div class="paragraph">
+<p>Issue: Instance shows <code>Unavailable</code> in the Instances page.<br></p>
+</div>
+<div class="paragraph">
+<p>Ensure port 27199 (default Receptor listener port) is open between the execution node and the OCP cluster ingress. Verify TLS certificates match by re-downloading and re-running the install bundle.</p>
+</div>
+</div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="section6.html">Performance Consideration</a></span>
+  <span class="prev"><a href="section6.html">Performance Considerations for OpenShift Deployments</a></span>
   <span class="next"><a href="section8.html">Summary</a></span>
 </nav>
 </article>
@@ -300,5 +341,7 @@ fatal: [127.0.0.1]: FAILED! =&gt; {"changed": false, "msg": "This machine does n
   <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
 </footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
   </body>
 </html>

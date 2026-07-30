@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshooting Containerized AAP Installation Issues :: Advanced Deployment of AAP 2.5</title>
+    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../chapter1/index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section1.html">Automation Mesh on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section6.html">Performance Considerations for OpenShift Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="section7.html">Troubleshooting Containerized AAP Installation Issues</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Troubleshooting Containerized AAP Installation Issues</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a containerized installation, the installer automates tasks that can also be performed manually using <code>podman</code> and <code>systemd</code>. The basic rule of thumb: if the installer fails on a task, that same task will fail when run manually — identify it and fix the root cause, then re-run the installer. This helps isolate the issue and ensures steps execute under the same user and environment.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_1_increase_verbosity"><a class="anchor" href="#_step_1_increase_verbosity"></a>Step 1: Increase Verbosity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add <code>-vvv</code> to the installer <code>ansible-playbook</code> command for verbose output:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook -i inventory-growth ansible.containerized_installer.install -vvv</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verbosity levels:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Level 1 (-v)</strong>: Task results, changed/failed details, module stdout/stderr. Useful for seeing why something failed.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.common : Set ostree-based OS fact] ****
+ok: [localhost] =&gt; {"ansible_facts": {"ostree": false}, "changed": false}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Level 2 (-vv)</strong>: More info on variables, task parameters, SSH arguments, and remote command details.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.preflight : Ensure postgresql admin password is provided] ***
+task path: .../roles/preflight/tasks/database.yml:30
+ok: [localhost] =&gt; {"changed": false, "msg": "All assertions passed"}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Level 3 (-vvv)</strong>: Connection details, exact shell commands on the remote machine, fact gathering, module file paths.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [Gather facts] ****
+&lt;127.0.0.1&gt; ESTABLISH LOCAL CONNECTION FOR USER: lab-user
+&lt;127.0.0.1&gt; EXEC /bin/sh -c 'echo ~lab-user &amp;&amp; sleep 0'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_2_reproduce_the_failing_task_manually"><a class="anchor" href="#_step_2_reproduce_the_failing_task_manually"></a>Step 2: Reproduce the Failing Task Manually</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If a task fails in the installer, try running the equivalent <code>podman</code> or <code>systemd</code> command manually on the affected host. This confirms whether the issue is environmental (file permissions, SELinux, missing packages) rather than a bug in the installer logic.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_3_read_error_messages_carefully"><a class="anchor" href="#_step_3_read_error_messages_carefully"></a>Step 3: Read Error Messages Carefully</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most preflight errors are self-explanatory. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">TASK [ansible.containerized_installer.preflight : Preflight check - Fail if this machine
+lacks sufficient RAM.] ***
+fatal: [127.0.0.1]: FAILED! =&gt; {"changed": false,
+"msg": "This machine does not have sufficient RAM to run Ansible Automation Platform."}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This error indicates insufficient memory on the target host. Increasing RAM resolves it. The same pattern applies to disk space, CPU count, and OS version preflight checks.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_4_check_container_and_service_status"><a class="anchor" href="#_step_4_check_container_and_service_status"></a>Step 4: Check Container and Service Status</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After installation, verify all containers are running:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo podman ps --all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check systemd service status for individual components:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo systemctl status automation-controller-web
+sudo systemctl status automation-controller-task
+sudo systemctl status automation-gateway
+sudo systemctl status automation-eda</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>View service logs:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo journalctl -u automation-controller-task -f
+sudo podman logs automation-controller-web</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_containerized_installation_issues"><a class="anchor" href="#_common_containerized_installation_issues"></a>Common Containerized Installation Issues</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Receptor port blocked (execution nodes not connecting)</strong></p>
+</div>
+<div class="paragraph">
+<p>Ensure port 27199 is open in the firewall on all nodes:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo firewall-cmd --permanent --zone=public --add-port=27199/tcp
+sudo firewall-cmd --reload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify Receptor is listening:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ss -ntlp | grep 27199</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>SELinux denials</strong></p>
+</div>
+<div class="paragraph">
+<p>Check for SELinux audit denials:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo ausearch -m avc -ts recent</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If denials are present, generate and apply a local policy, or set the boolean that allows container networking if applicable.</p>
+</div>
+<div class="paragraph">
+<p><strong>Image pull failures</strong></p>
+</div>
+<div class="paragraph">
+<p>Ensure the host is registered to Red Hat and has access to <code>registry.redhat.io</code>:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo podman login registry.redhat.io</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>PostgreSQL connection failures</strong></p>
+</div>
+<div class="paragraph">
+<p>Verify the database container is running and the password in the inventory matches what was configured:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo podman exec -it automation-postgresql psql -U postgres -c "\l"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_additional_resources"><a class="anchor" href="#_additional_resources"></a>Additional Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://access.redhat.com/search/">Red Hat Knowledge Base</a></p>
+</li>
+<li>
+<p><a href="https://issues.redhat.com/projects/AAP/issues">Jira — AAP Bug Tracker</a></p>
+</li>
+<li>
+<p><a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7">Ansible Automation Platform 2.7 Documentation</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+  </body>
+</html>

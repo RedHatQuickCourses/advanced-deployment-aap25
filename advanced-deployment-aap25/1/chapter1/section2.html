@@ -3,11 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Automation Mesh Example :: Advanced Deployment of AAP 2.5</title>
+    <title>Automation Mesh Configuration on OpenShift hands-on Lab :: Advanced Deployment of AAP 2.5</title>
     <link rel="prev" href="section1.html">
     <link rel="next" href="section3.html">
-    <meta name="generator" content="Antora 3.1.3">
+    <meta name="generator" content="Antora 3.2.0-rc.2">
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
     <script>var uiRootPath = '../../../_'</script>
   </head>
   <body class="article">
@@ -55,28 +59,28 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section1.html">Automation Mesh</a>
+    <a class="nav-link" href="section1.html">Automation Mesh on OpenShift</a>
   </li>
   <li class="nav-item is-current-page" data-depth="2">
-    <a class="nav-link" href="section2.html">Automation Mesh Example</a>
+    <a class="nav-link" href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab</a>
+    <a class="nav-link" href="section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section4.html">Calculate the Sizing Requirements for RPM and Containerized Installation</a>
+    <a class="nav-link" href="section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section5.html">Example on Calculating the Size</a>
+    <a class="nav-link" href="section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section6.html">Performance Consideration</a>
+    <a class="nav-link" href="section6.html">Performance Considerations for OpenShift Deployments</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="section7.html">Troubleshooting Ansible Automation Platform Installation Issue</a>
+    <a class="nav-link" href="section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="section8.html">Summary</a>
@@ -121,8 +125,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
-    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.5</a></li>
-    <li><a href="section2.html">Automation Mesh Example</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a></li>
+    <li><a href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a></li>
   </ul>
 </nav>
 </div>
@@ -131,133 +135,320 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Automation Mesh Example</h1>
+<h1 class="page">Automation Mesh Configuration on OpenShift hands-on Lab</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s take a closer look at Automation Mesh in RPM and Containerized installations.</p>
+<p>In an operator-based AAP deployment, Automation Mesh is configured entirely through the AAP UI and OpenShift custom resources — not through installer inventory files. This section walks through the remote execution for extending the mesh beyond the cluster.</p>
 </div>
-<div class="paragraph">
-<p><strong>RPM</strong></p>
 </div>
-<div class="paragraph">
-<p>Mesh configuration includes defining connections between nodes, which is also known as peering. Peer relations are defined within the [automationcontroller] and [execution_nodes] groups or using the [automationcontroller:vars] or [execution_nodes:vars] sections with peers=&lt;node-name-to-connect-too&gt; setting.</p>
 </div>
-<div class="paragraph">
-<p>To understand the concept better, let&#8217;s look at two deployment scenarios:</p>
-</div>
+<div class="sect1">
+<h2 id="_lets_setup_the_vm_and_connect_it_to_ansible_automation_platform_for_the_execution_node"><a class="anchor" href="#_lets_setup_the_vm_and_connect_it_to_ansible_automation_platform_for_the_execution_node"></a>Lets setup the VM and connect it to Ansible Automation Platform for the execution node:</h2>
+<div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Basic example of a Controller node connected to an Execution node with one Unified UI node and the Database node. This is the minimum possible configuration and all these nodes are mandatory.</p>
+<p><strong>OpenShift Console Access:</strong></p>
+<div class="paragraph">
+<p>Open the OpenShift Console at <code>{openshift_console_url}</code> and log in with username <code>{openshift_username}</code> and password <code>{common_admin_password}</code>.</p>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Navigate to <strong>Virtualization</strong> → <strong>VirtualMachines</strong>.</p>
+</li>
+<li>
+<p>Select namespace: <code>aap-lab</code></p>
+</li>
+<li>
+<p>Click on <code>aap-lab-execution</code></p>
 <div class="imageblock">
 <div class="content">
-<img src="_images/2.png" alt="2">
+<img src="_images/1.1.png" alt="1.1">
 </div>
-</div>
-<div class="paragraph">
-<p>On the diagram above Ansible automation platform 2.5 square represents all four nodes: Controller, Execution, Unified UI and Database. Below is an example of the inventory for this scenario:</p>
 </div>
 </li>
-</ol>
-</div>
-<div class="listingblock execute">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationcontroller]
-control_hostname.example.com
-
-[automationcontroller:vars]
-node_type=hybrid
-peers=execution_nodes
-
-[execution_nodes]
-execution_hostname.example.com</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>In this example node_type for Controller node is set to hybrid which means it can also act as an Execution node. This hybrid node is peered to an additional Execution node.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
 <li>
-<p>More advanced structure with one more Execution node connected via Hop node.</p>
+<p>Click on the <strong>Open Web Console</strong> button.</p>
 <div class="imageblock">
 <div class="content">
-<img src="_images/2.1.png" alt="2.1">
+<img src="_images/1.2.png" alt="1.2">
+</div>
+</div>
+</li>
+<li>
+<p>Use the <strong>Serial</strong> tab for terminal access.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.3.png" alt="1.3">
 </div>
 </div>
 </li>
 </ol>
 </div>
+</li>
+<li>
+<p>Log in to the VM using username <code>{bastion_ansible_user}</code> and password <code>{common_user_password}</code>. Copy and paste with CTRL+SHIFT+V in the terminal.</p>
+</li>
+<li>
+<p>Register the system with Red Hat Subscription Management and attach the subscription to the system.</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationcontroller]
-control_hostname.example.com
-
-[automationcontroller:vars]
-node_type=hybrid
-peers=execution
-
-[execution_nodes]
-execution_hostname1.example.com peers=proxy
-execution_hostname2.example.com
-execution_hop.example.com node_type=hop
-
-
-[execution]
-execution_hostname2.example.com
-
-[proxy:vars]
-peers=automationcontroller
-
-[proxy]
-execution_hop.example.com</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo subscription-manager register</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>In the inventory configuration we see that the additional Execution node is peered to the proxy group, which contains Hop node.</p>
-</div>
-<div class="paragraph">
-<p>For more information on the different types of architectures refer to <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.5/html/automation_mesh_for_vm_environments/design-patterns#mesh-segregated-execution">automation mesh</a>.</p>
-</div>
-<div class="paragraph">
-<p><strong>Containerized</strong></p>
-</div>
-<div class="paragraph">
-<p>In <code>Containerized<code> environments to create Execution or Hop nodes we need to use the `receptor_type</code> value which can be either execution or hop. `receptor_protocol`</code> can be set to either tcp or udp. By default, the nodes in the [execution_nodes] group are added as peers to nodes from the [automationcontroller] group. This can be overwritten with the receptor_peers variable.</p>
-</div>
-<div class="paragraph">
-<p>For example, for execution node:</p>
 </div>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[execution_nodes]
-execution_hostname.example.com</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">username: &lt;YOUR-RHN_LOGIN&gt;
+password: &lt;YOUR-RHN_PASSWORD&gt;</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>For hop node:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.4.png" alt="1.4">
 </div>
+</div>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Enable the required repository for AAP 2.7:</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[execution_nodes]
-execution_hostname2.example.com
-hop_hostname2.example.com receptor_type=hop receptor_peers='["execution_hostname2.example.com"]'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo subscription-manager repos --enable ansible-automation-platform-2.7-for-rhel-10-x86_64-rpms</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.5.png" alt="1.5">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Install the required and useful utilities:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo dnf install -y vim ansible-core</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_install_receptor_on_the_execution_node"><a class="anchor" href="#_install_receptor_on_the_execution_node"></a>Install Receptor on the Execution Node:</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_ansible_automation_platform_ui_configuration"><a class="anchor" href="#_ansible_automation_platform_ui_configuration"></a>Ansible Automation Platform UI Configuration:</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login to the AAP UI for that go to openshift cluster and then go to <strong>Networking &gt; Routes &gt; Location for the aap Service</strong> open the URL in the browser in the new tab.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.6.png" alt="1.6">
+</div>
+</div>
+</li>
+<li>
+<p>Go to <strong>Workloads &gt; Secrets &gt; aap-admin-password</strong> and copy the password to login to the AAP UI. for this lab you can use this for admin password: <code>{common_admin_password}</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.7.png" alt="1.7">
+</div>
+</div>
+</li>
+<li>
+<p>Download the Receptor install bundle from the AAP UI and copy it to the execution node. Use the following command to extract the bundle:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>From the navigation panel, select <strong>Automation Execution &gt; Infrastructure &gt; Instances</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.8.png" alt="1.8">
+</div>
+</div>
+</li>
+<li>
+<p>On the <strong>Instances</strong> list page, click <strong>Add instance</strong>. Fill in the following fields:</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
 <tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-In this example, the concept behind Execution and Hop nodes remains the same but the deployment will be different since we are using receptor_type instead of node_type.
-</td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Field</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Host name</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fully qualified domain name (public DNS) or IP address. Use IP if private DNS cannot be resolved from the control cluster.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Description</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(Optional) A description for the instance.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Instance state</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto-populated (<code>Installed</code>); cannot be modified.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Listener port</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Port for Receptor to listen on for incoming connections. Default: <strong>27199</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Instance type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only <code>execution</code> and <code>hop</code> are supported on OpenShift operator deployments.</p></td>
+</tr>
+</tbody>
 </table>
+</li>
+<li>
+<p>Add the VM <code>aap-lab-execution</code> FQDN from the Openshift cluster <strong>Virtualization &gt; VirtualMachines &gt; aap-lab &gt; aap-lab-execution </strong> and the port <code>27199</code> to the instance and click <strong>Save</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.9.png" alt="1.9">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.10.png" alt="1.10">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.11.png" alt="1.11">
+</div>
+</div>
+</li>
+<li>
+<p>Copy the URL of the bundle from the AAP UI and download it on the execution node using the following command:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.12.png" alt="1.12">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setup_receptor_on_the_execution_node"><a class="anchor" href="#_setup_receptor_on_the_execution_node"></a>Setup Receptor on the Execution Node:</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download and Extract the bundle on the remote machine:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -u admin:{common_admin_password} --output aap.tar.gz &lt;Paste the URL of the bundle from the AAP UI&gt;</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.13.png" alt="1.13">
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">tar -xzf aap.tar.gz</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Move into the extracted directory and run the install script:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd &lt;extracted directory&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Edit <code>inventory.yml</code></p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim inventory.yml</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">all:
+  hosts:
+    remote-execution:
+      ansible_host: &lt;this-should-be-the-mesh-node-host-name&gt;   # change to the mesh node host name if its not
+      ansible_user: lab-user # this should have the username of the remote execution node
+ #     ansible_ssh_private_key_file: ~/.ssh/&lt;id_rsa&gt;</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.14.png" alt="1.14">
+</div>
+</div>
+</li>
+<li>
+<p>Install the <code>ansible.receptor</code> collection:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo ansible-galaxy install -r requirements.yml</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.15.png" alt="1.15">
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Open port 27199 for Receptor communication on the Firewall of the execution node and the communication should be allowed bi-directionally between the execution node and the control plane nodes.</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the installation playbook and provide the password: <code>{common_admin_password}</code> for the execution node when prompted. This will install Receptor on the execution node and configure it to connect to the control plane nodes.:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.yml install_receptor.yml -k</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.16.png" alt="1.16">
+</div>
+</div>
+</li>
+<li>
+<p>Once the installation is complete successfully. Proceed to the next step to verify the connection between the execution node and the control plane nodes by clicking on the <strong>Run Health Check</strong> button in the AAP UI and soon the status will show <strong>Ready</strong> for the Execution node.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.17.png" alt="1.17">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/1.18.png" alt="1.18">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Let run a JOB on the execution node to verify if it will get executed. The job might be failing due to EE but the execution node should be the <code>aap-lab-execution</code> node that we have assigned.</p>
+</div>
+</div>
+</div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="section1.html">Automation Mesh</a></span>
-  <span class="next"><a href="section3.html">Automation Mesh Hands-on Lab</a></span>
+  <span class="prev"><a href="section1.html">Automation Mesh on OpenShift</a></span>
+  <span class="next"><a href="section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a></span>
 </nav>
 </article>
   </div>
@@ -267,5 +458,7 @@ In this example, the concept behind Execution and Hop nodes remains the same but
   <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
 </footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
   </body>
 </html>

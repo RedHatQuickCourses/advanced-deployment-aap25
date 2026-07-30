@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Automation Mesh Examples for Containerized Deployment :: Advanced Deployment of AAP 2.5</title>
+    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../chapter1/index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section1.html">Automation Mesh on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section6.html">Performance Considerations for OpenShift Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="section2.html">Automation Mesh Examples for Containerized Deployment</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Automation Mesh Examples for Containerized Deployment</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take a closer look at Automation Mesh topology examples in a containerized AAP 2.7 installation. Mesh configuration is done entirely in the installer inventory file using <code>receptor_type</code> and <code>receptor_peers</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+In containerized deployments, replace <code>node_type</code> with <code>receptor_type</code>. The values are the same: <code>execution</code> (default) and <code>hop</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_1_basic_controller_execution_node"><a class="anchor" href="#_example_1_basic_controller_execution_node"></a>Example 1: Basic Controller + Execution Node</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A minimal containerized deployment with one controller (acting as hybrid) and one execution node.</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="2.png" alt="2">
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationgateway]
+aap-gateway.example.com
+
+[automationcontroller]
+aap-controller.example.com
+
+[execution_nodes]
+aap-execution.example.com
+
+[automationhub]
+
+[automationeda]
+
+[database]
+aap-database.example.com
+
+[all:vars]
+postgresql_admin_username=postgres
+postgresql_admin_password=redhat
+
+bundle_install=true
+bundle_dir='{{ lookup("ansible.builtin.env", "PWD") }}/bundle'
+
+redis_mode=standalone
+
+gateway_admin_password=redhat
+gateway_pg_host=aap-database.example.com
+gateway_pg_password=redhat
+
+controller_admin_password=redhat
+controller_pg_host=aap-database.example.com
+controller_pg_password=redhat</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this configuration, nodes in <code>[execution_nodes]</code> are automatically peered to nodes in <code>[automationcontroller]</code>. The controller acts as a hybrid node by default.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_2_controller_hop_node_execution_node"><a class="anchor" href="#_example_2_controller_hop_node_execution_node"></a>Example 2: Controller + Hop Node + Execution Node</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A more advanced topology where an execution node in a remote or restricted network is reached via a hop node.</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="2.1.png" alt="2.1">
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationgateway]
+aap-gateway.example.com
+
+[automationcontroller]
+aap-controller.example.com
+
+[execution_nodes]
+aap-hop.example.com receptor_type=hop
+aap-execution-remote.example.com receptor_peers=aap-hop.example.com
+
+[automationhub]
+
+[automationeda]
+
+[database]
+aap-database.example.com
+
+[all:vars]
+postgresql_admin_username=postgres
+postgresql_admin_password=redhat
+
+bundle_install=true
+bundle_dir='{{ lookup("ansible.builtin.env", "PWD") }}/bundle'
+
+redis_mode=standalone
+
+gateway_admin_password=redhat
+gateway_pg_host=aap-database.example.com
+gateway_pg_password=redhat
+
+controller_admin_password=redhat
+controller_pg_host=aap-database.example.com
+controller_pg_password=redhat</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here, <code>aap-hop.example.com</code> is configured as a hop node (<code>receptor_type=hop</code>). The remote execution node <code>aap-execution-remote.example.com</code> peers to the hop node using <code>receptor_peers</code>. The hop node itself is automatically peered to the controller.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The concept behind Execution and Hop nodes is the same as in an RPM deployment, but the configuration uses <code>receptor_type</code> instead of <code>node_type</code>, and <code>receptor_peers</code> (a comma-separated hostname list) instead of <code>peers</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_3_multiple_execution_nodes_with_separate_peering"><a class="anchor" href="#_example_3_multiple_execution_nodes_with_separate_peering"></a>Example 3: Multiple Execution Nodes with Separate Peering</h2>
+<div class="sectionbody">
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[automationcontroller]
+aap-controller.example.com
+
+[execution_nodes]
+aap-hop.example.com receptor_type=hop
+aap-execution1.example.com
+aap-execution2.example.com receptor_peers=aap-hop.example.com</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>aap-execution1.example.com</code> peers directly to the controller (default behavior).</p>
+</li>
+<li>
+<p><code>aap-execution2.example.com</code> peers to the hop node, which routes traffic back to the controller.</p>
+</li>
+<li>
+<p><code>aap-hop.example.com</code> is automatically peered to <code>[automationcontroller]</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For more information on design patterns refer to <a href="https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7/html/administer_ansible_automation_platform/scale-automation-mesh-containerized-vm-environment">Automation mesh for containerized and VM environments</a>.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+  </body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Calculate Sizing Requirements for Containerized Deployment :: Advanced Deployment of AAP 2.5</title>
+    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/reading-time.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/audio-transcript.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/advanced-deployment-aap25/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="advanced-deployment-aap25" data-version="1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../chapter1/index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section1.html">Automation Mesh on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section3.html">Ansible Automation Platform 2.7 Job run on execution nodes:</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section4.html">Calculate Sizing Requirements for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section5.html">Example: Calculating Sizing for an OpenShift Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section6.html">Performance Considerations for OpenShift Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section7.html">Troubleshooting AAP Installation Issues on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../chapter1/section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="version">1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="section4.html">Calculate Sizing Requirements for Containerized Deployment</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Calculate Sizing Requirements for Containerized Deployment</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Having the right amount of resources for Ansible Automation Platform helps make the platform reliable and reduces cost. In a containerized deployment, AAP components run as containers on RHEL hosts managed by <code>podman</code> and <code>systemd</code>. Sizing is expressed in terms of host VM (or bare-metal) CPU, memory, and disk — but the capacity calculations are the same as for traditional VM deployments.</p>
+</div>
+<div class="paragraph">
+<p>The high-level points to consider during capacity planning:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Characterizing the workloads.</p>
+</li>
+<li>
+<p>Reviewing the capabilities of different node types.</p>
+</li>
+<li>
+<p>Planning the deployment based on workload requirements.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Isolated factors that play a major role in calculating sizing:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Number of managed hosts controlled by AAP.</p>
+</li>
+<li>
+<p>Jobs or tasks running per hour per host.</p>
+</li>
+<li>
+<p>Maximum number of concurrent jobs to support.</p>
+</li>
+<li>
+<p>Maximum number of forks set on jobs.</p>
+</li>
+<li>
+<p>Maximum API requests per second.</p>
+</li>
+<li>
+<p>Node size preferred for deployment (CPU/Memory/Disk).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_unified_ui_automation_gateway"><a class="anchor" href="#_unified_ui_automation_gateway"></a>Unified UI / Automation Gateway</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Automation Gateway provides authentication and load-balancing of requests using the gRPC service. Increasing CPU and memory reduces bottlenecks under load. If you see 502 gateway errors during access attempts, the gateway may be a bottleneck.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_automation_controller_control_plane"><a class="anchor" href="#_automation_controller_control_plane"></a>Automation Controller (Control Plane)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a containerized deployment, the Control Plane is made up of <strong>Hybrid nodes</strong> (default) and <strong>Control nodes</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Hybrid nodes</strong>: Can manage jobs (control) and run playbooks (execution). Default type in the <code>[automationcontroller]</code> group.</p>
+</li>
+<li>
+<p><strong>Control nodes</strong>: Manage and dispatch jobs but do not run playbooks. Set <code>receptor_type=control</code> to configure.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Key concept for control capacity:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Each job needs 1 unit of control capacity.</p>
+</li>
+<li>
+<p>A node with 100 capacity units can control up to 100 concurrent jobs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Vertical scaling</strong> a controller node (more CPU/RAM on the RHEL host) increases:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The number of jobs manageable simultaneously.</p>
+</li>
+<li>
+<p>The speed of job event processing.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Vertically scaling a controller node does not automatically increase the number of web workers. For more web concurrency, scale <strong>horizontally</strong> by adding more controller nodes — a load balancer distributes requests across them. Horizontal scaling also adds redundancy.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Recommended vertical scaling practice: scale CPU and memory together in a <strong>1 CPU to 4 GB RAM ratio</strong>. Add CPU even when it is not a bottleneck — during high memory utilization, higher CPU processes the accumulated event queue faster.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execution_nodes"><a class="anchor" href="#_execution_nodes"></a>Execution Nodes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Execution and Hybrid nodes provide execution capacity. The capacity consumed by a job running against one host equals one fork.</p>
+</div>
+<div class="paragraph">
+<p><strong>Vertical scaling</strong> an execution node (larger RHEL VM with more resources) provides more forks for job execution, increasing the number of concurrent jobs.</p>
+</div>
+<div class="paragraph">
+<p><strong>Horizontal scaling</strong> execution nodes (adding more nodes to an instance group) ensures lower-priority jobs do not block higher-priority jobs when nodes are grouped by workload.</p>
+</div>
+<div class="paragraph">
+<p>Hop nodes use minimal resources; vertical scaling does not increase their capacity. Instead, monitor bandwidth — especially for hop nodes connecting large numbers of execution nodes. Consider a network upgrade if bandwidth approaches capacity.</p>
+</div>
+<div class="paragraph">
+<p>Horizontal scaling of hop nodes increases redundancy and keeps traffic flowing if a hop node fails.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_memory_relative_capacity"><a class="anchor" href="#_memory_relative_capacity"></a>Memory Relative Capacity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>mem_capacity</code> is the maximum memory needed by one fork. The default value is 100 MB. 2 GB of memory is reserved for AAP services.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Example: 16 GB of available node memory → (16384 - 2048) / 100 ≈ 140 forks</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cpu_relative_capacity"><a class="anchor" href="#_cpu_relative_capacity"></a>CPU Relative Capacity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ansible workloads are often processor-bound. The baseline is 1 CPU = 4 forks.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">4 CPUs × 4 forks per CPU = 16 forks</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>capacity_adjustment</code> value (0 to 1) determines how close the chosen fork count is to the memory-bound maximum. At 0.5:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">Capacity = [140 forks (memory) × 0.50] + [16 forks (CPU) × 0.50]
+         = 70 + 8 = 78 forks</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_event_driven_ansible_controller_automationeda"><a class="anchor" href="#_event_driven_ansible_controller_automationeda"></a>Event-Driven Ansible Controller (AutomationEDA)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>EDA workloads are sized based on:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Number of simultaneous rulebook activations.</p>
+</li>
+<li>
+<p>Number of events received per minute.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By default, EDA allows 12 rulebook activations per node and 24 total. Override with <code>MAX_RUNNING_ACTIVATIONS</code> in <code>/etc/ansible-automation-platform/eda/settings.yaml</code>. Restart the service after changing the value:</p>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">automation-eda-controller-service restart</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each rulebook activation container has a 200 MB memory limit by default. For example, with 4 CPUs and 16 GB RAM, one activation with 200 MB cannot handle more than 150,000 events per minute. To increase the limit to 400 MB, set <code>PODMAN_MEM_LIMIT = 400m</code> in <code>/etc/ansible-automation-platform/eda/settings.yaml</code> and restart the service.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_automation_hub_private_automation_hub"><a class="anchor" href="#_automation_hub_private_automation_hub"></a>Automation Hub (Private Automation Hub)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>PAH provides Execution Environments and collections. Storage requirements dominate:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Number of Execution Environments stored.</p>
+</li>
+<li>
+<p>Size and version count of each Execution Environment.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ensure adequate disk space on the PAH host. The default database allocation is usually sufficient, but calculate precisely using the factors above for large environments.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script defer src="../../../_/js/vendor/tabs.js"></script>
+<script defer src="../../../_/js/vendor/reading-time.js"></script>
+  </body>
+</html>
