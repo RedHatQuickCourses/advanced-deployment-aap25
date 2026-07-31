@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Automation Mesh Configuration on OpenShift hands-on Lab :: Advanced Deployment of AAP 2.5</title>
+    <title>Automation Mesh Configuration on OpenShift hands-on Lab :: Advanced Deployment of AAP 2.7</title>
     <link rel="prev" href="section1.html">
     <link rel="next" href="section3.html">
-    <meta name="generator" content="Antora 3.2.0-rc.2">
+    <meta name="generator" content="Antora 3.2.0-alpha.12">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
     <link rel="stylesheet" href="../../../_/css/vendor/collapsible.css">
@@ -19,7 +19,7 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.5</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">Advanced Deployment of AAP 2.7</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -39,7 +39,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.5</a></h3>
+    <h3 class="title"><a href="../index.html">Advanced Deployment of AAP 2.7</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -101,12 +101,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Advanced Deployment of AAP 2.5</span>
+    <span class="title">Advanced Deployment of AAP 2.7</span>
     <span class="version">1</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <a class="title" href="../index.html">Advanced Deployment of AAP 2.5</a>
+      <a class="title" href="../index.html">Advanced Deployment of AAP 2.7</a>
       <ul class="versions">
         <li class="version is-current is-latest">
           <a href="../index.html">1</a>
@@ -124,7 +124,7 @@
   <a href="../index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="../index.html">Advanced Deployment of AAP 2.5</a></li>
+    <li><a href="../index.html">Advanced Deployment of AAP 2.7</a></li>
     <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 on OpenShift</a></li>
     <li><a href="section2.html">Automation Mesh Configuration on OpenShift hands-on Lab</a></li>
   </ul>
@@ -151,7 +151,7 @@
 <li>
 <p><strong>OpenShift Console Access:</strong></p>
 <div class="paragraph">
-<p>Open the OpenShift Console at <code>{openshift_console_url}</code> and log in with username <code>{openshift_username}</code> and password <code>{common_admin_password}</code>.</p>
+<p>Open the OpenShift Console at <code>{openshift_console_url}</code> and log in with username <code>admin</code> and password <code>{common_admin_password}</code>.</p>
 </div>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
@@ -189,7 +189,7 @@
 </div>
 </li>
 <li>
-<p>Log in to the VM using username <code>{bastion_ansible_user}</code> and password <code>{common_user_password}</code>. Copy and paste with CTRL+SHIFT+V in the terminal.</p>
+<p>Log in to the VM using username <code>{cloud_init_user}</code> and password <code>{common_user_password}</code>. Copy and paste with CTRL+SHIFT+V in the terminal.</p>
 </li>
 <li>
 <p>Register the system with Red Hat Subscription Management and attach the subscription to the system.</p>
@@ -346,10 +346,10 @@ password: &lt;YOUR-RHN_PASSWORD&gt;</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Download and Extract the bundle on the remote machine:</p>
+<p>Download and Extract the bundle on the remote machine. The aap admin password is <code>{common_admin_password}</code>.</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -u admin:{common_admin_password} --output aap.tar.gz &lt;Paste the URL of the bundle from the AAP UI&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -u admin:&lt;admin_password&gt; --output aap.tar.gz &lt;Paste the URL of the bundle from the AAP UI&gt;</code></pre>
 </div>
 </div>
 <div class="imageblock">
