@@ -4,11 +4,12 @@ Let's take a closer look at Automation Mesh topology examples in a containerized
 
 IMPORTANT: In containerized deployments, replace `node_type` with `receptor_type`. The values are the same: `execution` (default) and `hop`.
 
+image::example.png[]
+
 == Example 1: Basic Controller + Execution Node
 
 A minimal containerized deployment with one controller (acting as hybrid) and one execution node.
 
-image::2.png[]
 
 [source,bash,role=execute]
 ----
@@ -52,7 +53,6 @@ In this configuration, nodes in `[execution_nodes]` are automatically peered to 
 
 A more advanced topology where an execution node in a remote or restricted network is reached via a hop node.
 
-image::2.1.png[]
 
 [source,bash,role=execute]
 ----

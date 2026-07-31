@@ -18,21 +18,11 @@ The Execution Plane in a containerized deployment consists of execution and hop 
 - *Execution nodes*: Run jobs using `ansible-runner` with `podman` isolation. Configured in the `[execution_nodes]` group with `receptor_type=execution` (the default).
 - *Hop nodes*: Route Receptor traffic between nodes. Configured with `receptor_type=hop`. Hop nodes cannot execute automation.
 
-IMPORTANT: In a containerized deployment, use `receptor_type` instead of `node_type` to set execution vs. hop. `node_type` is used in RPM-based deployments only.
+IMPORTANT: In a containerized deployment, use `receptor_type` instead of `node_type` to set execution vs. hop. `node_type` was used in RPM-based deployments only.
 
 == Peers in a Containerized Deployment
 
 Peer relationships are defined in the installer inventory using `receptor_peers`. The value must be a *comma-separated list of hostnames* — not inventory group names. By default, nodes in the `[execution_nodes]` group are automatically peered to nodes in the `[automationcontroller]` group. You can override this with `receptor_peers`.
-
-image::0.png[]
-
-The following diagram describes the Control Plane and Execution Plane node types:
-
-image::1.png[]
-
-The next diagram shows the Execution Plane nodes and their functions:
-
-image::1.2.png[]
 
 == Key Differences from OCP Deployment
 

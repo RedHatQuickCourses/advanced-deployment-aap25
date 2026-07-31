@@ -12,6 +12,8 @@ For this example, the cluster must support the following capacity:
 
 Target pod sizes: 4 vCPU and 16 GB RAM each.
 
+image::example.png[]
+
 == Execution Capacity Calculation
 
 Execution Capacity = (Number of jobs × forks value) + (Number of jobs × 1 base task impact)

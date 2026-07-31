@@ -6,6 +6,8 @@ Having the right amount of resources for Ansible Automation Platform helps make 
 - Reviewing the capabilities of different component pods.
 - Planning the deployment based on the requirements of the workload.
 
+image::size.png[]
+
 The same isolated factors apply as in a VM-based deployment:
 
 - Number of managed hosts controlled by AAP.

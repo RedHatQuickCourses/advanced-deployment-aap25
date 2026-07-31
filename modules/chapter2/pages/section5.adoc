@@ -10,6 +10,8 @@ For this example, the cluster must support the following capacity:
 - Forks set to 5 on playbooks (the default)
 - The average event size is 1 KB
 
+image::capacity.png[]
+
 Target virtual machine size: 4 CPUs and 16 GB RAM, disks with 3,000 IOPS.
 
 == Execution Capacity Calculation

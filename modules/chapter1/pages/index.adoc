@@ -2,6 +2,8 @@
 
 Ansible Automation Platform on OpenShift Container Platform provides scalable, operator-managed IT automation. This course focuses on Automation Mesh in operator-based environments, where the Control Plane runs as pods inside the Kubernetes cluster and remote execution nodes peer to it via Receptor over TLS.
 
+image::intro.png[]
+
 Participants will acquire practical skills in:
 
 - Configuring Automation Mesh for an operator-based (OCP) deployment using Container Groups and the AAP UI.

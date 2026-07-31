@@ -2,8 +2,10 @@
 
 In the previous section we discussed how to calculate node size. The following default parameters and OCP-specific factors help with planning control and execution capacity. 
 
+image::example.png[]
+
 [NOTE]
-The Tunning of the parameters needs careful consideration and should be done only after measuring the actual workload and performance of the system. The default values are based on typical workloads and may not be optimal for all environments.
+The Tuning of the parameters needs careful consideration and should be done only after measuring the actual workload and performance of the system. The default values are based on typical workloads and may not be optimal for all environments.
 
 == Default Parameters
 

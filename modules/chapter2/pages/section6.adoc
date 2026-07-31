@@ -2,6 +2,9 @@
 
 In the previous section we discussed how to calculate node size. The following default parameters and containerized-specific factors will also help with planning control and execution capacity.
 
+[NOTE]
+The Tuning of the parameters needs careful consideration and should be done only after measuring the actual workload and performance of the system. The default values are based on typical workloads and may not be optimal for all environments.
+
 == Default Parameters
 
 The following parameters likely do not need to be changed unless you know a specific value and the reason it is needed:

@@ -2,9 +2,14 @@
 
 In an operator-based deployment, the AAP Operator reconciles custom resources and manages pod lifecycle. Most installation and configuration issues surface as failed operator reconciliation conditions, pods stuck in `Pending` or `CrashLoopBackOff`, or custom resources that never reach a `Running` state. The basic rule of thumb: check the operator conditions first, then the pod logs.
 
-- Login to the `{bastion_public_hostname}` using the command `{bastion_ssh_command}` and perform the following steps to know how to troubleshoot the AAP installation issues on OpenShift.
+- Login to the `{bastion_public_hostname}` using the ssh command of the *Linux Developer Host* host from the RHDP login page and perform the following steps to know how to troubleshoot the AAP installation issues on OpenShift.
 
-- Login to the OpenShift cluster using the command *oc login -u admin -p `{openshift_cluster_admin_password}` `{openshift_api_server_url}`*.
+- Login to the OpenShift cluster using the command: 
+
+[source,bash,role=execute]
+----
+oc login -u admin -p admin {openshift_api_url} 
+----
 
 == Step 1: Check the Operator CSV Status
 
