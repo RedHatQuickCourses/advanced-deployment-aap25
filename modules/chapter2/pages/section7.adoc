@@ -132,8 +132,4 @@ Verify the database container is running and the password in the inventory match
 sudo podman exec -it automation-postgresql psql -U postgres -c "\l"
 ----
 
-== Additional Resources
-
-- https://access.redhat.com/search/[Red Hat Knowledge Base,windows=_blank]
-- https://issues.redhat.com/projects/AAP/issues[Jira — AAP Bug Tracker,windows=_blank]
-- https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.7[Ansible Automation Platform 2.7 Documentation,windows=_blank]
+Congratulations! You have completed the troubleshooting guide for containerized AAP installation issues.

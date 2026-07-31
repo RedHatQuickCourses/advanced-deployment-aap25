@@ -2,6 +2,8 @@
 
 Automation Mesh in a containerized deployment uses the same fundamental architecture as other deployment types — peer-to-peer Receptor connections, TLS encryption, and a Control/Execution Plane separation — but all components run as `podman`-managed containers on RHEL hosts rather than as Kubernetes pods or traditional RPM services.
 
+image::mesh.png[]
+
 == Control Plane in a Containerized Deployment
 
 The Control Plane in a containerized deployment consists of *Hybrid nodes* and *Control nodes*, just as in a VM/RPM deployment. These nodes run the persistent AAP services: the web server, task dispatcher, project updates, and management jobs.
