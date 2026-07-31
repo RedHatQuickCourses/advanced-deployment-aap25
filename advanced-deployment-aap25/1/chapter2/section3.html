@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Automation Mesh Hands-on Lab (Containerized) :: Advanced Deployment of AAP 2.7</title>
+    <link rel="prev" href="section2.html">
+    <link rel="next" href="section4.html">
     <meta name="generator" content="Antora 3.2.0-alpha.12">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="../../../_/css/vendor/tabs.css">
@@ -90,6 +92,40 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 — Containerized</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section1.html">Automation Mesh on Containerized AAP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section2.html">Automation Mesh Examples for Containerized Deployment</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="section3.html">Automation Mesh Hands-on Lab (Containerized)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section4.html">Calculate Sizing Requirements for Containerized Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section5.html">Example: Calculating Sizing for a Containerized Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section6.html">Performance Considerations for Containerized Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section7.html">Troubleshooting Containerized AAP Installation Issues</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="section8.html">Summary</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
   </li>
 </ul>
@@ -123,6 +159,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="../index.html">Advanced Deployment of AAP 2.7</a></li>
+    <li><a href="index.html">Advanced Deployment of Ansible Automation Platform 2.7 — Containerized</a></li>
     <li><a href="section3.html">Automation Mesh Hands-on Lab (Containerized)</a></li>
   </ul>
 </nav>
@@ -140,11 +177,11 @@
 <ol class="arabic">
 <li>
 <p><strong>OpenShift Console Access:</strong></p>
-<div class="paragraph">
-<p>Open the OpenShift Console at <code>{openshift_console_url}</code> and log in with username <code>{openshift_username}</code> and password <code>{common_admin_password}</code>.</p>
-</div>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
+<li>
+<p>Open the OpenShift Console at <code>{openshift_console_url}</code> and log in with username <code>{openshift_username}</code> and password <code>{common_admin_password}</code>.</p>
+</li>
 <li>
 <p>Navigate to <strong>Virtualization</strong> → <strong>VirtualMachines</strong></p>
 </li>
@@ -152,13 +189,28 @@
 <p>Select namespace: <code>aap-lab</code></p>
 </li>
 <li>
-<p>Click on <code>aap-lab-rhel10</code></p>
+<p>Click on <code>aap-lab-container</code></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.1.png" alt="3.1">
+</div>
+</div>
 </li>
 <li>
 <p>Click on the <strong>Open Web Console</strong> button.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.2.png" alt="3.2">
+</div>
+</div>
 </li>
 <li>
 <p>Use the <strong>Serial</strong> tab for terminal access.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.3.png" alt="3.3">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -179,12 +231,34 @@
 password: &lt;YOUR-RHN_PASSWORD&gt;</code></pre>
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.4.png" alt="3.4">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Follow the above steps for the aap-lab-container-exe as well once the you will register the system with Red Hat Subscription Management and attach the subscription to the system after that you can proceed with the below steps for the <code>aap-lab-container</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.5.png" alt="3.5">
+</div>
+</div>
 </li>
 <li>
 <p>Install the required and useful utilities:</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo dnf install -y wget git-core rsync vim ansible-core</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sudo dnf install -y wget git-core rsync vim ansible-core sshpass</code></pre>
 </div>
 </div>
 </li>
@@ -193,12 +267,22 @@ password: &lt;YOUR-RHN_PASSWORD&gt;</code></pre>
 <div class="paragraph">
 <p>Note: Please follow steps 5 and 6 one after another in order to avoid the link expiration error, as the copied URL has an expiration time. Reload the website, repeat step 5, and copy the link if you are having trouble.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.6.png" alt="3.6">
+</div>
+</div>
 </li>
 <li>
 <p>Download the installer file to the VM:</p>
 <div class="listingblock execute">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">wget -O aap.tar.gz "&lt;paste-link-here taken from step 5&gt;"</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.7.png" alt="3.7">
 </div>
 </div>
 </li>
@@ -313,17 +397,76 @@ aap.example.org → &lt; paste system hostname&gt;
 </tr>
 </table>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.8.png" alt="3.8">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.9.png" alt="3.9">
+</div>
+</div>
 </li>
 <li>
-<p>Once the inventory file is ready follow the below steps to do the installation:</p>
+<p>Now after that do minor changes to use the execution node in the mesh. In the <code>[execution_nodes]</code> section, add the following line to specify the execution node&#8217;s hostname and the <code>ansible_ssh_password</code> is <code>{common_user_password}</code> :</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ansible-playbook -i inventory-growth ansible.containerized_installer.install</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vim inventory-growth</code></pre>
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[execution_nodes]
+aap-lab-container-exe.headless.aap.svc.cluster.local ansible_ssh_password=`{common_user_password}`</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.10.png" alt="3.10">
+</div>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[all:vars]
+# Ansible
+#ansible_connection=local &lt;-- remove or comment this line</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.11.png" alt="3.11">
 </div>
 </div>
 </li>
 <li>
-<p>Simply go to the RHDP login page from the lab deployment and access the AAP web interface.</p>
+<p>Once the inventory file is ready follow the below steps to do the installation and pass the <code>-k</code> option to prompt for the SSH password for the nodes in the inventory file. The password is <code>{common_user_password}</code>.:</p>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory-growth ansible.containerized_installer.install -k</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.12.png" alt="3.12">
+</div>
+</div>
+</li>
+<li>
+<p>During the installation, you will be prompted to enter the SSH password for the nodes Enter <code>{common_user_password}</code> when prompted.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.13.png" alt="3.13">
+</div>
+</div>
+</li>
+<li>
+<p>Go to Openshift Console and click on the Networking → Routes and click on the <strong>aap.example.org</strong> route to get the URL for accessing the AAP web interface. Copy the URL and open it in a new browser tab.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.14.png" alt="3.14">
+</div>
+</div>
 </li>
 <li>
 <p>Use the user <strong>admin</strong> and the <strong>password</strong> set during the time of installation. The example above uses <code>redhat</code> as the password.</p>
@@ -341,6 +484,11 @@ aap.example.org → &lt; paste system hostname&gt;
 </tr>
 </table>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.15.png" alt="3.15">
+</div>
+</div>
 </li>
 <li>
 <p>Select the Username and Password fields and provide the <strong>Red Hat login ID</strong> to get the subscription for attaching it to the AAP and <strong>60-day subscription to Red Hat Ansible® Automation Platform</strong> or <strong>Red Hat Developer Subscription for Individuals</strong> subscription can be used for this lab.</p>
@@ -349,19 +497,36 @@ aap.example.org → &lt; paste system hostname&gt;
 <p>You can access the AAP web interface using the <strong>admin</strong> user and the <strong>password</strong> set according to the Step 9. and use the link given in the RHDP login page: <strong>After AAP Installation</strong> to access the AAP web interface.</p>
 </li>
 <li>
-<p>After login, run the <strong>Project sync</strong> for the <strong>Demo project</strong> to confirm job execution is working.</p>
-</li>
-<li>
 <p>In <strong>Automation Execution</strong> click on <strong>Templates</strong> and edit the <strong>Demo Job Template</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.16.png" alt="3.16">
+</div>
+</div>
 </li>
 <li>
-<p>Click on <strong>Instance groups</strong> and select <strong>executionplane</strong>, then save the job template.</p>
+<p>Click on <strong>Instance groups</strong> and select <strong>executionplane</strong>, then save the job template after selecting the execution node.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.17.png" alt="3.17">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.18.png" alt="3.18">
+</div>
+</div>
 </li>
 <li>
 <p>Run the <strong>Demo Job Template</strong>.</p>
 </li>
 <li>
 <p>Go to <strong>Jobs</strong>, select <strong>Demo Job Template</strong>, and check the <strong>Details</strong> section to verify the job executed on the Execution Plane node.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/3.19.png" alt="3.19">
+</div>
+</div>
 </li>
 <li>
 <p>Go to <strong>Automation Execution &gt; Infrastructure &gt; Topology View</strong> to confirm the current mesh architecture showing the controller peered to the execution node.</p>
@@ -380,6 +545,10 @@ Use a stronger password than <code>redhat</code> in production deployments.
 </tr>
 </table>
 </div>
+<nav class="pagination">
+  <span class="prev"><a href="section2.html">Automation Mesh Examples for Containerized Deployment</a></span>
+  <span class="next"><a href="section4.html">Calculate Sizing Requirements for Containerized Deployment</a></span>
+</nav>
 </article>
   </div>
 </main>
