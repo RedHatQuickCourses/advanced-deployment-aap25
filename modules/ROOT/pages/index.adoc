@@ -11,25 +11,23 @@ Duration: 60 minutes
 
 On completing this course, you will:
 
-- Understand how Automation Mesh works in an operator-based (OCP) deployment;
-- Configure Container Groups and remote execution nodes using the AAP UI and operator custom resources;
+- Understand how Automation Mesh works in an operator-based (OCP) deployment and Containerized deployment;
+- Configure Instance Groups and remote execution nodes using the AAP UI and operator custom resources;
 - Calculate sizing requirements expressed as Pod resource requests and limits;
-- Troubleshoot AAP installation and mesh issues using the `oc` CLI and operator conditions.
+- Troubleshoot AAP installation and mesh issues using the `oc` CLI and operator conditions and Containerized deployment. 
 
 == Prerequisites
 
 This course assumes that you have the following prior experience:
 
 - Foundational knowledge of Linux, Containers, Kubernetes/OpenShift, and Ansible.
-- https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D73946012[Basic Deployment of Ansible Automation Platform,windows=_blank].
+- https://training-lms.redhat.com/sso/saml/auth/rhlpint?RelayState=deeplinkoffering%3D92347691[Product Enablement: AAP 2.7 Fundamentals and Deployment,windows=_blank].
 - Familiarity with OpenShift concepts: namespaces, pods, service accounts, routes, and RBAC.
-
 
 == Contributors
 
 The PTL team acknowledges the valuable contributions of the following Red Hat associates:
 
-- Konstantin Kuminsky (Contributor)
 - Amrinder Singh (Content Architect)
-- Rutuja Deshmukh (Editor)
 - Anna Swicegood (Learning Product Manager)
+- Rupali Talwatkar (Coordinator)
