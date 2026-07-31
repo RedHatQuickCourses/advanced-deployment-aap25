@@ -6,7 +6,7 @@ In an operator-based AAP deployment, Automation Mesh is configured entirely thro
 
 . *OpenShift Console Access:*
 +
-Open the OpenShift Console at `{openshift_console_url}` and log in with username `{openshift_username}` and password `{common_admin_password}`.
+Open the OpenShift Console at `{openshift_console_url}` and log in with username `admin` and password `{common_admin_password}`.
 
 .. Navigate to *Virtualization* → *VirtualMachines*.
 
@@ -24,7 +24,7 @@ image::1.2.png[]
 +
 image::1.3.png[]
 
-. Log in to the VM using username `{bastion_ansible_user}` and password `{common_user_password}`. Copy and paste with CTRL+SHIFT+V in the terminal.
+. Log in to the VM using username `{cloud_init_user}` and password `{common_user_password}`. Copy and paste with CTRL+SHIFT+V in the terminal.
 
 . Register the system with Red Hat Subscription Management and attach the subscription to the system.
 +
@@ -101,11 +101,11 @@ image::1.12.png[]
 
 === Setup Receptor on the Execution Node:
 
-. Download and Extract the bundle on the remote machine:
+. Download and Extract the bundle on the remote machine. The aap admin password is `{common_admin_password}`. 
 +
 [source,bash,role=execute]
 ----
-curl -u admin:{common_admin_password} --output aap.tar.gz <Paste the URL of the bundle from the AAP UI>
+curl -u admin:<admin_password> --output aap.tar.gz <Paste the URL of the bundle from the AAP UI>
 ----
 +
 image::1.13.png[]
