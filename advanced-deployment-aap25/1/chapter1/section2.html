@@ -189,7 +189,7 @@
 </div>
 </li>
 <li>
-<p>Log in to the VM using username <code>{cloud_init_user}</code> and password <code>{common_user_password}</code>. Copy and paste with CTRL+SHIFT+V in the terminal.</p>
+<p>Log in to the VM using username <code>lab-user</code> and password <code>{common_user_password}</code>. Copy and paste with CTRL+SHIFT+V in the terminal.</p>
 </li>
 <li>
 <p>Register the system with Red Hat Subscription Management and attach the subscription to the system.</p>
@@ -349,7 +349,7 @@ password: &lt;YOUR-RHN_PASSWORD&gt;</code></pre>
 <p>Download and Extract the bundle on the remote machine. The aap admin password is <code>{common_admin_password}</code>.</p>
 <div class="listingblock execute">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -u admin:&lt;admin_password&gt; --output aap.tar.gz &lt;Paste the URL of the bundle from the AAP UI&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -u admin:&lt;aap_admin_password&gt; --output aap.tar.gz &lt;Paste the URL of the bundle from the AAP UI&gt;</code></pre>
 </div>
 </div>
 <div class="imageblock">

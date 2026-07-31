@@ -144,12 +144,17 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Login to the <code>{bastion_public_hostname}</code> using the command <code>{bastion_ssh_command}</code> and perform the following steps to know how to troubleshoot the AAP installation issues on OpenShift.</p>
+<p>Login to the <code>{bastion_public_hostname}</code> using the ssh command of the <strong>Linux Developer Host</strong> host from the RHDP login page and perform the following steps to know how to troubleshoot the AAP installation issues on OpenShift.</p>
 </li>
 <li>
-<p>Login to the OpenShift cluster using the command <strong>oc login -u admin -p <code>{openshift_cluster_admin_password}</code> <code>{openshift_api_server_url}</code></strong>.</p>
+<p>Login to the OpenShift cluster using the command:</p>
 </li>
 </ul>
+</div>
+<div class="listingblock execute">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u admin -p admin {openshift_api_url}</code></pre>
+</div>
 </div>
 </div>
 </div>

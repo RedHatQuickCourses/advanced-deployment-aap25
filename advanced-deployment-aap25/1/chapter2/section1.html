@@ -193,7 +193,7 @@ Unlike operator-based deployments, containerized deployments <strong>do</strong>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-In a containerized deployment, use <code>receptor_type</code> instead of <code>node_type</code> to set execution vs. hop. <code>node_type</code> is used in RPM-based deployments only.
+In a containerized deployment, use <code>receptor_type</code> instead of <code>node_type</code> to set execution vs. hop. <code>node_type</code> was used in RPM-based deployments only.
 </td>
 </tr>
 </table>
@@ -205,27 +205,6 @@ In a containerized deployment, use <code>receptor_type</code> instead of <code>n
 <div class="sectionbody">
 <div class="paragraph">
 <p>Peer relationships are defined in the installer inventory using <code>receptor_peers</code>. The value must be a <strong>comma-separated list of hostnames</strong> — not inventory group names. By default, nodes in the <code>[execution_nodes]</code> group are automatically peered to nodes in the <code>[automationcontroller]</code> group. You can override this with <code>receptor_peers</code>.</p>
-</div>
-<div class="imageblock unresolved">
-<div class="content">
-<img src="0.png" alt="0">
-</div>
-</div>
-<div class="paragraph">
-<p>The following diagram describes the Control Plane and Execution Plane node types:</p>
-</div>
-<div class="imageblock unresolved">
-<div class="content">
-<img src="1.png" alt="1">
-</div>
-</div>
-<div class="paragraph">
-<p>The next diagram shows the Execution Plane nodes and their functions:</p>
-</div>
-<div class="imageblock unresolved">
-<div class="content">
-<img src="1.2.png" alt="1.2">
-</div>
 </div>
 </div>
 </div>
