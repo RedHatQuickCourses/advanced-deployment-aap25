@@ -4,7 +4,7 @@ The following steps demonstrate how to install all AAP 2.7 components on a singl
 
 . *OpenShift Console Access:*
 
-.. Open the OpenShift Console at `{openshift_console_url}` and log in with username `{openshift_username}` and password `{common_admin_password}`.
+.. Open the OpenShift Console at `{openshift_console_url}` and log in with username `admin` and password `{common_admin_password}`.
 
 .. Navigate to *Virtualization* → *VirtualMachines*
 .. Select namespace: `aap-lab`
@@ -18,7 +18,7 @@ image::3.2.png[]
 +
 image::3.3.png[]
 
-. Log in to the VM using username `{bastion_ansible_user}` and password `{common_user_password}`. Copy and paste with CTRL+SHIFT+V in the terminal.
+. Log in to the VM using username `lab-user` and password `{common_user_password}`. Copy and paste with CTRL+SHIFT+V in the terminal.
 
 . Register the system with Red Hat Subscription Management and attach the subscription to the system.
 +
